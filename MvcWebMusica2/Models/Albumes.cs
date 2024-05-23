@@ -7,7 +7,6 @@ namespace MvcWebMusica2.Models;
 
 public partial class Albumes
 {
-    [ScaffoldColumn(false)]
     public int Id { get; set; }
     
     [Required(ErrorMessage = "Campo requerido.")]
