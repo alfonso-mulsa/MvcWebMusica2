@@ -1,7 +1,7 @@
 ﻿@model IEnumerable<MvcWebMusica2.Models.VideoClipsPlataformas>
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Index de VideoClips/Plataformas";
 }
 
 <h1>Index</h1>
@@ -31,10 +31,10 @@
                 @Html.DisplayFor(modelItem => item.url)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Plataformas.Id)
+                @Html.DisplayFor(modelItem => item.Plataformas.Nombre)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.VideoClips.Id)
+                @Html.DisplayFor(modelItem => item.VideoClips.Canciones)
             </td>
             <td>
                 <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |

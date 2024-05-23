@@ -1,7 +1,7 @@
 ﻿@model MvcWebMusica2.Models.VideoClips
 
 @{
-    ViewData["Title"] = "Details";
+    ViewData["Title"] = "Details de VideoClips";
 }
 
 <h1>Details</h1>
@@ -20,7 +20,7 @@
             @Html.DisplayNameFor(model => model.Canciones)
         </dt>
         <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Canciones.Id)
+            @Html.DisplayFor(model => model.Canciones.Titulo)
         </dd>
     </dl>
 </div>

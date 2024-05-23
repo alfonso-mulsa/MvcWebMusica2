@@ -49,7 +49,7 @@ namespace MvcWebMusica2.Controllers
         public IActionResult Create()
         {
             ViewData["PlataformasId"] = new SelectList(_context.Plataformas, "Id", "Nombre");
-            ViewData["VideoClipsId"] = new SelectList(_context.VideoClips, "Id", "Id");
+            ViewData["VideoClipsId"] = new SelectList(_context.VideoClips, "Id", "Canciones");
             return View();
         }
 
@@ -67,7 +67,7 @@ namespace MvcWebMusica2.Controllers
                 return RedirectToAction(nameof(Index));
             }
             ViewData["PlataformasId"] = new SelectList(_context.Plataformas, "Id", "Nombre", videoClipsPlataformas.PlataformasId);
-            ViewData["VideoClipsId"] = new SelectList(_context.VideoClips, "Id", "Id", videoClipsPlataformas.VideoClipsId);
+            ViewData["VideoClipsId"] = new SelectList(_context.VideoClips, "Id", "Canciones", videoClipsPlataformas.VideoClipsId);
             return View(videoClipsPlataformas);
         }
 
@@ -85,7 +85,7 @@ namespace MvcWebMusica2.Controllers
                 return NotFound();
             }
             ViewData["PlataformasId"] = new SelectList(_context.Plataformas, "Id", "Nombre", videoClipsPlataformas.PlataformasId);
-            ViewData["VideoClipsId"] = new SelectList(_context.VideoClips, "Id", "Id", videoClipsPlataformas.VideoClipsId);
+            ViewData["VideoClipsId"] = new SelectList(_context.VideoClips, "Id", "Canciones", videoClipsPlataformas.VideoClipsId);
             return View(videoClipsPlataformas);
         }
 
@@ -122,7 +122,7 @@ namespace MvcWebMusica2.Controllers
                 return RedirectToAction(nameof(Index));
             }
             ViewData["PlataformasId"] = new SelectList(_context.Plataformas, "Id", "Nombre", videoClipsPlataformas.PlataformasId);
-            ViewData["VideoClipsId"] = new SelectList(_context.VideoClips, "Id", "Id", videoClipsPlataformas.VideoClipsId);
+            ViewData["VideoClipsId"] = new SelectList(_context.VideoClips, "Id", "Canciones", videoClipsPlataformas.VideoClipsId);
             return View(videoClipsPlataformas);
         }
 
