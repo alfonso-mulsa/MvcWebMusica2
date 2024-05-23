@@ -1,0 +1,30 @@
+﻿@model MvcWebMusica2.Models.FuncionesArtistas
+
+@{
+    ViewData["Title"] = "Details de Funciones/Artistas";
+}
+
+<h1>Details</h1>
+
+<div>
+    <h4>FuncionesArtistas</h4>
+    <hr />
+    <dl class="row">
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Artistas)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Artistas.Nombre)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Funciones)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Funciones.Nombre)
+        </dd>
+    </dl>
+</div>
+<div>
+    <a asp-action="Edit" asp-route-id="@Model?.Id">Edit</a> |
+    <a asp-action="Index">Back to List</a>
+</div>
