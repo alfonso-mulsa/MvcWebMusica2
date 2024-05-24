@@ -82,33 +82,7 @@ body {
     }
 }
 
-/*.masthead .btn {
-    opacity: 0;
-    animation-name: animBtnSaberMas;
-    animation-duration: 3s;
-    animation-timing-function: ease;
-    animation-delay: 1.2s;
-    animation-iteration-count: infinite;
-    animation-direction: normal;
-    animation-fill-mode: forwards;
+.vistas {
+    background-color: white;
+    opacity: 85%;
 }
-
-@keyframes animBtnSaberMas {
-    0%, 50%, 100% {
-        opacity: 1;
-    }
-
-    25%, 75% {
-        opacity: 0;
-    }
-}
-
-@media (min-width: 992px) {
-    .masthead {
-        height: 100vh;
-    }
-
-        .masthead h1 {
-            font-size: 6rem;
-        }
-}*/

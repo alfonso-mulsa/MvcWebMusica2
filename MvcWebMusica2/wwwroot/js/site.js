@@ -3,7 +3,7 @@
     DataTable.datetime('DD/MM/YYYY');
     $('.tabla-indice').DataTable({
         search: {
-            return: true
+            return: false
         },
         language: {
             lengthMenu: 'Mostrar _MENU_ entradas por página',
@@ -18,7 +18,11 @@
         layout: {
             topStart: 'search',
             topEnd: 'pageLength',
-            bottomStart: 'paging',
+            bottomStart: {
+                paging: {
+                    type: 'full_numbers'
+                }
+            },
             bottomEnd: 'info',
         },
         colReorder: true,
