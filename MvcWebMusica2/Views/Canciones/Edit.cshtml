@@ -20,7 +20,8 @@
             </div>
             <div class="form-group">
                 <label asp-for="Duracion" class="control-label"></label>
-                <input asp-for="Duracion" class="form-control" />
+                @* <input asp-for="Duracion" class="form-control" /> *@
+                @Html.TextBoxFor(model => model.Duracion, "{0:HH:mm:ss}", new { @class = "form-control" })
                 <span asp-validation-for="Duracion" class="text-danger"></span>
             </div>
             <div class="form-group">
@@ -41,7 +42,7 @@
 </div>
 
 <div>
-    <a asp-action="Index">Back to List</a>
+    <a asp-action="Index"><i class="fa-solid fa-rotate-left" title="Volver al listado"></i></a>
 </div>
 
 @section Scripts {

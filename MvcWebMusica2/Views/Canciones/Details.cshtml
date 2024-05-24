@@ -20,7 +20,7 @@
             @Html.DisplayNameFor(model => model.Duracion)
         </dt>
         <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Duracion)
+            @Html.DisplayFor(model => model.Duracion, "{0:HH:mm:ss}")
         </dd>
         <dt class = "col-sm-2">
             @Html.DisplayNameFor(model => model.Single)
@@ -38,5 +38,5 @@
 </div>
 <div>
     <a asp-action="Edit" asp-route-id="@Model?.Id"><i class="fa-solid fa-pen-to-square" title="Editar"></i></a> |
-    <a asp-action="Index">Back to List</a>
+    <a asp-action="Index"><i class="fa-solid fa-rotate-left" title="Volver al listado"></i></a>
 </div>

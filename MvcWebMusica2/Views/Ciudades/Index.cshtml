@@ -7,7 +7,7 @@
 <h1>Ciudades</h1>
 
 <p>
-    <a asp-action="Create">Create New</a>
+    <a asp-action="Create"><i class="border border-1 border-primary bg-info bg-opacity-25 fs-3 fa-solid fa-plus" title="Añadir"></i></a>
 </p>
 <table class="table table-bordered border-primary table-hover tabla-indice">
     <thead class="table-primary">
@@ -22,20 +22,21 @@
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Nombre)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Paises.Nombre)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.Id"><i class="fa-solid fa-pen-to-square" title="Editar"></i></a> |
-                <a asp-action="Details" asp-route-id="@item.Id"><i class="fa-solid fa-eye" title="Detalles"></i></a> |
-                <a asp-action="Delete" asp-route-id="@item.Id"><i class="fa-solid fa-trash" title="Borrar"></i></a>
-            </td>
-        </tr>
-}
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Nombre)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Paises.Nombre)
+                </td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.Id"><i class="fa-solid fa-pen-to-square" title="Editar"></i></a> |
+                    <a asp-action="Details" asp-route-id="@item.Id"><i class="fa-solid fa-eye" title="Detalles"></i></a> |
+                    <a asp-action="Delete" asp-route-id="@item.Id"><i class="fa-solid fa-trash" title="Borrar"></i></a>
+                </td>
+            </tr>
+        }
     </tbody>
 </table>

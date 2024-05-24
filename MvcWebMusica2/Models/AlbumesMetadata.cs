@@ -11,7 +11,8 @@ namespace MvcWebMusica2.Models
         public int Id { get; set; }
 
         [Required(ErrorMessage = "Campo requerido.")]
-        [Length(1, 50, ErrorMessage = "La longitud debe ser entre 1 y 50 caracteres.")]
+        [DisplayName("Nombre Album")]
+        [MaxLength(50, ErrorMessage = "La longitud debe ser menor de 50 caracteres.")]
         public string? Nombre { get; set; }
 
         [Required(ErrorMessage = "Campo requerido.")]
@@ -23,6 +24,7 @@ namespace MvcWebMusica2.Models
         public int? GruposId { get; set; }
 
         [Required(ErrorMessage = "Campo requerido.")]
+        [DisplayName("Fecha Publicación")]
         [DataType(DataType.Date)]
         public DateOnly? Fecha { get; set; }
 
