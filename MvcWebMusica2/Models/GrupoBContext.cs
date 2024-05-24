@@ -59,7 +59,6 @@ public partial class GrupoBContext : DbContext
     {
         modelBuilder.Entity<Albumes>(entity =>
         {
-            entity.Property(e => e.Id).ValueGeneratedNever();
             entity.Property(e => e.Nombre)
                 .HasMaxLength(50)
                 .IsUnicode(false);
@@ -149,8 +148,6 @@ public partial class GrupoBContext : DbContext
 
         modelBuilder.Entity<FuncionesArtistas>(entity =>
         {
-            entity.Property(e => e.Id).ValueGeneratedNever();
-
             entity.HasOne(d => d.Artistas).WithMany(p => p.FuncionesArtistas)
                 .HasForeignKey(d => d.ArtistasId)
                 .HasConstraintName("FK_FuncionesArtistas_Artistas");
