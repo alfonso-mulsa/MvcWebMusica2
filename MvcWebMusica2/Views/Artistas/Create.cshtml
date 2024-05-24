@@ -1,7 +1,7 @@
 ﻿@model MvcWebMusica2.Models.Artistas
 
 @{
-    ViewData["Title"] = "Create de Artistas";
+    ViewData["Title"] = "Crear Artistas";
 }
 
 <h1>Create de Artistas</h1>
@@ -35,14 +35,14 @@
                 <select asp-for="GruposId" class ="form-control" asp-items="ViewBag.GruposId"></select>
             </div>
             <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
+                <input type="submit" value="Añadir" class="btn btn-primary mt-3" />
             </div>
         </form>
     </div>
 </div>
 
 <div>
-    <a asp-action="Index"><i class="fa-solid fa-rotate-left" title="Volver al listado"></i></a>
+    <a asp-action="Index"><i class="fa-solid fa-rotate-left fs-3 mt-3" title="Volver al listado"></i></a>
 </div>
 
 @section Scripts {
