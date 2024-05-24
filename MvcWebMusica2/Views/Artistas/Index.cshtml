@@ -22,10 +22,10 @@
                 @Html.DisplayNameFor(model => model.Ciudades)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Generos)
+                @Html.DisplayNameFor(model => model.Grupos)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Grupos)
+                @Html.DisplayNameFor(model => model.Generos)
             </th>
             <th></th>
         </tr>
@@ -43,10 +43,10 @@
                 @Html.DisplayFor(modelItem => item.Ciudades.Nombre)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Generos.Nombre)
+                @Html.DisplayFor(modelItem => item.Grupos.Nombre)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Grupos.Nombre)
+                @Html.DisplayFor(modelItem => item.Generos.Nombre)
             </td>
             <td>
                 <a asp-action="Edit" asp-route-id="@item.Id"><i class="fa-solid fa-pen-to-square" title="Editar"></i></a> |

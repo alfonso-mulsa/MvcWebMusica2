@@ -29,7 +29,7 @@ namespace MvcWebMusica2.Models
         public int? CiudadesId { get; set; }
 
         [Required(ErrorMessage = "Campo requerido.")]
-        [DisplayName("Grupo")]
+        [DisplayName("Grupo Musical")]
         public int? GruposId { get; set; }
 
         [DisplayName("Ciudad")]
@@ -38,7 +38,7 @@ namespace MvcWebMusica2.Models
         [DisplayName("Género")]
         public virtual Generos? Generos { get; set; }
 
-        [DisplayName("Grupo")]
+        [DisplayName("Grupo Musical")]
         public virtual Grupos? Grupos { get; set; }
 
     }

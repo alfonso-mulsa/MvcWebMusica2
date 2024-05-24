@@ -16,13 +16,13 @@
                 @Html.DisplayNameFor(model => model.Titulo)
             </th>
             <th>
+                @Html.DisplayNameFor(model => model.Albumes)
+            </th>
+            <th>
                 @Html.DisplayNameFor(model => model.Duracion)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.Single)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Albumes)
             </th>
             <th></th>
         </tr>
@@ -34,13 +34,13 @@
                 @Html.DisplayFor(modelItem => item.Titulo)
             </td>
             <td>
+                @Html.DisplayFor(modelItem => item.Albumes.Nombre)
+            </td>
+            <td>
                 @Html.DisplayFor(modelItem => item.Duracion)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Single)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Albumes.Nombre)
             </td>
             <td>
                 <a asp-action="Edit" asp-route-id="@item.Id"><i class="fa-solid fa-pen-to-square" title="Editar"></i></a> |
