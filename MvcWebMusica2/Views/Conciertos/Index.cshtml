@@ -1,7 +1,7 @@
 ﻿@model IEnumerable<MvcWebMusica2.Models.Conciertos>
 
 @{
-    ViewData["Title"] = "Index de Conciertos";
+    ViewData["Title"] = "Conciertos";
 }
 
 <h1>Conciertos</h1>
@@ -19,10 +19,10 @@
                 @Html.DisplayNameFor(model => model.Fecha)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Direccion)
+                @Html.DisplayNameFor(model => model.Ciudades)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Ciudades)
+                @Html.DisplayNameFor(model => model.Direccion)
             </th>
             <th></th>
         </tr>
@@ -37,10 +37,10 @@
                 @Html.DisplayFor(modelItem => item.Fecha)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Direccion)
+                @Html.DisplayFor(modelItem => item.Ciudades.Nombre)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Ciudades.Nombre)
+                @Html.DisplayFor(modelItem => item.Direccion)
             </td>
             <td>
                 <a asp-action="Edit" asp-route-id="@item.Id"><i class="fa-solid fa-pen-to-square" title="Editar"></i></a> |

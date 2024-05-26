@@ -16,7 +16,7 @@ namespace MvcWebMusica2.Models
         public string? Nombre { get; set; }
 
         [Required(ErrorMessage = "Campo requerido.")]
-        [DisplayName("Género")]
+        [DisplayName("Género Musical")]
         public int? GenerosId { get; set; }
 
         [Required(ErrorMessage = "Campo requerido.")]
@@ -25,17 +25,17 @@ namespace MvcWebMusica2.Models
         public DateOnly? FechaDeNacimiento { get; set; }
 
         [Required(ErrorMessage = "Campo requerido.")]
-        [DisplayName("Ciudad")]
+        [DisplayName("Ciudad Nacimiento")]
         public int? CiudadesId { get; set; }
 
         [Required(ErrorMessage = "Campo requerido.")]
         [DisplayName("Grupo Musical")]
         public int? GruposId { get; set; }
 
-        [DisplayName("Ciudad")]
+        [DisplayName("Ciudad Nacimiento")]
         public virtual Ciudades? Ciudades { get; set; }
 
-        [DisplayName("Género")]
+        [DisplayName("Género Musical")]
         public virtual Generos? Generos { get; set; }
 
         [DisplayName("Grupo Musical")]

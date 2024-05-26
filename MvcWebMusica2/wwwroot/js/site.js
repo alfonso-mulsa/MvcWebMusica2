@@ -29,7 +29,7 @@
     });
 
     // ***************** Carrusel de fondo *******************
-    const imagenes = ['./img/fondos/fondo1-byn.jpg', './img/fondos/fondo2-byn.jpg', './img/fondos/fondo3-byn.jpg', './img/fondos/fondo4-byn.jpg'];
+    const imagenes = ['/img/fondos/fondo1-byn.jpg', '/img/fondos/fondo2-byn.jpg', '/img/fondos/fondo3-byn.jpg', '/img/fondos/fondo4-byn.jpg'];
     var numFondo = 1;
     setInterval(cambiarFondo, 5000);
 

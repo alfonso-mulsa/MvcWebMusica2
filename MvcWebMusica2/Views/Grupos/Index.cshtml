@@ -1,10 +1,10 @@
 ﻿@model IEnumerable<MvcWebMusica2.Models.Grupos>
 
 @{
-    ViewData["Title"] = "Index de Grupos";
+    ViewData["Title"] = "Grupos Musicales";
 }
 
-<h1>Grupos</h1>
+<h1>Grupos Musicales</h1>
 
 <p>
     <a asp-action="Create"><i class="ps-3 fs-3 fa-solid fa-file-circle-plus" title="Crear nueva entrada"></i></a>
@@ -19,13 +19,13 @@
                 @Html.DisplayNameFor(model => model.grupo)
             </th>
             <th>
+                @Html.DisplayNameFor(model => model.Generos)
+            </th>
+            <th>
                 @Html.DisplayNameFor(model => model.FechaCreacion)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.Ciudades)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Generos)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.Representantes)
@@ -43,13 +43,13 @@
                 @Html.DisplayFor(modelItem => item.grupo)
             </td>
             <td>
+                @Html.DisplayFor(modelItem => item.Generos.Nombre)
+            </td>
+            <td>
                 @Html.DisplayFor(modelItem => item.FechaCreacion)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Ciudades.Nombre)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Generos.Nombre)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Representantes.NombreCompleto)

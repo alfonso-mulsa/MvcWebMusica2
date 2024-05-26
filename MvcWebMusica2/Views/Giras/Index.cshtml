@@ -1,7 +1,7 @@
 ﻿@model IEnumerable<MvcWebMusica2.Models.Giras>
 
 @{
-    ViewData["Title"] = "Index de Giras";
+    ViewData["Title"] = "Giras";
 }
 
 <h1>Giras</h1>
@@ -13,10 +13,10 @@
     <thead class="table-primary">
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.Grupos)
+                @Html.DisplayNameFor(model => model.Nombre)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Nombre)
+                @Html.DisplayNameFor(model => model.Grupos)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.FechaInicio)
@@ -31,10 +31,10 @@
 @foreach (var item in Model) {
         <tr>
             <td>
-                @Html.DisplayFor(modelItem => item.Grupos.Nombre)
+                @Html.DisplayFor(modelItem => item.Nombre)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Nombre)
+                @Html.DisplayFor(modelItem => item.Grupos.Nombre)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.FechaInicio)

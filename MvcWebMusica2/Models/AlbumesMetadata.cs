@@ -16,11 +16,11 @@ namespace MvcWebMusica2.Models
         public string? Nombre { get; set; }
 
         [Required(ErrorMessage = "Campo requerido.")]
-        [DisplayName("Género")]
+        [DisplayName("Género Musical")]
         public int? GenerosId { get; set; }
 
         [Required(ErrorMessage = "Campo requerido.")]
-        [DisplayName("Grupo")]
+        [DisplayName("Grupo Musical")]
         public int? GruposId { get; set; }
 
         [Required(ErrorMessage = "Campo requerido.")]

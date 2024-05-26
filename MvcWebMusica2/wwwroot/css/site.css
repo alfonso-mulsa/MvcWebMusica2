@@ -30,7 +30,6 @@ body {
 }
 
 /*************** Cabecera ***************/
-
 .masthead {
     min-height: 30rem;
     position: relative;
@@ -62,7 +61,7 @@ body {
 
     .masthead h1, .masthead h3 {
         animation-name: animTextoCabecera;
-        animation-duration: 1s;
+        animation-duration: 1.2s;
         animation-timing-function: linear;
         animation-delay: 0s;
         animation-iteration-count: 1;
@@ -72,8 +71,8 @@ body {
 
 @keyframes animTextoCabecera {
     from {
-        filter: blur(7px);
-        transform: scale(3, 3);
+        filter: blur(9px);
+        transform: scale(4, 4);
     }
 
     to {
@@ -82,6 +81,7 @@ body {
     }
 }
 
+/*************** Cambiar fondo del contenedor de renderización RenderBody ***************/
 .vistas {
     background-color: white;
     opacity: 85%;

@@ -1,7 +1,7 @@
 ﻿@model MvcWebMusica2.Models.Conciertos
 
 @{
-    ViewData["Title"] = "Details de Conciertos";
+    ViewData["Title"] = "Detalles de Conciertos";
 }
 
 <h1>Detalles</h1>
@@ -11,16 +11,16 @@
     <hr />
     <dl class="row">
         <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Giras)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Giras.Nombre)
+        </dd>
+        <dt class = "col-sm-2">
             @Html.DisplayNameFor(model => model.Fecha)
         </dt>
         <dd class = "col-sm-10">
             @Html.DisplayFor(model => model.Fecha)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Direccion)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Direccion)
         </dd>
         <dt class = "col-sm-2">
             @Html.DisplayNameFor(model => model.Ciudades)
@@ -29,10 +29,10 @@
             @Html.DisplayFor(model => model.Ciudades.Nombre)
         </dd>
         <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Giras)
+            @Html.DisplayNameFor(model => model.Direccion)
         </dt>
         <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Giras.Nombre)
+            @Html.DisplayFor(model => model.Direccion)
         </dd>
     </dl>
 </div>

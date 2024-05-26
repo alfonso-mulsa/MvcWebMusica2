@@ -1,24 +1,24 @@
 ﻿@model MvcWebMusica2.Models.VideoClipsPlataformas
 
 @{
-    ViewData["Title"] = "Create de VideoClips/Plataformas";
+    ViewData["Title"] = "Añadir VideoClips/Plataformas";
 }
 
 <h1>Añadir</h1>
 
-<h4>VideoClipsPlataformas</h4>
+<h4>VideoClips / Plataformas</h4>
 <hr />
 <div class="row">
     <div class="col-md-4">
         <form asp-action="Create">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
-                <label asp-for="PlataformasId" class="control-label"></label>
-                <select asp-for="PlataformasId" class ="form-control" asp-items="ViewBag.PlataformasId"></select>
-            </div>
-            <div class="form-group">
                 <label asp-for="VideoClipsId" class="control-label"></label>
                 <select asp-for="VideoClipsId" class ="form-control" asp-items="ViewBag.VideoClipsId"></select>
+            </div>
+            <div class="form-group">
+                <label asp-for="PlataformasId" class="control-label"></label>
+                <select asp-for="PlataformasId" class ="form-control" asp-items="ViewBag.PlataformasId"></select>
             </div>
             <div class="form-group">
                 <label asp-for="url" class="control-label"></label>

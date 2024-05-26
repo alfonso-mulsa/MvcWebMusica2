@@ -1,10 +1,10 @@
 ﻿@model IEnumerable<MvcWebMusica2.Models.VideoClipsPlataformas>
 
 @{
-    ViewData["Title"] = "Index de VideoClips/Plataformas";
+    ViewData["Title"] = "VideoClips/Plataformas";
 }
 
-<h1>VideoClips/Plataformas</h1>
+<h1>VideoClips / Plataformas</h1>
 
 <p>
     <a asp-action="Create"><i class="ps-3 fs-3 fa-solid fa-file-circle-plus" title="Crear nueva entrada"></i></a>
@@ -13,13 +13,13 @@
     <thead class="table-primary">
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.url)
+                @Html.DisplayNameFor(model => model.VideoClips)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.Plataformas)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.VideoClips)
+                @Html.DisplayNameFor(model => model.url)
             </th>
             <th></th>
         </tr>
@@ -28,13 +28,13 @@
 @foreach (var item in Model) {
         <tr>
             <td>
-                @Html.DisplayFor(modelItem => item.url)
+                @Html.DisplayFor(modelItem => item.VideoClips.Canciones)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Plataformas.Nombre)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.VideoClips.Canciones)
+                @Html.DisplayFor(modelItem => item.url)
             </td>
             <td>
                 <a asp-action="Edit" asp-route-id="@item.Id"><i class="fa-solid fa-pen-to-square" title="Editar"></i></a> |

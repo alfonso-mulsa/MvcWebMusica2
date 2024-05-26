@@ -1,21 +1,21 @@
 ﻿@model MvcWebMusica2.Models.VideoClipsPlataformas
 
 @{
-    ViewData["Title"] = "Delete de VideoClips/Plataformas";
+    ViewData["Title"] = "Borrar VideoClips/Plataformas";
 }
 
 <h1>Borrar</h1>
 
 <h3>¿Está segurro de borrar esta entrada?</h3>
 <div>
-    <h4>VideoClipsPlataformas</h4>
+    <h4>VideoClips / Plataformas</h4>
     <hr />
     <dl class="row">
         <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.url)
+            @Html.DisplayNameFor(model => model.VideoClips)
         </dt>
         <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.url)
+            @Html.DisplayFor(model => model.VideoClips.Canciones)
         </dd>
         <dt class = "col-sm-2">
             @Html.DisplayNameFor(model => model.Plataformas)
@@ -24,10 +24,10 @@
             @Html.DisplayFor(model => model.Plataformas.Nombre)
         </dd>
         <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.VideoClips)
+            @Html.DisplayNameFor(model => model.url)
         </dt>
         <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.VideoClips.Canciones)
+            @Html.DisplayFor(model => model.url)
         </dd>
     </dl>
     

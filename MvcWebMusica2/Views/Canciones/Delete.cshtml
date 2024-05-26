@@ -6,7 +6,7 @@
 
 <h1>Borrar</h1>
 
-<h3>¿Está segurro de borrar esta entrada?</h3>
+<h3>¿Está segurro de borrar esta canción?</h3>
 <div>
     <h4>Canciones</h4>
     <hr />
@@ -24,16 +24,16 @@
             @Html.DisplayFor(model => model.Duracion, "{0:HH:mm:ss}")
         </dd>
         <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Single)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Single)
-        </dd>
-        <dt class = "col-sm-2">
             @Html.DisplayNameFor(model => model.Albumes)
         </dt>
         <dd class = "col-sm-10">
             @Html.DisplayFor(model => model.Albumes.Nombre)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Single)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Single)
         </dd>
     </dl>
     

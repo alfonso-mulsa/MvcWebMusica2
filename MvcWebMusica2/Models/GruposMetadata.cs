@@ -24,7 +24,7 @@ namespace MvcWebMusica2.Models
         public DateOnly? FechaCreacion { get; set; }
 
         [Required(ErrorMessage = "Campo requerido.")]
-        [DisplayName("Ciudad")]
+        [DisplayName("Ciudad de creación")]
         public int? CiudadesId { get; set; }
 
         [Required(ErrorMessage = "Campo requerido.")]
@@ -35,7 +35,7 @@ namespace MvcWebMusica2.Models
         [DisplayName("Género Musical")]
         public int? GenerosId { get; set; }
 
-        [DisplayName("Ciudad")]
+        [DisplayName("Ciudad de creación")]
         public virtual Ciudades? Ciudades { get; set; }
 
         [DisplayName("Género Musical")]

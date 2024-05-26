@@ -1,7 +1,7 @@
 ﻿@model IEnumerable<MvcWebMusica2.Models.Representantes>
 
 @{
-    ViewData["Title"] = "Index de Representantes";
+    ViewData["Title"] = "Representantes";
 }
 
 <h1>Representantes</h1>
@@ -19,6 +19,9 @@
                 @Html.DisplayNameFor(model => model.FechaNacimiento)
             </th>
             <th>
+                @Html.DisplayNameFor(model => model.Ciudades)
+            </th>
+            <th>
                 @Html.DisplayNameFor(model => model.Identificacion)
             </th>
             <th>
@@ -26,9 +29,6 @@
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.Telefono)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Ciudades)
             </th>
             <th></th>
         </tr>
@@ -43,6 +43,9 @@
                 @Html.DisplayFor(modelItem => item.FechaNacimiento)
             </td>
             <td>
+                @Html.DisplayFor(modelItem => item.Ciudades.Nombre)
+            </td>
+            <td>
                 @Html.DisplayFor(modelItem => item.Identificacion)
             </td>
             <td>
@@ -50,9 +53,6 @@
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Telefono)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Ciudades.Nombre)
             </td>
             <td>
                 <a asp-action="Edit" asp-route-id="@item.Id"><i class="fa-solid fa-pen-to-square" title="Editar"></i></a> |

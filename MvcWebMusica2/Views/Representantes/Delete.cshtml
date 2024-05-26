@@ -1,12 +1,12 @@
 ﻿@model MvcWebMusica2.Models.Representantes
 
 @{
-    ViewData["Title"] = "Delete de Representantes";
+    ViewData["Title"] = "Borrar Representantes";
 }
 
 <h1>Borrar</h1>
 
-<h3>¿Está segurro de borrar esta entrada?</h3>
+<h3>¿Está segurro de borrar este representante?</h3>
 <div>
     <h4>Representantes</h4>
     <hr />
@@ -22,6 +22,12 @@
         </dt>
         <dd class = "col-sm-10">
             @Html.DisplayFor(model => model.FechaNacimiento)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Ciudades)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Ciudades.Nombre)
         </dd>
         <dt class = "col-sm-2">
             @Html.DisplayNameFor(model => model.Identificacion)
@@ -40,12 +46,6 @@
         </dt>
         <dd class = "col-sm-10">
             @Html.DisplayFor(model => model.Telefono)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Ciudades)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Ciudades.Nombre)
         </dd>
     </dl>
     

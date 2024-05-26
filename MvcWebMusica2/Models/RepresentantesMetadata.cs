@@ -36,10 +36,10 @@ namespace MvcWebMusica2.Models
         public string? Telefono { get; set; }
 
         [Required(ErrorMessage = "Campo requerido.")]
-        [DisplayName("Ciudad")]
+        [DisplayName("Ciudad de nacimiento")]
         public int? CiudadesID { get; set; }
 
-        [DisplayName("Ciudad")]
+        [DisplayName("Ciudad de nacimiento")]
         public virtual Ciudades? Ciudades { get; set; }
     }
 }

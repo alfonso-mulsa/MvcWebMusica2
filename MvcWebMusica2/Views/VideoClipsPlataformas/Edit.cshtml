@@ -1,12 +1,12 @@
 ﻿@model MvcWebMusica2.Models.VideoClipsPlataformas
 
 @{
-    ViewData["Title"] = "Edit de VideoClips/Plataformas";
+    ViewData["Title"] = "Editar VideoClips/Plataformas";
 }
 
 <h1>Editar</h1>
 
-<h4>VideoClipsPlataformas</h4>
+<h4>VideoClips / Plataformas</h4>
 <hr />
 <div class="row">
     <div class="col-md-4">
@@ -14,14 +14,14 @@
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <input type="hidden" asp-for="Id" />
             <div class="form-group">
-                <label asp-for="PlataformasId" class="control-label"></label>
-                <select asp-for="PlataformasId" class="form-control" asp-items="ViewBag.PlataformasId"></select>
-                <span asp-validation-for="PlataformasId" class="text-danger"></span>
-            </div>
-            <div class="form-group">
                 <label asp-for="VideoClipsId" class="control-label"></label>
                 <select asp-for="VideoClipsId" class="form-control" asp-items="ViewBag.VideoClipsId"></select>
                 <span asp-validation-for="VideoClipsId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="PlataformasId" class="control-label"></label>
+                <select asp-for="PlataformasId" class="form-control" asp-items="ViewBag.PlataformasId"></select>
+                <span asp-validation-for="PlataformasId" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="url" class="control-label"></label>
