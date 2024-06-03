@@ -7,69 +7,97 @@
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" />
     @* <link href="https://cdn.datatables.net/v/bs5/dt-2.0.7/cr-2.0.2/datatables.min.css" rel="stylesheet"> *@
+    <!-- Font awesome CSS -->
+    <link href="~/css/font-awesome.min.css" rel="stylesheet">
     <link href="~/css/datatables.min.css" rel="stylesheet" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/MvcWebMusica2.styles.css" asp-append-version="true" />
 </head>
 <body>
     <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
+        <!-- secondary menu -->
+        <nav class="secondary-menu bg-dark text-white-50">
+            <div class="container">
+                <!-- secondary menu left link area -->
+                <div class="sm-left">
+                    <strong>Phone</strong>:&nbsp; <a href="#">555 555 555</a>&nbsp;&nbsp;&nbsp;&nbsp;
+                    <strong>E-mail</strong>:&nbsp; <a href="#">music.site@melodi.com</a>
+                </div>
+                <!-- secondary menu right link area -->
+                <div class="sm-right">
+                    <!-- social link -->
+                    <div class="sm-social-link">
+                        <a class="h-facebook" href="#"><i class="fa fa-facebook"></i></a>
+                        <a class="h-twitter" href="#"><i class="fa fa-twitter"></i></a>
+                        <a class="h-google" href="#"><i class="fa fa-google-plus"></i></a>
+                        <a class="h-linkedin" href="#"><i class="fa fa-linkedin"></i></a>
+                    </div>
+                </div>
+                <div class="clearfix"></div>
+            </div>
+        </nav>
+        <!-- primary menu -->
+        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-dark bg-dark border-bottom box-shadow mb-3">
             <div class="container-fluid">
-                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">MVC Web Musica</a>
+                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">
+                    <img class="img-responsive" src="/img/logo/logo.png" alt="" />
+                </a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
                         aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
                 <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
                     <ul class="navbar-nav flex-grow-1">
+                        <li class="nav-item"><a class="nav-link text-danger fw-bold" href="#">Latest Album</a></li>
+                        <li class="nav-item"><a class="nav-link text-danger fw-bold" href="#">Featured Album</a></li>
+                        <li class="nav-item"><a class="nav-link text-danger fw-bold" href="#">Join Us</a></li>
+                        <li class="nav-item"><a class="nav-link text-danger fw-bold" href="#">Portfolio</a></li>
+                        <li class="nav-item"><a class="nav-link text-danger fw-bold" href="#">Events</a></li>
+                        <li class="nav-item"><a class="nav-link text-danger fw-bold" href="#">Team</a></li>
+                        <li class="nav-item"><a class="nav-link text-danger fw-bold" href="#">Contact</a></li>
                         <li class="nav-item dropdown">
-                            <a class="nav-link text-dark dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                Música
-                            </a>
-                            <ul class="dropdown-menu">
-                                <li><a class="nav-link text-dark" asp-area="" asp-controller="Generos" asp-action="Index">Géneros</a></li>
-                                <li><a class="nav-link text-dark" asp-area="" asp-controller="Funciones" asp-action="Index">Funciones</a></li>
-                                <li><a class="nav-link text-dark" asp-area="" asp-controller="Representantes" asp-action="Index">Representantes</a></li>
-                                <li><a class="nav-link text-dark" asp-area="" asp-controller="Artistas" asp-action="Index">Artistas</a></li>
-                                <li><a class="nav-link text-dark" asp-area="" asp-controller="FuncionesArtistas" asp-action="Index">Funciones/Artistas</a></li>
-                                <li><a class="nav-link text-dark" asp-area="" asp-controller="Canciones" asp-action="Index">Canciones</a></li>
-                                <li><a class="nav-link text-dark" asp-area="" asp-controller="Grupos" asp-action="Index">Grupos</a></li>
-                                <li><a class="nav-link text-dark" asp-area="" asp-controller="Albumes" asp-action="Index">Albumes</a></li>
+                            <a class="nav-link text-danger fw-bold dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">Formularios</a>
+                            <ul class="dropdown-menu bg-dark border-2 border-secondary">
+                                <li class="nav-item dropdown">
+                                    <a class="dropdown-item text-danger fw-bold" href="#">Música &raquo;</a>
+                                    <ul class="submenu dropdown-menu bg-dark border-2 border-secondary">
+                                        <li><a class="dropdown-item text-danger fw-bold" asp-area="" asp-controller="Generos" asp-action="Index">Géneros</a></li>
+                                        <li><a class="dropdown-item text-danger fw-bold" asp-area="" asp-controller="Funciones" asp-action="Index">Funciones</a></li>
+                                        <li><a class="dropdown-item text-danger fw-bold" asp-area="" asp-controller="FuncionesArtistas" asp-action="Index">Funciones/Artistas</a></li>
+                                        <li><hr class="dropdown-divider"></li>
+                                        <li><a class="dropdown-item text-danger fw-bold" asp-area="" asp-controller="Representantes" asp-action="Index">Representantes</a></li>
+                                        <li><a class="dropdown-item text-danger fw-bold" asp-area="" asp-controller="Artistas" asp-action="Index">Artistas</a></li>
+                                        <li><a class="dropdown-item text-danger fw-bold" asp-area="" asp-controller="Canciones" asp-action="Index">Canciones</a></li>
+                                        <li><a class="dropdown-item text-danger fw-bold" asp-area="" asp-controller="Grupos" asp-action="Index">Grupos</a></li>
+                                        <li><a class="dropdown-item text-danger fw-bold" asp-area="" asp-controller="Albumes" asp-action="Index">Albumes</a></li>
+                                    </ul>
+                                </li>
+                                <li class="nav-item dropdown">
+                                    <a class="dropdown-item text-danger fw-bold" href="#">Giras &raquo;</a>
+                                    <ul class="submenu dropdown-menu bg-dark border-2 border-secondary">
+                                        <li><a class="dropdown-item text-danger fw-bold" asp-area="" asp-controller="Giras" asp-action="Index">Giras</a></li>
+                                        <li><a class="dropdown-item text-danger fw-bold" asp-area="" asp-controller="Conciertos" asp-action="Index">Conciertos</a></li>
+                                    </ul>
+                                </li>
+                                <li class="nav-item dropdown">
+                                    <a class="dropdown-item text-danger fw-bold" href="#">Videos &raquo;</a>
+                                    <ul class="submenu dropdown-menu bg-dark border-2 border-secondary">
+                                        <li><a class="dropdown-item text-danger fw-bold" asp-area="" asp-controller="VideoClips" asp-action="Index">VideoClips</a></li>
+                                        <li><a class="dropdown-item text-danger fw-bold" asp-area="" asp-controller="Plataformas" asp-action="Index">Plataformas</a></li>
+                                        <li><a class="dropdown-item text-danger fw-bold" asp-area="" asp-controller="VideoClipsPlataformas" asp-action="Index">VideoClips/Plataformas</a></li>
+                                    </ul>
+                                </li>
+                                <li class="nav-item dropdown">
+                                    <a class="dropdown-item text-danger fw-bold" href="#">Otros &raquo;</a>
+                                    <ul class="submenu dropdown-menu bg-dark border-2 border-secondary">
+                                        <li><a class="dropdown-item text-danger fw-bold" asp-area="" asp-controller="Roles" asp-action="Index">Roles</a></li>
+                                        <li><a class="dropdown-item text-danger fw-bold" asp-area="" asp-controller="Empleados" asp-action="Index">Empleados</a></li>
+                                        <li><hr class="dropdown-divider"></li>
+                                        <li><a class="dropdown-item text-danger fw-bold" asp-area="" asp-controller="Paises" asp-action="Index">Paises</a></li>
+                                        <li><a class="dropdown-item text-danger fw-bold" asp-area="" asp-controller="Ciudades" asp-action="Index">Ciudades</a></li>
+                                    </ul>
+                                </li>
                             </ul>
-                        </li>
-                        <li class="nav-item dropdown">
-                            <a class="nav-link text-dark dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                Giras
-                            </a>
-                            <ul class="dropdown-menu">
-                                <li><a class="nav-link text-dark" asp-area="" asp-controller="Giras" asp-action="Index">Giras</a></li>
-                                <li><a class="nav-link text-dark" asp-area="" asp-controller="Conciertos" asp-action="Index">Conciertos</a></li>
-                            </ul>
-                        </li>
-                        <li class="nav-item dropdown">
-                            <a class="nav-link text-dark dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                Videos
-                            </a>
-                            <ul class="dropdown-menu">
-                                <li><a class="nav-link text-dark" asp-area="" asp-controller="VideoClips" asp-action="Index">VideoClips</a></li>
-                                <li><a class="nav-link text-dark" asp-area="" asp-controller="Plataformas" asp-action="Index">Plataformas</a></li>
-                                <li><a class="nav-link text-dark" asp-area="" asp-controller="VideoClipsPlataformas" asp-action="Index">VideoClips/Plataformas</a></li>
-                            </ul>
-                        </li>
-                        <li class="nav-item dropdown">
-                            <a class="nav-link text-dark dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                Otros
-                            </a>
-                            <ul class="dropdown-menu">
-                                <li><a class="nav-link text-dark" asp-area="" asp-controller="Roles" asp-action="Index">Roles</a></li>
-                                <li><a class="nav-link text-dark" asp-area="" asp-controller="Empleados" asp-action="Index">Empleados</a></li>
-                                <li><hr class="dropdown-divider"></li>
-                                <li><a class="nav-link text-dark" asp-area="" asp-controller="Paises" asp-action="Index">Paises</a></li>
-                                <li><a class="nav-link text-dark" asp-area="" asp-controller="Ciudades" asp-action="Index">Ciudades</a></li>
-                            </ul>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
                         </li>
                     </ul>
                 </div>
