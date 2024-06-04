@@ -1,0 +1,87 @@
+﻿@model IEnumerable<MvcWebMusica2.Models.Albumes>
+
+@{
+    ViewData["Title"] = "Albumes Y Canciones";
+}
+
+<h1>Albumes Y Canciones</h1>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Nombre)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Fecha)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Generos)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Grupos)
+            </th>
+            <th>
+                Nº canciones
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Nombre)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Fecha)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Generos.Nombre)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Grupos.Nombre)
+                </td>
+                @if (item.Canciones.Count() == 0)
+                {
+                    <td class ="text-danger fw-bold align-content-end">
+                        @item.Canciones.Count()
+                    </td>
+                }
+                else
+                {
+                    <td class="align-content-end">
+                        @item.Canciones.Count()
+                    </td>
+                }
+                <tr>
+                    <th>
+                        @Html.DisplayNameFor(model => item.Canciones.First().Titulo)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => item.Canciones.First().Duracion)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => item.Canciones.First().Single)
+                    </th>
+                    <th></th>
+                </tr>
+
+                @foreach (var item2 in item.Canciones)
+                {
+                    <tr>
+                        <td>
+                                        @Html.DisplayFor(modelItem => item2.Titulo)
+                        </td>
+                        <td>
+                                        @Html.DisplayFor(modelItem => item2.Duracion)
+                        </td>
+                        <td>
+                                        @Html.DisplayFor(modelItem => item2.Single)
+                        </td>
+                    </tr>
+                }
+                </tr>
+        }
+        </tbody>
+    </table>

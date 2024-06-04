@@ -6,16 +6,19 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using MvcWebMusica2.Models;
+using MvcWebMusica2.ViewModels;
 
 namespace MvcWebMusica2.Controllers
 {
     public class AlbumesController : Controller
     {
         private readonly GrupoBContext _context;
+        private readonly IListableCanciones _listadorCanciones;
 
-        public AlbumesController(GrupoBContext context)
+        public AlbumesController(GrupoBContext context, IListableCanciones listadorCanciones)
         {
             _context = context;
+            _listadorCanciones = listadorCanciones;
         }
 
         // GET: Albumes
@@ -23,6 +26,19 @@ namespace MvcWebMusica2.Controllers
         {
             var grupoBContext = _context.Albumes.Include(a => a.Generos).Include(a => a.Grupos);
             return View(await grupoBContext.ToListAsync());
+        }
+
+        // GET: Albumes y Canciones
+        public async Task<IActionResult> AlbumesYCanciones()
+        {
+            var listaAlbumes = _context.Albumes.Include(a => a.Generos).Include(a => a.Grupos).ToList();
+
+            foreach (var item in listaAlbumes)
+            {
+                item.Canciones = _listadorCanciones.dameCanciones(item.Id);
+            }
+
+            return View(listaAlbumes);
         }
 
         // GET: Albumes/Details/5
