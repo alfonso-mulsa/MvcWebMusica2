@@ -2,11 +2,11 @@
 
 namespace MvcWebMusica2.ViewModels
 {
-    public class ListaCanciones : IListableCanciones
+    public class ListaCancionesAlbumes : IListableCancionesAlbumes
     {
         private readonly GrupoBContext _context;
 
-        public ListaCanciones(GrupoBContext contexto)
+        public ListaCancionesAlbumes(GrupoBContext contexto)
         {
             _context = contexto;
         }

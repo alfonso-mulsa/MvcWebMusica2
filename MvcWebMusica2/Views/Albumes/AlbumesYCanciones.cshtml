@@ -9,6 +9,9 @@
 <table class="table">
     <thead>
         <tr>
+            <th colspan="2">
+                @Html.DisplayNameFor(model => model.Grupos)
+            </th>
             <th>
                 @Html.DisplayNameFor(model => model.Nombre)
             </th>
@@ -19,9 +22,6 @@
                 @Html.DisplayNameFor(model => model.Generos)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Grupos)
-            </th>
-            <th>
                 Nº canciones
             </th>
         </tr>
@@ -29,7 +29,10 @@
     <tbody>
         @foreach (var item in Model)
         {
-            <tr>
+            <tr class="bg-dark bg-opacity-25">
+                <td colspan="2">
+                    @Html.DisplayFor(modelItem => item.Grupos.Nombre)
+                </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.Nombre)
                 </td>
@@ -39,49 +42,59 @@
                 <td>
                     @Html.DisplayFor(modelItem => item.Generos.Nombre)
                 </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Grupos.Nombre)
-                </td>
                 @if (item.Canciones.Count() == 0)
                 {
-                    <td class ="text-danger fw-bold align-content-end">
+                    <td class ="text-danger fw-bold text-center">
                         @item.Canciones.Count()
                     </td>
                 }
                 else
                 {
-                    <td class="align-content-end">
+                    <td class="text-center">
                         @item.Canciones.Count()
                     </td>
                 }
+            </tr>
+            @if (item.Canciones.Count() > 0)
+            {
                 <tr>
-                    <th>
+                    <th class="border-bottom-0" width="7%"></th>
+                    <th class="bg-dark bg-opacity-50 text-white">
                         @Html.DisplayNameFor(model => item.Canciones.First().Titulo)
                     </th>
-                    <th>
+                    <th class="bg-dark bg-opacity-50 text-white">
                         @Html.DisplayNameFor(model => item.Canciones.First().Duracion)
                     </th>
-                    <th>
+                    <th class="bg-dark bg-opacity-50 text-white">
                         @Html.DisplayNameFor(model => item.Canciones.First().Single)
                     </th>
-                    <th></th>
                 </tr>
+            }
+            else
+            {
+                <tr>
+                    <td class="border-bottom-0" width="7%"></td>
+                    <td class="text-danger fw-bold text-center" colspan="3">
+                        Este album no contiene canciones
+                    </td>
+                </tr>
+            }
 
-                @foreach (var item2 in item.Canciones)
-                {
-                    <tr>
-                        <td>
-                                        @Html.DisplayFor(modelItem => item2.Titulo)
-                        </td>
-                        <td>
-                                        @Html.DisplayFor(modelItem => item2.Duracion)
-                        </td>
-                        <td>
-                                        @Html.DisplayFor(modelItem => item2.Single)
-                        </td>
-                    </tr>
-                }
+            @foreach (var item2 in item.Canciones)
+            {
+                <tr>
+                    <td class="border-bottom-0" width="7%"></td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item2.Titulo)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item2.Duracion)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item2.Single)
+                    </td>
                 </tr>
+            }
         }
         </tbody>
     </table>

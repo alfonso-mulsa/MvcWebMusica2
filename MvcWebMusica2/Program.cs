@@ -8,7 +8,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllersWithViews();
 builder.Services.AddDbContext<GrupoBContext>(
        options => options.UseSqlServer("server=musicagrupos.database.windows.net;database=GrupoB;user=as;password=P0t@t0P0t@t0"));
-builder.Services.AddScoped<IListableCanciones, ListaCanciones>();
+builder.Services.AddScoped<IListableCancionesAlbumes, ListaCancionesAlbumes>();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

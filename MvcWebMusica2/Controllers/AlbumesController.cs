@@ -13,12 +13,12 @@ namespace MvcWebMusica2.Controllers
     public class AlbumesController : Controller
     {
         private readonly GrupoBContext _context;
-        private readonly IListableCanciones _listadorCanciones;
+        private readonly IListableCancionesAlbumes _listadorCancionesAlbumes;
 
-        public AlbumesController(GrupoBContext context, IListableCanciones listadorCanciones)
+        public AlbumesController(GrupoBContext context, IListableCancionesAlbumes listadorCancionesAlbumes)
         {
             _context = context;
-            _listadorCanciones = listadorCanciones;
+            _listadorCancionesAlbumes = listadorCancionesAlbumes;
         }
 
         // GET: Albumes
@@ -35,7 +35,7 @@ namespace MvcWebMusica2.Controllers
 
             foreach (var item in listaAlbumes)
             {
-                item.Canciones = _listadorCanciones.dameCanciones(item.Id);
+                item.Canciones = _listadorCancionesAlbumes.dameCanciones(item.Id);
             }
 
             return View(listaAlbumes);
