@@ -48,9 +48,6 @@ namespace MvcWebMusica2.Services.Repositorio
         {
             _context.Albumes.Update(album);
             _context.SaveChanges();
-            //Borrar(Id);
-
-            //Agregar(album);
         }
     }
 }

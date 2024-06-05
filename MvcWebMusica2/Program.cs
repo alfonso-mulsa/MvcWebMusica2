@@ -10,7 +10,7 @@ builder.Services.AddControllersWithViews();
 builder.Services.AddDbContext<GrupoBContext>(
        options => options.UseSqlServer("server=musicagrupos.database.windows.net;database=GrupoB;user=as;password=P0t@t0P0t@t0"));
 builder.Services.AddScoped<IListableCancionesAlbumes, ListaCancionesAlbumes>();
-builder.Services.AddScoped<IAlbumesRepositorio, EFAlbumesRepositorio>();
+builder.Services.AddScoped<IAlbumesRepositorio, FakeAlbumesRepositorio>();
 builder.Services.AddScoped<IGruposRepositorio, EFGruposRepositorio>();
 builder.Services.AddScoped<IGenerosRepositorio, EFGenerosRepositorio>();
 var app = builder.Build();

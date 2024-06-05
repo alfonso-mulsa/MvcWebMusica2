@@ -68,6 +68,11 @@ namespace MvcWebMusica2.Services.Repositorio
             }
             else
             {
+                int ultimoId = listaAlbumes.Max(x => x.Id);
+                if (album.Id == 0)
+                {
+                    album.Id = ultimoId + 1;
+                }
                 listaAlbumes.Add(album);
                 return true;
             }
@@ -99,7 +104,8 @@ namespace MvcWebMusica2.Services.Repositorio
 
         public void Modificar(int Id, Albumes album)
         {
-            if (DameUno(Id) != null)
+            var albumAModificar = DameUno(Id);
+            if (albumAModificar != null)
             {
                 Borrar(Id);
             }

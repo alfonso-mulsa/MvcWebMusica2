@@ -48,6 +48,8 @@ namespace MvcWebMusica2.Controllers
 
             foreach (var item in listaAlbumes)
             {
+                item.Generos = _repositorioGeneros.DameUno((int)item.GenerosId);
+                item.Grupos = _repositorioGrupos.DameUno((int)item.GruposId);
                 item.Canciones = _listadorCancionesAlbumes.dameCanciones(item.Id);
             }
 
