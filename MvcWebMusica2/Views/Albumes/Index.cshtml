@@ -18,11 +18,14 @@
             <th>
                 @Html.DisplayNameFor(model => model.Nombre)
             </th>
-            <th>
+            <th class="text-center">
                 @Html.DisplayNameFor(model => model.Generos)
             </th>
-            <th>
+            <th class="text-center">
                 @Html.DisplayNameFor(model => model.Fecha)
+            </th>
+            <th class="text-center">
+                Nº Canciones
             </th>
             <th></th>
         </tr>
@@ -36,11 +39,14 @@
             <td>
                 @Html.DisplayFor(modelItem => item.Nombre)
             </td>
-            <td>
+            <td class="text-center">
                 @Html.DisplayFor(modelItem => item.Generos.Nombre)
             </td>
-            <td>
+            <td class="text-center">
                 @Html.DisplayFor(modelItem => item.Fecha)
+            </td>
+            <td class="text-center">
+                @item.Canciones.Count()
             </td>
             <td>
                 <a asp-action="Edit" asp-route-id="@item.Id"><i class="fa-solid fa-pen-to-square" title="Editar"></i></a> |

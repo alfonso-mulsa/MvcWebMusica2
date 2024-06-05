@@ -25,14 +25,6 @@ namespace MvcWebMusica2.Controllers
             return View(await grupoBContext.ToListAsync());
         }
 
-        // GET: Artistas sin Grupo Musical
-        public async Task<IActionResult> ArtistasSinGrupo()
-        {
-            var grupoBContext = _context.Artistas.Include(a => a.Ciudades).Include(a => a.Generos).Include(a => a.Grupos);
-            var consultaSinGrupo = grupoBContext.Where(item => item.GruposId == null);
-            return View(await consultaSinGrupo.ToListAsync());
-        }
-
         // GET: Artistas/Details/5
         public async Task<IActionResult> Details(int? id)
         {

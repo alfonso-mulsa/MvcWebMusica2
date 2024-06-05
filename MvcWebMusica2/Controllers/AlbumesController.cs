@@ -6,32 +6,45 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using MvcWebMusica2.Models;
+using MvcWebMusica2.Services.Repositorio;
 using MvcWebMusica2.ViewModels;
 
 namespace MvcWebMusica2.Controllers
 {
     public class AlbumesController : Controller
     {
-        private readonly GrupoBContext _context;
+        //private readonly GrupoBContext _context;
+        private readonly IAlbumesRepositorio _repositorioAlbumes;
+        private readonly IGruposRepositorio _repositorioGrupos;
+        private readonly IGenerosRepositorio _repositorioGeneros;
         private readonly IListableCancionesAlbumes _listadorCancionesAlbumes;
 
-        public AlbumesController(GrupoBContext context, IListableCancionesAlbumes listadorCancionesAlbumes)
+        public AlbumesController(IAlbumesRepositorio repositorioAlbumes, IGruposRepositorio repositorioGrupos, IGenerosRepositorio repositorioGeneros, IListableCancionesAlbumes listadorCancionesAlbumes)
         {
-            _context = context;
+            //_context = context;
+            _repositorioAlbumes = repositorioAlbumes;
+            _repositorioGrupos = repositorioGrupos;
+            _repositorioGeneros = repositorioGeneros;
             _listadorCancionesAlbumes = listadorCancionesAlbumes;
         }
 
         // GET: Albumes
         public async Task<IActionResult> Index()
         {
-            var grupoBContext = _context.Albumes.Include(a => a.Generos).Include(a => a.Grupos);
-            return View(await grupoBContext.ToListAsync());
+            var listaAlbumes= _repositorioAlbumes.DameTodos();
+            foreach (var item in listaAlbumes)
+            {
+                item.Generos = _repositorioGeneros.DameUno((int)item.GenerosId);
+                item.Grupos = _repositorioGrupos.DameUno((int)item.GruposId);
+                item.Canciones = _listadorCancionesAlbumes.dameCanciones(item.Id);
+            }
+            return View(listaAlbumes);
         }
 
         // GET: Albumes y Canciones
         public async Task<IActionResult> AlbumesYCanciones()
         {
-            var listaAlbumes = _context.Albumes.Include(a => a.Generos).Include(a => a.Grupos).ToList();
+            var listaAlbumes = _repositorioAlbumes.DameTodos();
 
             foreach (var item in listaAlbumes)
             {
@@ -49,23 +62,24 @@ namespace MvcWebMusica2.Controllers
                 return NotFound();
             }
 
-            var albumes = await _context.Albumes
-                .Include(a => a.Generos)
-                .Include(a => a.Grupos)
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (albumes == null)
+            var album = _repositorioAlbumes.DameUno((int)id);
+            album.Generos = _repositorioGeneros.DameUno((int)album.GenerosId);
+            album.Grupos = _repositorioGrupos.DameUno((int)album.GruposId);
+            album.Canciones = _listadorCancionesAlbumes.dameCanciones(album.Id);
+
+            if (album == null)
             {
                 return NotFound();
             }
 
-            return View(albumes);
+            return View(album);
         }
 
         // GET: Albumes/Create
         public IActionResult Create()
         {
-            ViewData["GenerosId"] = new SelectList(_context.Generos, "Id", "Nombre");
-            ViewData["GruposId"] = new SelectList(_context.Grupos, "Id", "Nombre");
+            ViewData["GenerosId"] = new SelectList(_repositorioGeneros.DameTodos(), "Id", "Nombre");
+            ViewData["GruposId"] = new SelectList(_repositorioGrupos.DameTodos(), "Id", "Nombre");
             return View();
         }
 
@@ -74,17 +88,16 @@ namespace MvcWebMusica2.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Nombre,GenerosId,GruposId,Fecha")] Albumes albumes)
+        public async Task<IActionResult> Create([Bind("Id,Nombre,GenerosId,GruposId,Fecha")] Albumes album)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(albumes);
-                await _context.SaveChangesAsync();
+                _repositorioAlbumes.Agregar(album);
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["GenerosId"] = new SelectList(_context.Generos, "Id", "Nombre", albumes.GenerosId);
-            ViewData["GruposId"] = new SelectList(_context.Grupos, "Id", "Nombre", albumes.GruposId);
-            return View(albumes);
+            ViewData["GenerosId"] = new SelectList(_repositorioGeneros.DameTodos(), "Id", "Nombre", album.GenerosId);
+            ViewData["GruposId"] = new SelectList(_repositorioGrupos.DameTodos(), "Id", "Nombre", album.GruposId);
+            return View(album);
         }
 
         // GET: Albumes/Edit/5
@@ -95,14 +108,14 @@ namespace MvcWebMusica2.Controllers
                 return NotFound();
             }
 
-            var albumes = await _context.Albumes.FindAsync(id);
-            if (albumes == null)
+            var album = _repositorioAlbumes.DameUno((int)id);
+            if (album == null)
             {
                 return NotFound();
             }
-            ViewData["GenerosId"] = new SelectList(_context.Generos, "Id", "Nombre", albumes.GenerosId);
-            ViewData["GruposId"] = new SelectList(_context.Grupos, "Id", "Nombre", albumes.GruposId);
-            return View(albumes);
+            ViewData["GenerosId"] = new SelectList(_repositorioGeneros.DameTodos(), "Id", "Nombre", album.GenerosId);
+            ViewData["GruposId"] = new SelectList(_repositorioGrupos.DameTodos(), "Id", "Nombre", album.GruposId);
+            return View(album);
         }
 
         // POST: Albumes/Edit/5
@@ -110,9 +123,9 @@ namespace MvcWebMusica2.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Nombre,GenerosId,GruposId,Fecha")] Albumes albumes)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Nombre,GenerosId,GruposId,Fecha")] Albumes album)
         {
-            if (id != albumes.Id)
+            if (id != album.Id)
             {
                 return NotFound();
             }
@@ -121,12 +134,11 @@ namespace MvcWebMusica2.Controllers
             {
                 try
                 {
-                    _context.Update(albumes);
-                    await _context.SaveChangesAsync();
+                    _repositorioAlbumes.Modificar(id, album);
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!AlbumesExists(albumes.Id))
+                    if (!AlbumesExists(album.Id))
                     {
                         return NotFound();
                     }
@@ -137,9 +149,9 @@ namespace MvcWebMusica2.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["GenerosId"] = new SelectList(_context.Generos, "Id", "Nombre", albumes.GenerosId);
-            ViewData["GruposId"] = new SelectList(_context.Grupos, "Id", "Nombre", albumes.GruposId);
-            return View(albumes);
+            ViewData["GenerosId"] = new SelectList(_repositorioGeneros.DameTodos(), "Id", "Nombre", album.GenerosId);
+            ViewData["GruposId"] = new SelectList(_repositorioGrupos.DameTodos(), "Id", "Nombre", album.GruposId);
+            return View(album);
         }
 
         // GET: Albumes/Delete/5
@@ -150,16 +162,13 @@ namespace MvcWebMusica2.Controllers
                 return NotFound();
             }
 
-            var albumes = await _context.Albumes
-                .Include(a => a.Generos)
-                .Include(a => a.Grupos)
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (albumes == null)
+            var album = _repositorioAlbumes.DameUno((int)id);
+            if (album == null)
             {
                 return NotFound();
             }
 
-            return View(albumes);
+            return View(album);
         }
 
         // POST: Albumes/Delete/5
@@ -167,19 +176,25 @@ namespace MvcWebMusica2.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var albumes = await _context.Albumes.FindAsync(id);
-            if (albumes != null)
+            var album = _repositorioAlbumes.DameUno((int)id);
+            if (album != null)
             {
-                _context.Albumes.Remove(albumes);
+                _repositorioAlbumes.Borrar((int)id);
             }
 
-            await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
         private bool AlbumesExists(int id)
         {
-            return _context.Albumes.Any(e => e.Id == id);
+            if (_repositorioAlbumes.DameUno((int)id) != null)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
         }
     }
 }

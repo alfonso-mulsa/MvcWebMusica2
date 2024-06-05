@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using MvcWebMusica2.Models;
+using MvcWebMusica2.Services.Repositorio;
 using MvcWebMusica2.ViewModels;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -9,6 +10,9 @@ builder.Services.AddControllersWithViews();
 builder.Services.AddDbContext<GrupoBContext>(
        options => options.UseSqlServer("server=musicagrupos.database.windows.net;database=GrupoB;user=as;password=P0t@t0P0t@t0"));
 builder.Services.AddScoped<IListableCancionesAlbumes, ListaCancionesAlbumes>();
+builder.Services.AddScoped<IAlbumesRepositorio, EFAlbumesRepositorio>();
+builder.Services.AddScoped<IGruposRepositorio, EFGruposRepositorio>();
+builder.Services.AddScoped<IGenerosRepositorio, EFGenerosRepositorio>();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
