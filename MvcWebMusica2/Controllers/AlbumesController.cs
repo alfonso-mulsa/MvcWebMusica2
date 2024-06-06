@@ -189,14 +189,7 @@ namespace MvcWebMusica2.Controllers
 
         private bool AlbumesExists(int id)
         {
-            if (_repositorioAlbumes.DameUno((int)id) != null)
-            {
-                return true;
-            }
-            else
-            {
-                return false;
-            }
+            return _repositorioAlbumes.DameUno((int)id) != null;
         }
     }
 }
