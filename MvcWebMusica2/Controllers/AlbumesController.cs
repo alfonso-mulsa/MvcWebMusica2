@@ -14,29 +14,30 @@ namespace MvcWebMusica2.Controllers
     public class AlbumesController : Controller
     {
         //private readonly GrupoBContext _context;
-        private readonly IAlbumesRepositorio _repositorioAlbumes;
-        private readonly IGruposRepositorio _repositorioGrupos;
-        private readonly IGenerosRepositorio _repositorioGeneros;
-        private readonly IListableCancionesAlbumes _listadorCancionesAlbumes;
+        private readonly IGenericRepositorio<Albumes> _repositorioAlbumes;
+        private readonly IGenericRepositorio<Grupos> _repositorioGrupos;
+        private readonly IGenericRepositorio<Generos> _repositorioGeneros;
+        private readonly IGenericRepositorio<Canciones> _repositorioCanciones;
+        //private readonly IListableCancionesAlbumes _listadorCancionesAlbumes;
 
-        public AlbumesController(IAlbumesRepositorio repositorioAlbumes, IGruposRepositorio repositorioGrupos, IGenerosRepositorio repositorioGeneros, IListableCancionesAlbumes listadorCancionesAlbumes)
+        public AlbumesController(IGenericRepositorio<Albumes> repositorioAlbumes, IGenericRepositorio<Grupos> repositorioGrupos, IGenericRepositorio<Generos> repositorioGeneros, IGenericRepositorio<Canciones> repositorioCanciones)
         {
             //_context = context;
             _repositorioAlbumes = repositorioAlbumes;
             _repositorioGrupos = repositorioGrupos;
             _repositorioGeneros = repositorioGeneros;
-            _listadorCancionesAlbumes = listadorCancionesAlbumes;
+            _repositorioCanciones = repositorioCanciones;
         }
 
         // GET: Albumes
         public async Task<IActionResult> Index()
         {
             var listaAlbumes= _repositorioAlbumes.DameTodos();
-            foreach (var item in listaAlbumes)
+            foreach (var album in listaAlbumes)
             {
-                item.Generos = _repositorioGeneros.DameUno((int)item.GenerosId);
-                item.Grupos = _repositorioGrupos.DameUno((int)item.GruposId);
-                item.Canciones = _listadorCancionesAlbumes.dameCanciones(item.Id);
+                album.Generos = _repositorioGeneros.DameUno(album.GenerosId);
+                album.Grupos = _repositorioGrupos.DameUno(album.GruposId);
+                album.Canciones = _repositorioCanciones.Filtra(x => x.AlbumesId == album.Id);
             }
             return View(listaAlbumes);
         }
@@ -46,11 +47,11 @@ namespace MvcWebMusica2.Controllers
         {
             var listaAlbumes = _repositorioAlbumes.DameTodos();
 
-            foreach (var item in listaAlbumes)
+            foreach (var album in listaAlbumes)
             {
-                item.Generos = _repositorioGeneros.DameUno((int)item.GenerosId);
-                item.Grupos = _repositorioGrupos.DameUno((int)item.GruposId);
-                item.Canciones = _listadorCancionesAlbumes.dameCanciones(item.Id);
+                album.Generos = _repositorioGeneros.DameUno(album.GenerosId);
+                album.Grupos = _repositorioGrupos.DameUno(album.GruposId);
+                album.Canciones = _repositorioCanciones.Filtra(x => x.AlbumesId == album.Id);
             }
 
             return View(listaAlbumes);
@@ -64,10 +65,10 @@ namespace MvcWebMusica2.Controllers
                 return NotFound();
             }
 
-            var album = _repositorioAlbumes.DameUno((int)id);
-            album.Generos = _repositorioGeneros.DameUno((int)album.GenerosId);
-            album.Grupos = _repositorioGrupos.DameUno((int)album.GruposId);
-            album.Canciones = _listadorCancionesAlbumes.dameCanciones(album.Id);
+            var album = _repositorioAlbumes.DameUno(id);
+            album.Generos = _repositorioGeneros.DameUno(album.GenerosId);
+            album.Grupos = _repositorioGrupos.DameUno(album.GruposId);
+            album.Canciones = _repositorioCanciones.Filtra(x => x.AlbumesId == album.Id);
 
             if (album == null)
             {
@@ -110,7 +111,7 @@ namespace MvcWebMusica2.Controllers
                 return NotFound();
             }
 
-            var album = _repositorioAlbumes.DameUno((int)id);
+            var album = _repositorioAlbumes.DameUno(id);
             if (album == null)
             {
                 return NotFound();
@@ -164,7 +165,7 @@ namespace MvcWebMusica2.Controllers
                 return NotFound();
             }
 
-            var album = _repositorioAlbumes.DameUno((int)id);
+            var album = _repositorioAlbumes.DameUno(id);
             if (album == null)
             {
                 return NotFound();
@@ -178,10 +179,10 @@ namespace MvcWebMusica2.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var album = _repositorioAlbumes.DameUno((int)id);
+            var album = _repositorioAlbumes.DameUno(id);
             if (album != null)
             {
-                _repositorioAlbumes.Borrar((int)id);
+                _repositorioAlbumes.Borrar(id);
             }
 
             return RedirectToAction(nameof(Index));
@@ -189,7 +190,7 @@ namespace MvcWebMusica2.Controllers
 
         private bool AlbumesExists(int id)
         {
-            return _repositorioAlbumes.DameUno((int)id) != null;
+            return _repositorioAlbumes.DameUno(id) != null;
         }
     }
 }

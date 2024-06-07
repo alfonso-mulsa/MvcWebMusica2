@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using MvcWebMusica2.Models;
 
-namespace MvcWebMusica2.Services.Repositorio
+namespace MvcWebMusica2.Services.Repositorio.bak
 {
     public class EFGruposRepositorio : IGruposRepositorio
     {

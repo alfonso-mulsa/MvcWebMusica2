@@ -1,6 +1,6 @@
 ﻿using MvcWebMusica2.Models;
 
-namespace MvcWebMusica2.Services.Repositorio
+namespace MvcWebMusica2.Services.Repositorio.bak
 {
     public interface IGenerosRepositorio
     {

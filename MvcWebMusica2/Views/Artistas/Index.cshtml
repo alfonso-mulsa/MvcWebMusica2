@@ -27,6 +27,9 @@
             <th>
                 @Html.DisplayNameFor(model => model.Generos)
             </th>
+            <th>
+                Funciones
+            </th>
             <th></th>
         </tr>
     </thead>
@@ -47,6 +50,13 @@
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Generos.Nombre)
+            </td>
+            <td>
+                @foreach (var item2 in item.FuncionesArtistas)
+                {
+                    @Html.DisplayFor(modelItem => item2.Funciones.Nombre)
+                    <br/>
+                }
             </td>
             <td>
                 <a asp-action="Edit" asp-route-id="@item.Id"><i class="fa-solid fa-pen-to-square" title="Editar"></i></a> |

@@ -1,20 +1,21 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using MvcWebMusica2.Models;
+using System.Text.RegularExpressions;
 
-namespace MvcWebMusica2.Services.Repositorio
+namespace MvcWebMusica2.Services.Repositorio.bak
 {
-    public class EFAlbumesRepositorio : IAlbumesRepositorio
+    public class EFGenerosRepositorio : IGenerosRepositorio
     {
         private readonly GrupoBContext _context = new();
-        public bool Agregar(Albumes album)
+        public bool Agregar(Generos genero)
         {
-            if (DameUno(album.Id) != null)
+            if (DameUno(genero.Id) != null)
             {
                 return false;
             }
             else
             {
-                _context.Albumes.Add(album);
+                _context.Generos.Add(genero);
                 _context.SaveChanges();
                 return true;
             }
@@ -24,7 +25,7 @@ namespace MvcWebMusica2.Services.Repositorio
         {
             if (DameUno(Id) != null)
             {
-                _context.Albumes.Remove(DameUno(Id));
+                _context.Generos.Remove(DameUno(Id));
                 _context.SaveChanges();
                 return true;
             }
@@ -34,19 +35,19 @@ namespace MvcWebMusica2.Services.Repositorio
             }
         }
 
-        public List<Albumes> DameTodos()
+        public List<Generos> DameTodos()
         {
-            return _context.Albumes.AsNoTracking().ToList();
+            return _context.Generos.AsNoTracking().ToList();
         }
 
-        public Albumes? DameUno(int Id)
+        public Generos? DameUno(int Id)
         {
-            return _context.Albumes.Find(Id);
+            return _context.Generos.Find(Id);
         }
 
-        public void Modificar(int Id, Albumes album)
+        public void Modificar(int Id, Generos genero)
         {
-            _context.Albumes.Update(album);
+            _context.Generos.Update(genero);
             _context.SaveChanges();
         }
     }
