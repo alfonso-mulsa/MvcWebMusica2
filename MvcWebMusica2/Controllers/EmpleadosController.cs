@@ -9,19 +9,12 @@ using MvcWebMusica2.Models;
 
 namespace MvcWebMusica2.Controllers
 {
-    public class EmpleadosController : Controller
+    public class EmpleadosController(GrupoBContext context) : Controller
     {
-        private readonly GrupoBContext _context;
-
-        public EmpleadosController(GrupoBContext context)
-        {
-            _context = context;
-        }
-
         // GET: Empleados
         public async Task<IActionResult> Index()
         {
-            var grupoBContext = _context.Empleados.Include(e => e.Roles);
+            var grupoBContext = context.Empleados.Include(e => e.Roles);
             return View(await grupoBContext.ToListAsync());
         }
 
@@ -33,7 +26,7 @@ namespace MvcWebMusica2.Controllers
                 return NotFound();
             }
 
-            var empleados = await _context.Empleados
+            var empleados = await context.Empleados
                 .Include(e => e.Roles)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (empleados == null)
@@ -47,7 +40,7 @@ namespace MvcWebMusica2.Controllers
         // GET: Empleados/Create
         public IActionResult Create()
         {
-            ViewData["RolesId"] = new SelectList(_context.Roles, "Id", "Descripcion");
+            ViewData["RolesId"] = new SelectList(context.Roles, "Id", "Descripcion");
             return View();
         }
 
@@ -60,11 +53,11 @@ namespace MvcWebMusica2.Controllers
         {
             if (ModelState.IsValid)
             {
-                _context.Add(empleados);
-                await _context.SaveChangesAsync();
+                context.Add(empleados);
+                await context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["RolesId"] = new SelectList(_context.Roles, "Id", "Descripcion", empleados.RolesId);
+            ViewData["RolesId"] = new SelectList(context.Roles, "Id", "Descripcion", empleados.RolesId);
             return View(empleados);
         }
 
@@ -76,12 +69,12 @@ namespace MvcWebMusica2.Controllers
                 return NotFound();
             }
 
-            var empleados = await _context.Empleados.FindAsync(id);
+            var empleados = await context.Empleados.FindAsync(id);
             if (empleados == null)
             {
                 return NotFound();
             }
-            ViewData["RolesId"] = new SelectList(_context.Roles, "Id", "Descripcion", empleados.RolesId);
+            ViewData["RolesId"] = new SelectList(context.Roles, "Id", "Descripcion", empleados.RolesId);
             return View(empleados);
         }
 
@@ -101,8 +94,8 @@ namespace MvcWebMusica2.Controllers
             {
                 try
                 {
-                    _context.Update(empleados);
-                    await _context.SaveChangesAsync();
+                    context.Update(empleados);
+                    await context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -117,7 +110,7 @@ namespace MvcWebMusica2.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["RolesId"] = new SelectList(_context.Roles, "Id", "Descripcion", empleados.RolesId);
+            ViewData["RolesId"] = new SelectList(context.Roles, "Id", "Descripcion", empleados.RolesId);
             return View(empleados);
         }
 
@@ -129,7 +122,7 @@ namespace MvcWebMusica2.Controllers
                 return NotFound();
             }
 
-            var empleados = await _context.Empleados
+            var empleados = await context.Empleados
                 .Include(e => e.Roles)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (empleados == null)
@@ -145,19 +138,19 @@ namespace MvcWebMusica2.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var empleados = await _context.Empleados.FindAsync(id);
+            var empleados = await context.Empleados.FindAsync(id);
             if (empleados != null)
             {
-                _context.Empleados.Remove(empleados);
+                context.Empleados.Remove(empleados);
             }
 
-            await _context.SaveChangesAsync();
+            await context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
         private bool EmpleadosExists(int id)
         {
-            return _context.Empleados.Any(e => e.Id == id);
+            return context.Empleados.Any(e => e.Id == id);
         }
     }
 }

@@ -9,19 +9,12 @@ using MvcWebMusica2.Models;
 
 namespace MvcWebMusica2.Controllers
 {
-    public class ConciertosController : Controller
+    public class ConciertosController(GrupoBContext context) : Controller
     {
-        private readonly GrupoBContext _context;
-
-        public ConciertosController(GrupoBContext context)
-        {
-            _context = context;
-        }
-
         // GET: Conciertos
         public async Task<IActionResult> Index()
         {
-            var grupoBContext = _context.Conciertos.Include(c => c.Ciudades).Include(c => c.Giras);
+            var grupoBContext = context.Conciertos.Include(c => c.Ciudades).Include(c => c.Giras);
             return View(await grupoBContext.ToListAsync());
         }
 
@@ -33,7 +26,7 @@ namespace MvcWebMusica2.Controllers
                 return NotFound();
             }
 
-            var conciertos = await _context.Conciertos
+            var conciertos = await context.Conciertos
                 .Include(c => c.Ciudades)
                 .Include(c => c.Giras)
                 .FirstOrDefaultAsync(m => m.Id == id);
@@ -48,8 +41,8 @@ namespace MvcWebMusica2.Controllers
         // GET: Conciertos/Create
         public IActionResult Create()
         {
-            ViewData["CiudadesId"] = new SelectList(_context.Ciudades, "Id", "Nombre");
-            ViewData["GirasId"] = new SelectList(_context.Giras, "Id", "Nombre");
+            ViewData["CiudadesId"] = new SelectList(context.Ciudades, "Id", "Nombre");
+            ViewData["GirasId"] = new SelectList(context.Giras, "Id", "Nombre");
             return View();
         }
 
@@ -62,12 +55,12 @@ namespace MvcWebMusica2.Controllers
         {
             if (ModelState.IsValid)
             {
-                _context.Add(conciertos);
-                await _context.SaveChangesAsync();
+                context.Add(conciertos);
+                await context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["CiudadesId"] = new SelectList(_context.Ciudades, "Id", "Nombre", conciertos.CiudadesId);
-            ViewData["GirasId"] = new SelectList(_context.Giras, "Id", "Nombre", conciertos.GirasId);
+            ViewData["CiudadesId"] = new SelectList(context.Ciudades, "Id", "Nombre", conciertos.CiudadesId);
+            ViewData["GirasId"] = new SelectList(context.Giras, "Id", "Nombre", conciertos.GirasId);
             return View(conciertos);
         }
 
@@ -79,13 +72,13 @@ namespace MvcWebMusica2.Controllers
                 return NotFound();
             }
 
-            var conciertos = await _context.Conciertos.FindAsync(id);
+            var conciertos = await context.Conciertos.FindAsync(id);
             if (conciertos == null)
             {
                 return NotFound();
             }
-            ViewData["CiudadesId"] = new SelectList(_context.Ciudades, "Id", "Nombre", conciertos.CiudadesId);
-            ViewData["GirasId"] = new SelectList(_context.Giras, "Id", "Nombre", conciertos.GirasId);
+            ViewData["CiudadesId"] = new SelectList(context.Ciudades, "Id", "Nombre", conciertos.CiudadesId);
+            ViewData["GirasId"] = new SelectList(context.Giras, "Id", "Nombre", conciertos.GirasId);
             return View(conciertos);
         }
 
@@ -105,8 +98,8 @@ namespace MvcWebMusica2.Controllers
             {
                 try
                 {
-                    _context.Update(conciertos);
-                    await _context.SaveChangesAsync();
+                    context.Update(conciertos);
+                    await context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -121,8 +114,8 @@ namespace MvcWebMusica2.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["CiudadesId"] = new SelectList(_context.Ciudades, "Id", "Nombre", conciertos.CiudadesId);
-            ViewData["GirasId"] = new SelectList(_context.Giras, "Id", "Nombre", conciertos.GirasId);
+            ViewData["CiudadesId"] = new SelectList(context.Ciudades, "Id", "Nombre", conciertos.CiudadesId);
+            ViewData["GirasId"] = new SelectList(context.Giras, "Id", "Nombre", conciertos.GirasId);
             return View(conciertos);
         }
 
@@ -134,7 +127,7 @@ namespace MvcWebMusica2.Controllers
                 return NotFound();
             }
 
-            var conciertos = await _context.Conciertos
+            var conciertos = await context.Conciertos
                 .Include(c => c.Ciudades)
                 .Include(c => c.Giras)
                 .FirstOrDefaultAsync(m => m.Id == id);
@@ -151,19 +144,19 @@ namespace MvcWebMusica2.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var conciertos = await _context.Conciertos.FindAsync(id);
+            var conciertos = await context.Conciertos.FindAsync(id);
             if (conciertos != null)
             {
-                _context.Conciertos.Remove(conciertos);
+                context.Conciertos.Remove(conciertos);
             }
 
-            await _context.SaveChangesAsync();
+            await context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
         private bool ConciertosExists(int id)
         {
-            return _context.Conciertos.Any(e => e.Id == id);
+            return context.Conciertos.Any(e => e.Id == id);
         }
     }
 }

@@ -9,19 +9,12 @@ using MvcWebMusica2.Models;
 
 namespace MvcWebMusica2.Controllers
 {
-    public class FuncionesArtistasController : Controller
+    public class FuncionesArtistasController(GrupoBContext context) : Controller
     {
-        private readonly GrupoBContext _context;
-
-        public FuncionesArtistasController(GrupoBContext context)
-        {
-            _context = context;
-        }
-
         // GET: FuncionesArtistas
         public async Task<IActionResult> Index()
         {
-            var grupoBContext = _context.FuncionesArtistas.Include(f => f.Artistas).Include(f => f.Funciones);
+            var grupoBContext = context.FuncionesArtistas.Include(f => f.Artistas).Include(f => f.Funciones);
             return View(await grupoBContext.ToListAsync());
         }
 
@@ -33,7 +26,7 @@ namespace MvcWebMusica2.Controllers
                 return NotFound();
             }
 
-            var funcionesArtistas = await _context.FuncionesArtistas
+            var funcionesArtistas = await context.FuncionesArtistas
                 .Include(f => f.Artistas)
                 .Include(f => f.Funciones)
                 .FirstOrDefaultAsync(m => m.Id == id);
@@ -48,8 +41,8 @@ namespace MvcWebMusica2.Controllers
         // GET: FuncionesArtistas/Create
         public IActionResult Create()
         {
-            ViewData["ArtistasId"] = new SelectList(_context.Artistas, "Id", "Nombre");
-            ViewData["FuncionesId"] = new SelectList(_context.Funciones, "Id", "Nombre");
+            ViewData["ArtistasId"] = new SelectList(context.Artistas, "Id", "Nombre");
+            ViewData["FuncionesId"] = new SelectList(context.Funciones, "Id", "Nombre");
             return View();
         }
 
@@ -62,12 +55,12 @@ namespace MvcWebMusica2.Controllers
         {
             if (ModelState.IsValid)
             {
-                _context.Add(funcionesArtistas);
-                await _context.SaveChangesAsync();
+                context.Add(funcionesArtistas);
+                await context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["ArtistasId"] = new SelectList(_context.Artistas, "Id", "Nombre", funcionesArtistas.ArtistasId);
-            ViewData["FuncionesId"] = new SelectList(_context.Funciones, "Id", "Nombre", funcionesArtistas.FuncionesId);
+            ViewData["ArtistasId"] = new SelectList(context.Artistas, "Id", "Nombre", funcionesArtistas.ArtistasId);
+            ViewData["FuncionesId"] = new SelectList(context.Funciones, "Id", "Nombre", funcionesArtistas.FuncionesId);
             return View(funcionesArtistas);
         }
 
@@ -79,13 +72,13 @@ namespace MvcWebMusica2.Controllers
                 return NotFound();
             }
 
-            var funcionesArtistas = await _context.FuncionesArtistas.FindAsync(id);
+            var funcionesArtistas = await context.FuncionesArtistas.FindAsync(id);
             if (funcionesArtistas == null)
             {
                 return NotFound();
             }
-            ViewData["ArtistasId"] = new SelectList(_context.Artistas, "Id", "Nombre", funcionesArtistas.ArtistasId);
-            ViewData["FuncionesId"] = new SelectList(_context.Funciones, "Id", "Nombre", funcionesArtistas.FuncionesId);
+            ViewData["ArtistasId"] = new SelectList(context.Artistas, "Id", "Nombre", funcionesArtistas.ArtistasId);
+            ViewData["FuncionesId"] = new SelectList(context.Funciones, "Id", "Nombre", funcionesArtistas.FuncionesId);
             return View(funcionesArtistas);
         }
 
@@ -105,8 +98,8 @@ namespace MvcWebMusica2.Controllers
             {
                 try
                 {
-                    _context.Update(funcionesArtistas);
-                    await _context.SaveChangesAsync();
+                    context.Update(funcionesArtistas);
+                    await context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -121,8 +114,8 @@ namespace MvcWebMusica2.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["ArtistasId"] = new SelectList(_context.Artistas, "Id", "Nombre", funcionesArtistas.ArtistasId);
-            ViewData["FuncionesId"] = new SelectList(_context.Funciones, "Id", "Nombre", funcionesArtistas.FuncionesId);
+            ViewData["ArtistasId"] = new SelectList(context.Artistas, "Id", "Nombre", funcionesArtistas.ArtistasId);
+            ViewData["FuncionesId"] = new SelectList(context.Funciones, "Id", "Nombre", funcionesArtistas.FuncionesId);
             return View(funcionesArtistas);
         }
 
@@ -134,7 +127,7 @@ namespace MvcWebMusica2.Controllers
                 return NotFound();
             }
 
-            var funcionesArtistas = await _context.FuncionesArtistas
+            var funcionesArtistas = await context.FuncionesArtistas
                 .Include(f => f.Artistas)
                 .Include(f => f.Funciones)
                 .FirstOrDefaultAsync(m => m.Id == id);
@@ -151,19 +144,19 @@ namespace MvcWebMusica2.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var funcionesArtistas = await _context.FuncionesArtistas.FindAsync(id);
+            var funcionesArtistas = await context.FuncionesArtistas.FindAsync(id);
             if (funcionesArtistas != null)
             {
-                _context.FuncionesArtistas.Remove(funcionesArtistas);
+                context.FuncionesArtistas.Remove(funcionesArtistas);
             }
 
-            await _context.SaveChangesAsync();
+            await context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
         private bool FuncionesArtistasExists(int id)
         {
-            return _context.FuncionesArtistas.Any(e => e.Id == id);
+            return context.FuncionesArtistas.Any(e => e.Id == id);
         }
     }
 }

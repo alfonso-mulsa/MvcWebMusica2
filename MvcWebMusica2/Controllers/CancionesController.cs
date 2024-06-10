@@ -9,19 +9,12 @@ using MvcWebMusica2.Models;
 
 namespace MvcWebMusica2.Controllers
 {
-    public class CancionesController : Controller
+    public class CancionesController(GrupoBContext context) : Controller
     {
-        private readonly GrupoBContext _context;
-
-        public CancionesController(GrupoBContext context)
-        {
-            _context = context;
-        }
-
         // GET: Canciones
         public async Task<IActionResult> Index()
         {
-            var grupoBContext = _context.Canciones.Include(c => c.Albumes);
+            var grupoBContext = context.Canciones.Include(c => c.Albumes);
             return View(await grupoBContext.ToListAsync());
         }
 
@@ -33,7 +26,7 @@ namespace MvcWebMusica2.Controllers
                 return NotFound();
             }
 
-            var canciones = await _context.Canciones
+            var canciones = await context.Canciones
                 .Include(c => c.Albumes)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (canciones == null)
@@ -47,7 +40,7 @@ namespace MvcWebMusica2.Controllers
         // GET: Canciones/Create
         public IActionResult Create()
         {
-            ViewData["AlbumesId"] = new SelectList(_context.Albumes, "Id", "Nombre");
+            ViewData["AlbumesId"] = new SelectList(context.Albumes, "Id", "Nombre");
             return View();
         }
 
@@ -60,11 +53,11 @@ namespace MvcWebMusica2.Controllers
         {
             if (ModelState.IsValid)
             {
-                _context.Add(canciones);
-                await _context.SaveChangesAsync();
+                context.Add(canciones);
+                await context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["AlbumesId"] = new SelectList(_context.Albumes, "Id", "Nombre", canciones.AlbumesId);
+            ViewData["AlbumesId"] = new SelectList(context.Albumes, "Id", "Nombre", canciones.AlbumesId);
             return View(canciones);
         }
 
@@ -76,12 +69,12 @@ namespace MvcWebMusica2.Controllers
                 return NotFound();
             }
 
-            var canciones = await _context.Canciones.FindAsync(id);
+            var canciones = await context.Canciones.FindAsync(id);
             if (canciones == null)
             {
                 return NotFound();
             }
-            ViewData["AlbumesId"] = new SelectList(_context.Albumes, "Id", "Nombre", canciones.AlbumesId);
+            ViewData["AlbumesId"] = new SelectList(context.Albumes, "Id", "Nombre", canciones.AlbumesId);
             return View(canciones);
         }
 
@@ -101,8 +94,8 @@ namespace MvcWebMusica2.Controllers
             {
                 try
                 {
-                    _context.Update(canciones);
-                    await _context.SaveChangesAsync();
+                    context.Update(canciones);
+                    await context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -117,7 +110,7 @@ namespace MvcWebMusica2.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["AlbumesId"] = new SelectList(_context.Albumes, "Id", "Nombre", canciones.AlbumesId);
+            ViewData["AlbumesId"] = new SelectList(context.Albumes, "Id", "Nombre", canciones.AlbumesId);
             return View(canciones);
         }
 
@@ -129,7 +122,7 @@ namespace MvcWebMusica2.Controllers
                 return NotFound();
             }
 
-            var canciones = await _context.Canciones
+            var canciones = await context.Canciones
                 .Include(c => c.Albumes)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (canciones == null)
@@ -145,19 +138,19 @@ namespace MvcWebMusica2.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var canciones = await _context.Canciones.FindAsync(id);
+            var canciones = await context.Canciones.FindAsync(id);
             if (canciones != null)
             {
-                _context.Canciones.Remove(canciones);
+                context.Canciones.Remove(canciones);
             }
 
-            await _context.SaveChangesAsync();
+            await context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
         private bool CancionesExists(int id)
         {
-            return _context.Canciones.Any(e => e.Id == id);
+            return context.Canciones.Any(e => e.Id == id);
         }
     }
 }

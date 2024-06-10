@@ -9,19 +9,12 @@ using MvcWebMusica2.Models;
 
 namespace MvcWebMusica2.Controllers
 {
-    public class FuncionesController : Controller
+    public class FuncionesController(GrupoBContext context) : Controller
     {
-        private readonly GrupoBContext _context;
-
-        public FuncionesController(GrupoBContext context)
-        {
-            _context = context;
-        }
-
         // GET: Funciones
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Funciones.ToListAsync());
+            return View(await context.Funciones.ToListAsync());
         }
 
         // GET: Funciones/Details/5
@@ -32,7 +25,7 @@ namespace MvcWebMusica2.Controllers
                 return NotFound();
             }
 
-            var funciones = await _context.Funciones
+            var funciones = await context.Funciones
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (funciones == null)
             {
@@ -57,8 +50,8 @@ namespace MvcWebMusica2.Controllers
         {
             if (ModelState.IsValid)
             {
-                _context.Add(funciones);
-                await _context.SaveChangesAsync();
+                context.Add(funciones);
+                await context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
             return View(funciones);
@@ -72,7 +65,7 @@ namespace MvcWebMusica2.Controllers
                 return NotFound();
             }
 
-            var funciones = await _context.Funciones.FindAsync(id);
+            var funciones = await context.Funciones.FindAsync(id);
             if (funciones == null)
             {
                 return NotFound();
@@ -96,8 +89,8 @@ namespace MvcWebMusica2.Controllers
             {
                 try
                 {
-                    _context.Update(funciones);
-                    await _context.SaveChangesAsync();
+                    context.Update(funciones);
+                    await context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -123,7 +116,7 @@ namespace MvcWebMusica2.Controllers
                 return NotFound();
             }
 
-            var funciones = await _context.Funciones
+            var funciones = await context.Funciones
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (funciones == null)
             {
@@ -138,19 +131,19 @@ namespace MvcWebMusica2.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var funciones = await _context.Funciones.FindAsync(id);
+            var funciones = await context.Funciones.FindAsync(id);
             if (funciones != null)
             {
-                _context.Funciones.Remove(funciones);
+                context.Funciones.Remove(funciones);
             }
 
-            await _context.SaveChangesAsync();
+            await context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
         private bool FuncionesExists(int id)
         {
-            return _context.Funciones.Any(e => e.Id == id);
+            return context.Funciones.Any(e => e.Id == id);
         }
     }
 }

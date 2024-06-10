@@ -9,19 +9,12 @@ using MvcWebMusica2.Models;
 
 namespace MvcWebMusica2.Controllers
 {
-    public class VideoClipsPlataformasController : Controller
+    public class VideoClipsPlataformasController(GrupoBContext context) : Controller
     {
-        private readonly GrupoBContext _context;
-
-        public VideoClipsPlataformasController(GrupoBContext context)
-        {
-            _context = context;
-        }
-
         // GET: VideoClipsPlataformas
         public async Task<IActionResult> Index()
         {
-            var grupoBContext = _context.VideoClipsPlataformas.Include(v => v.Plataformas).Include(v => v.VideoClips);
+            var grupoBContext = context.VideoClipsPlataformas.Include(v => v.Plataformas).Include(v => v.VideoClips);
             return View(await grupoBContext.ToListAsync());
         }
 
@@ -33,7 +26,7 @@ namespace MvcWebMusica2.Controllers
                 return NotFound();
             }
 
-            var videoClipsPlataformas = await _context.VideoClipsPlataformas
+            var videoClipsPlataformas = await context.VideoClipsPlataformas
                 .Include(v => v.Plataformas)
                 .Include(v => v.VideoClips)
                 .FirstOrDefaultAsync(m => m.Id == id);
@@ -48,8 +41,8 @@ namespace MvcWebMusica2.Controllers
         // GET: VideoClipsPlataformas/Create
         public IActionResult Create()
         {
-            ViewData["PlataformasId"] = new SelectList(_context.Plataformas, "Id", "Nombre");
-            ViewData["VideoClipsId"] = new SelectList(_context.VideoClips, "Id", "Canciones");
+            ViewData["PlataformasId"] = new SelectList(context.Plataformas, "Id", "Nombre");
+            ViewData["VideoClipsId"] = new SelectList(context.VideoClips, "Id", "Canciones");
             return View();
         }
 
@@ -62,12 +55,12 @@ namespace MvcWebMusica2.Controllers
         {
             if (ModelState.IsValid)
             {
-                _context.Add(videoClipsPlataformas);
-                await _context.SaveChangesAsync();
+                context.Add(videoClipsPlataformas);
+                await context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["PlataformasId"] = new SelectList(_context.Plataformas, "Id", "Nombre", videoClipsPlataformas.PlataformasId);
-            ViewData["VideoClipsId"] = new SelectList(_context.VideoClips, "Id", "Canciones", videoClipsPlataformas.VideoClipsId);
+            ViewData["PlataformasId"] = new SelectList(context.Plataformas, "Id", "Nombre", videoClipsPlataformas.PlataformasId);
+            ViewData["VideoClipsId"] = new SelectList(context.VideoClips, "Id", "Canciones", videoClipsPlataformas.VideoClipsId);
             return View(videoClipsPlataformas);
         }
 
@@ -79,13 +72,13 @@ namespace MvcWebMusica2.Controllers
                 return NotFound();
             }
 
-            var videoClipsPlataformas = await _context.VideoClipsPlataformas.FindAsync(id);
+            var videoClipsPlataformas = await context.VideoClipsPlataformas.FindAsync(id);
             if (videoClipsPlataformas == null)
             {
                 return NotFound();
             }
-            ViewData["PlataformasId"] = new SelectList(_context.Plataformas, "Id", "Nombre", videoClipsPlataformas.PlataformasId);
-            ViewData["VideoClipsId"] = new SelectList(_context.VideoClips, "Id", "Canciones", videoClipsPlataformas.VideoClipsId);
+            ViewData["PlataformasId"] = new SelectList(context.Plataformas, "Id", "Nombre", videoClipsPlataformas.PlataformasId);
+            ViewData["VideoClipsId"] = new SelectList(context.VideoClips, "Id", "Canciones", videoClipsPlataformas.VideoClipsId);
             return View(videoClipsPlataformas);
         }
 
@@ -105,8 +98,8 @@ namespace MvcWebMusica2.Controllers
             {
                 try
                 {
-                    _context.Update(videoClipsPlataformas);
-                    await _context.SaveChangesAsync();
+                    context.Update(videoClipsPlataformas);
+                    await context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -121,8 +114,8 @@ namespace MvcWebMusica2.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["PlataformasId"] = new SelectList(_context.Plataformas, "Id", "Nombre", videoClipsPlataformas.PlataformasId);
-            ViewData["VideoClipsId"] = new SelectList(_context.VideoClips, "Id", "Canciones", videoClipsPlataformas.VideoClipsId);
+            ViewData["PlataformasId"] = new SelectList(context.Plataformas, "Id", "Nombre", videoClipsPlataformas.PlataformasId);
+            ViewData["VideoClipsId"] = new SelectList(context.VideoClips, "Id", "Canciones", videoClipsPlataformas.VideoClipsId);
             return View(videoClipsPlataformas);
         }
 
@@ -134,7 +127,7 @@ namespace MvcWebMusica2.Controllers
                 return NotFound();
             }
 
-            var videoClipsPlataformas = await _context.VideoClipsPlataformas
+            var videoClipsPlataformas = await context.VideoClipsPlataformas
                 .Include(v => v.Plataformas)
                 .Include(v => v.VideoClips)
                 .FirstOrDefaultAsync(m => m.Id == id);
@@ -151,19 +144,19 @@ namespace MvcWebMusica2.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var videoClipsPlataformas = await _context.VideoClipsPlataformas.FindAsync(id);
+            var videoClipsPlataformas = await context.VideoClipsPlataformas.FindAsync(id);
             if (videoClipsPlataformas != null)
             {
-                _context.VideoClipsPlataformas.Remove(videoClipsPlataformas);
+                context.VideoClipsPlataformas.Remove(videoClipsPlataformas);
             }
 
-            await _context.SaveChangesAsync();
+            await context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
         private bool VideoClipsPlataformasExists(int id)
         {
-            return _context.VideoClipsPlataformas.Any(e => e.Id == id);
+            return context.VideoClipsPlataformas.Any(e => e.Id == id);
         }
     }
 }

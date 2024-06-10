@@ -9,19 +9,12 @@ using MvcWebMusica2.Models;
 
 namespace MvcWebMusica2.Controllers
 {
-    public class GruposController : Controller
+    public class GruposController(GrupoBContext context) : Controller
     {
-        private readonly GrupoBContext _context;
-
-        public GruposController(GrupoBContext context)
-        {
-            _context = context;
-        }
-
         // GET: Grupos
         public async Task<IActionResult> Index()
         {
-            var grupoBContext = _context.Grupos.Include(g => g.Ciudades).Include(g => g.Generos).Include(g => g.Representantes);
+            var grupoBContext = context.Grupos.Include(g => g.Ciudades).Include(g => g.Generos).Include(g => g.Representantes);
             return View(await grupoBContext.ToListAsync());
         }
 
@@ -33,7 +26,7 @@ namespace MvcWebMusica2.Controllers
                 return NotFound();
             }
 
-            var grupos = await _context.Grupos
+            var grupos = await context.Grupos
                 .Include(g => g.Ciudades)
                 .Include(g => g.Generos)
                 .Include(g => g.Representantes)
@@ -49,9 +42,9 @@ namespace MvcWebMusica2.Controllers
         // GET: Grupos/Create
         public IActionResult Create()
         {
-            ViewData["CiudadesId"] = new SelectList(_context.Ciudades, "Id", "Nombre");
-            ViewData["GenerosId"] = new SelectList(_context.Generos, "Id", "Nombre");
-            ViewData["RepresentantesId"] = new SelectList(_context.Representantes, "Id", "NombreCompleto");
+            ViewData["CiudadesId"] = new SelectList(context.Ciudades, "Id", "Nombre");
+            ViewData["GenerosId"] = new SelectList(context.Generos, "Id", "Nombre");
+            ViewData["RepresentantesId"] = new SelectList(context.Representantes, "Id", "NombreCompleto");
             return View();
         }
 
@@ -64,13 +57,13 @@ namespace MvcWebMusica2.Controllers
         {
             if (ModelState.IsValid)
             {
-                _context.Add(grupos);
-                await _context.SaveChangesAsync();
+                context.Add(grupos);
+                await context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["CiudadesId"] = new SelectList(_context.Ciudades, "Id", "Nombre", grupos.CiudadesId);
-            ViewData["GenerosId"] = new SelectList(_context.Generos, "Id", "Nombre", grupos.GenerosId);
-            ViewData["RepresentantesId"] = new SelectList(_context.Representantes, "Id", "NombreCompleto", grupos.RepresentantesId);
+            ViewData["CiudadesId"] = new SelectList(context.Ciudades, "Id", "Nombre", grupos.CiudadesId);
+            ViewData["GenerosId"] = new SelectList(context.Generos, "Id", "Nombre", grupos.GenerosId);
+            ViewData["RepresentantesId"] = new SelectList(context.Representantes, "Id", "NombreCompleto", grupos.RepresentantesId);
             return View(grupos);
         }
 
@@ -82,14 +75,14 @@ namespace MvcWebMusica2.Controllers
                 return NotFound();
             }
 
-            var grupos = await _context.Grupos.FindAsync(id);
+            var grupos = await context.Grupos.FindAsync(id);
             if (grupos == null)
             {
                 return NotFound();
             }
-            ViewData["CiudadesId"] = new SelectList(_context.Ciudades, "Id", "Nombre", grupos.CiudadesId);
-            ViewData["GenerosId"] = new SelectList(_context.Generos, "Id", "Nombre", grupos.GenerosId);
-            ViewData["RepresentantesId"] = new SelectList(_context.Representantes, "Id", "NombreCompleto", grupos.RepresentantesId);
+            ViewData["CiudadesId"] = new SelectList(context.Ciudades, "Id", "Nombre", grupos.CiudadesId);
+            ViewData["GenerosId"] = new SelectList(context.Generos, "Id", "Nombre", grupos.GenerosId);
+            ViewData["RepresentantesId"] = new SelectList(context.Representantes, "Id", "NombreCompleto", grupos.RepresentantesId);
             return View(grupos);
         }
 
@@ -109,8 +102,8 @@ namespace MvcWebMusica2.Controllers
             {
                 try
                 {
-                    _context.Update(grupos);
-                    await _context.SaveChangesAsync();
+                    context.Update(grupos);
+                    await context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -125,9 +118,9 @@ namespace MvcWebMusica2.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["CiudadesId"] = new SelectList(_context.Ciudades, "Id", "Nombre", grupos.CiudadesId);
-            ViewData["GenerosId"] = new SelectList(_context.Generos, "Id", "Nombre", grupos.GenerosId);
-            ViewData["RepresentantesId"] = new SelectList(_context.Representantes, "Id", "NombreCompleto", grupos.RepresentantesId);
+            ViewData["CiudadesId"] = new SelectList(context.Ciudades, "Id", "Nombre", grupos.CiudadesId);
+            ViewData["GenerosId"] = new SelectList(context.Generos, "Id", "Nombre", grupos.GenerosId);
+            ViewData["RepresentantesId"] = new SelectList(context.Representantes, "Id", "NombreCompleto", grupos.RepresentantesId);
             return View(grupos);
         }
 
@@ -139,7 +132,7 @@ namespace MvcWebMusica2.Controllers
                 return NotFound();
             }
 
-            var grupos = await _context.Grupos
+            var grupos = await context.Grupos
                 .Include(g => g.Ciudades)
                 .Include(g => g.Generos)
                 .Include(g => g.Representantes)
@@ -157,19 +150,19 @@ namespace MvcWebMusica2.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var grupos = await _context.Grupos.FindAsync(id);
+            var grupos = await context.Grupos.FindAsync(id);
             if (grupos != null)
             {
-                _context.Grupos.Remove(grupos);
+                context.Grupos.Remove(grupos);
             }
 
-            await _context.SaveChangesAsync();
+            await context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
         private bool GruposExists(int id)
         {
-            return _context.Grupos.Any(e => e.Id == id);
+            return context.Grupos.Any(e => e.Id == id);
         }
     }
 }

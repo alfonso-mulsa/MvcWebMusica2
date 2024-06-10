@@ -9,19 +9,12 @@ using MvcWebMusica2.Models;
 
 namespace MvcWebMusica2.Controllers
 {
-    public class PlataformasController : Controller
+    public class PlataformasController(GrupoBContext context) : Controller
     {
-        private readonly GrupoBContext _context;
-
-        public PlataformasController(GrupoBContext context)
-        {
-            _context = context;
-        }
-
         // GET: Plataformas
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Plataformas.ToListAsync());
+            return View(await context.Plataformas.ToListAsync());
         }
 
         // GET: Plataformas/Details/5
@@ -32,7 +25,7 @@ namespace MvcWebMusica2.Controllers
                 return NotFound();
             }
 
-            var plataformas = await _context.Plataformas
+            var plataformas = await context.Plataformas
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (plataformas == null)
             {
@@ -57,8 +50,8 @@ namespace MvcWebMusica2.Controllers
         {
             if (ModelState.IsValid)
             {
-                _context.Add(plataformas);
-                await _context.SaveChangesAsync();
+                context.Add(plataformas);
+                await context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
             return View(plataformas);
@@ -72,7 +65,7 @@ namespace MvcWebMusica2.Controllers
                 return NotFound();
             }
 
-            var plataformas = await _context.Plataformas.FindAsync(id);
+            var plataformas = await context.Plataformas.FindAsync(id);
             if (plataformas == null)
             {
                 return NotFound();
@@ -96,8 +89,8 @@ namespace MvcWebMusica2.Controllers
             {
                 try
                 {
-                    _context.Update(plataformas);
-                    await _context.SaveChangesAsync();
+                    context.Update(plataformas);
+                    await context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -123,7 +116,7 @@ namespace MvcWebMusica2.Controllers
                 return NotFound();
             }
 
-            var plataformas = await _context.Plataformas
+            var plataformas = await context.Plataformas
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (plataformas == null)
             {
@@ -138,19 +131,19 @@ namespace MvcWebMusica2.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var plataformas = await _context.Plataformas.FindAsync(id);
+            var plataformas = await context.Plataformas.FindAsync(id);
             if (plataformas != null)
             {
-                _context.Plataformas.Remove(plataformas);
+                context.Plataformas.Remove(plataformas);
             }
 
-            await _context.SaveChangesAsync();
+            await context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
         private bool PlataformasExists(int id)
         {
-            return _context.Plataformas.Any(e => e.Id == id);
+            return context.Plataformas.Any(e => e.Id == id);
         }
     }
 }

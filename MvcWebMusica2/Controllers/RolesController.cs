@@ -9,19 +9,12 @@ using MvcWebMusica2.Models;
 
 namespace MvcWebMusica2.Controllers
 {
-    public class RolesController : Controller
+    public class RolesController(GrupoBContext context) : Controller
     {
-        private readonly GrupoBContext _context;
-
-        public RolesController(GrupoBContext context)
-        {
-            _context = context;
-        }
-
         // GET: Roles
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Roles.ToListAsync());
+            return View(await context.Roles.ToListAsync());
         }
 
         // GET: Roles/Details/5
@@ -32,7 +25,7 @@ namespace MvcWebMusica2.Controllers
                 return NotFound();
             }
 
-            var roles = await _context.Roles
+            var roles = await context.Roles
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (roles == null)
             {
@@ -57,8 +50,8 @@ namespace MvcWebMusica2.Controllers
         {
             if (ModelState.IsValid)
             {
-                _context.Add(roles);
-                await _context.SaveChangesAsync();
+                context.Add(roles);
+                await context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
             return View(roles);
@@ -72,7 +65,7 @@ namespace MvcWebMusica2.Controllers
                 return NotFound();
             }
 
-            var roles = await _context.Roles.FindAsync(id);
+            var roles = await context.Roles.FindAsync(id);
             if (roles == null)
             {
                 return NotFound();
@@ -96,8 +89,8 @@ namespace MvcWebMusica2.Controllers
             {
                 try
                 {
-                    _context.Update(roles);
-                    await _context.SaveChangesAsync();
+                    context.Update(roles);
+                    await context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -123,7 +116,7 @@ namespace MvcWebMusica2.Controllers
                 return NotFound();
             }
 
-            var roles = await _context.Roles
+            var roles = await context.Roles
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (roles == null)
             {
@@ -138,19 +131,19 @@ namespace MvcWebMusica2.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var roles = await _context.Roles.FindAsync(id);
+            var roles = await context.Roles.FindAsync(id);
             if (roles != null)
             {
-                _context.Roles.Remove(roles);
+                context.Roles.Remove(roles);
             }
 
-            await _context.SaveChangesAsync();
+            await context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
         private bool RolesExists(int id)
         {
-            return _context.Roles.Any(e => e.Id == id);
+            return context.Roles.Any(e => e.Id == id);
         }
     }
 }

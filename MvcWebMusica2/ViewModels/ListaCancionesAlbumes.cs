@@ -2,18 +2,13 @@
 
 namespace MvcWebMusica2.ViewModels
 {
-    public class ListaCancionesAlbumes : IListableCancionesAlbumes
+    public class ListaCancionesAlbumes(GrupoBContext contexto) : IListableCancionesAlbumes
     {
-        private readonly GrupoBContext _context;
-
-        public ListaCancionesAlbumes(GrupoBContext contexto)
-        {
-            _context = contexto;
-        }
-
         public List<Canciones> dameCanciones(int albumId)
         {
-            return _context.Canciones.Where(item => item.AlbumesId == albumId).ToList();
+            List<Canciones> list = [];
+            foreach (var canciones in contexto.Canciones.Where(item => item.AlbumesId == albumId)) list.Add(canciones);
+            return list;
         }
     }
 }

@@ -9,19 +9,12 @@ using MvcWebMusica2.Models;
 
 namespace MvcWebMusica2.Controllers
 {
-    public class VideoClipsController : Controller
+    public class VideoClipsController(GrupoBContext context) : Controller
     {
-        private readonly GrupoBContext _context;
-
-        public VideoClipsController(GrupoBContext context)
-        {
-            _context = context;
-        }
-
         // GET: VideoClips
         public async Task<IActionResult> Index()
         {
-            var grupoBContext = _context.VideoClips.Include(v => v.Canciones);
+            var grupoBContext = context.VideoClips.Include(v => v.Canciones);
             return View(await grupoBContext.ToListAsync());
         }
 
@@ -33,7 +26,7 @@ namespace MvcWebMusica2.Controllers
                 return NotFound();
             }
 
-            var videoClips = await _context.VideoClips
+            var videoClips = await context.VideoClips
                 .Include(v => v.Canciones)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (videoClips == null)
@@ -47,7 +40,7 @@ namespace MvcWebMusica2.Controllers
         // GET: VideoClips/Create
         public IActionResult Create()
         {
-            ViewData["CancionesId"] = new SelectList(_context.Canciones, "Id", "Titulo");
+            ViewData["CancionesId"] = new SelectList(context.Canciones, "Id", "Titulo");
             return View();
         }
 
@@ -60,11 +53,11 @@ namespace MvcWebMusica2.Controllers
         {
             if (ModelState.IsValid)
             {
-                _context.Add(videoClips);
-                await _context.SaveChangesAsync();
+                context.Add(videoClips);
+                await context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["CancionesId"] = new SelectList(_context.Canciones, "Id", "Titulo", videoClips.CancionesId);
+            ViewData["CancionesId"] = new SelectList(context.Canciones, "Id", "Titulo", videoClips.CancionesId);
             return View(videoClips);
         }
 
@@ -76,12 +69,12 @@ namespace MvcWebMusica2.Controllers
                 return NotFound();
             }
 
-            var videoClips = await _context.VideoClips.FindAsync(id);
+            var videoClips = await context.VideoClips.FindAsync(id);
             if (videoClips == null)
             {
                 return NotFound();
             }
-            ViewData["CancionesId"] = new SelectList(_context.Canciones, "Id", "Titulo", videoClips.CancionesId);
+            ViewData["CancionesId"] = new SelectList(context.Canciones, "Id", "Titulo", videoClips.CancionesId);
             return View(videoClips);
         }
 
@@ -101,8 +94,8 @@ namespace MvcWebMusica2.Controllers
             {
                 try
                 {
-                    _context.Update(videoClips);
-                    await _context.SaveChangesAsync();
+                    context.Update(videoClips);
+                    await context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -117,7 +110,7 @@ namespace MvcWebMusica2.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["CancionesId"] = new SelectList(_context.Canciones, "Id", "Titulo", videoClips.CancionesId);
+            ViewData["CancionesId"] = new SelectList(context.Canciones, "Id", "Titulo", videoClips.CancionesId);
             return View(videoClips);
         }
 
@@ -129,7 +122,7 @@ namespace MvcWebMusica2.Controllers
                 return NotFound();
             }
 
-            var videoClips = await _context.VideoClips
+            var videoClips = await context.VideoClips
                 .Include(v => v.Canciones)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (videoClips == null)
@@ -145,19 +138,19 @@ namespace MvcWebMusica2.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var videoClips = await _context.VideoClips.FindAsync(id);
+            var videoClips = await context.VideoClips.FindAsync(id);
             if (videoClips != null)
             {
-                _context.VideoClips.Remove(videoClips);
+                context.VideoClips.Remove(videoClips);
             }
 
-            await _context.SaveChangesAsync();
+            await context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
         private bool VideoClipsExists(int id)
         {
-            return _context.VideoClips.Any(e => e.Id == id);
+            return context.VideoClips.Any(e => e.Id == id);
         }
     }
 }

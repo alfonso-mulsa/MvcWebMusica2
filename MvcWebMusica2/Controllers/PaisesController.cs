@@ -9,19 +9,12 @@ using MvcWebMusica2.Models;
 
 namespace MvcWebMusica2.Controllers
 {
-    public class PaisesController : Controller
+    public class PaisesController(GrupoBContext context) : Controller
     {
-        private readonly GrupoBContext _context;
-
-        public PaisesController(GrupoBContext context)
-        {
-            _context = context;
-        }
-
         // GET: Paises
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Paises.ToListAsync());
+            return View(await context.Paises.ToListAsync());
         }
 
         // GET: Paises/Details/5
@@ -32,7 +25,7 @@ namespace MvcWebMusica2.Controllers
                 return NotFound();
             }
 
-            var paises = await _context.Paises
+            var paises = await context.Paises
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (paises == null)
             {
@@ -57,8 +50,8 @@ namespace MvcWebMusica2.Controllers
         {
             if (ModelState.IsValid)
             {
-                _context.Add(paises);
-                await _context.SaveChangesAsync();
+                context.Add(paises);
+                await context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
             return View(paises);
@@ -72,7 +65,7 @@ namespace MvcWebMusica2.Controllers
                 return NotFound();
             }
 
-            var paises = await _context.Paises.FindAsync(id);
+            var paises = await context.Paises.FindAsync(id);
             if (paises == null)
             {
                 return NotFound();
@@ -96,8 +89,8 @@ namespace MvcWebMusica2.Controllers
             {
                 try
                 {
-                    _context.Update(paises);
-                    await _context.SaveChangesAsync();
+                    context.Update(paises);
+                    await context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -123,7 +116,7 @@ namespace MvcWebMusica2.Controllers
                 return NotFound();
             }
 
-            var paises = await _context.Paises
+            var paises = await context.Paises
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (paises == null)
             {
@@ -138,19 +131,19 @@ namespace MvcWebMusica2.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var paises = await _context.Paises.FindAsync(id);
+            var paises = await context.Paises.FindAsync(id);
             if (paises != null)
             {
-                _context.Paises.Remove(paises);
+                context.Paises.Remove(paises);
             }
 
-            await _context.SaveChangesAsync();
+            await context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
         private bool PaisesExists(int id)
         {
-            return _context.Paises.Any(e => e.Id == id);
+            return context.Paises.Any(e => e.Id == id);
         }
     }
 }

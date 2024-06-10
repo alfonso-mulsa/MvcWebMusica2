@@ -9,19 +9,12 @@ using MvcWebMusica2.Models;
 
 namespace MvcWebMusica2.Controllers
 {
-    public class GirasController : Controller
+    public class GirasController(GrupoBContext context) : Controller
     {
-        private readonly GrupoBContext _context;
-
-        public GirasController(GrupoBContext context)
-        {
-            _context = context;
-        }
-
         // GET: Giras
         public async Task<IActionResult> Index()
         {
-            var grupoBContext = _context.Giras.Include(g => g.Grupos);
+            var grupoBContext = context.Giras.Include(g => g.Grupos);
             return View(await grupoBContext.ToListAsync());
         }
 
@@ -33,7 +26,7 @@ namespace MvcWebMusica2.Controllers
                 return NotFound();
             }
 
-            var giras = await _context.Giras
+            var giras = await context.Giras
                 .Include(g => g.Grupos)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (giras == null)
@@ -47,7 +40,7 @@ namespace MvcWebMusica2.Controllers
         // GET: Giras/Create
         public IActionResult Create()
         {
-            ViewData["GruposId"] = new SelectList(_context.Grupos, "Id", "Nombre");
+            ViewData["GruposId"] = new SelectList(context.Grupos, "Id", "Nombre");
             return View();
         }
 
@@ -60,11 +53,11 @@ namespace MvcWebMusica2.Controllers
         {
             if (ModelState.IsValid)
             {
-                _context.Add(giras);
-                await _context.SaveChangesAsync();
+                context.Add(giras);
+                await context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["GruposId"] = new SelectList(_context.Grupos, "Id", "Nombre", giras.GruposId);
+            ViewData["GruposId"] = new SelectList(context.Grupos, "Id", "Nombre", giras.GruposId);
             return View(giras);
         }
 
@@ -76,12 +69,12 @@ namespace MvcWebMusica2.Controllers
                 return NotFound();
             }
 
-            var giras = await _context.Giras.FindAsync(id);
+            var giras = await context.Giras.FindAsync(id);
             if (giras == null)
             {
                 return NotFound();
             }
-            ViewData["GruposId"] = new SelectList(_context.Grupos, "Id", "Nombre", giras.GruposId);
+            ViewData["GruposId"] = new SelectList(context.Grupos, "Id", "Nombre", giras.GruposId);
             return View(giras);
         }
 
@@ -101,8 +94,8 @@ namespace MvcWebMusica2.Controllers
             {
                 try
                 {
-                    _context.Update(giras);
-                    await _context.SaveChangesAsync();
+                    context.Update(giras);
+                    await context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -117,7 +110,7 @@ namespace MvcWebMusica2.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["GruposId"] = new SelectList(_context.Grupos, "Id", "Nombre", giras.GruposId);
+            ViewData["GruposId"] = new SelectList(context.Grupos, "Id", "Nombre", giras.GruposId);
             return View(giras);
         }
 
@@ -129,7 +122,7 @@ namespace MvcWebMusica2.Controllers
                 return NotFound();
             }
 
-            var giras = await _context.Giras
+            var giras = await context.Giras
                 .Include(g => g.Grupos)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (giras == null)
@@ -145,19 +138,19 @@ namespace MvcWebMusica2.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var giras = await _context.Giras.FindAsync(id);
+            var giras = await context.Giras.FindAsync(id);
             if (giras != null)
             {
-                _context.Giras.Remove(giras);
+                context.Giras.Remove(giras);
             }
 
-            await _context.SaveChangesAsync();
+            await context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
         private bool GirasExists(int id)
         {
-            return _context.Giras.Any(e => e.Id == id);
+            return context.Giras.Any(e => e.Id == id);
         }
     }
 }

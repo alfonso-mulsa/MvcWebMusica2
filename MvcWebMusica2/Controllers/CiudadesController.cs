@@ -9,19 +9,12 @@ using MvcWebMusica2.Models;
 
 namespace MvcWebMusica2.Controllers
 {
-    public class CiudadesController : Controller
+    public class CiudadesController(GrupoBContext context) : Controller
     {
-        private readonly GrupoBContext _context;
-
-        public CiudadesController(GrupoBContext context)
-        {
-            _context = context;
-        }
-
         // GET: Ciudades
         public async Task<IActionResult> Index()
         {
-            var grupoBContext = _context.Ciudades.Include(c => c.Paises);
+            var grupoBContext = context.Ciudades.Include(c => c.Paises);
             return View(await grupoBContext.ToListAsync());
         }
 
@@ -33,7 +26,7 @@ namespace MvcWebMusica2.Controllers
                 return NotFound();
             }
 
-            var ciudades = await _context.Ciudades
+            var ciudades = await context.Ciudades
                 .Include(c => c.Paises)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (ciudades == null)
@@ -47,7 +40,7 @@ namespace MvcWebMusica2.Controllers
         // GET: Ciudades/Create
         public IActionResult Create()
         {
-            ViewData["PaisesID"] = new SelectList(_context.Paises, "Id", "Nombre");
+            ViewData["PaisesID"] = new SelectList(context.Paises, "Id", "Nombre");
             return View();
         }
 
@@ -60,11 +53,11 @@ namespace MvcWebMusica2.Controllers
         {
             if (ModelState.IsValid)
             {
-                _context.Add(ciudades);
-                await _context.SaveChangesAsync();
+                context.Add(ciudades);
+                await context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["PaisesID"] = new SelectList(_context.Paises, "Id", "Nombre", ciudades.PaisesID);
+            ViewData["PaisesID"] = new SelectList(context.Paises, "Id", "Nombre", ciudades.PaisesID);
             return View(ciudades);
         }
 
@@ -76,12 +69,12 @@ namespace MvcWebMusica2.Controllers
                 return NotFound();
             }
 
-            var ciudades = await _context.Ciudades.FindAsync(id);
+            var ciudades = await context.Ciudades.FindAsync(id);
             if (ciudades == null)
             {
                 return NotFound();
             }
-            ViewData["PaisesID"] = new SelectList(_context.Paises, "Id", "Nombre", ciudades.PaisesID);
+            ViewData["PaisesID"] = new SelectList(context.Paises, "Id", "Nombre", ciudades.PaisesID);
             return View(ciudades);
         }
 
@@ -101,8 +94,8 @@ namespace MvcWebMusica2.Controllers
             {
                 try
                 {
-                    _context.Update(ciudades);
-                    await _context.SaveChangesAsync();
+                    context.Update(ciudades);
+                    await context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -117,7 +110,7 @@ namespace MvcWebMusica2.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["PaisesID"] = new SelectList(_context.Paises, "Id", "Nombre", ciudades.PaisesID);
+            ViewData["PaisesID"] = new SelectList(context.Paises, "Id", "Nombre", ciudades.PaisesID);
             return View(ciudades);
         }
 
@@ -129,7 +122,7 @@ namespace MvcWebMusica2.Controllers
                 return NotFound();
             }
 
-            var ciudades = await _context.Ciudades
+            var ciudades = await context.Ciudades
                 .Include(c => c.Paises)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (ciudades == null)
@@ -145,19 +138,19 @@ namespace MvcWebMusica2.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var ciudades = await _context.Ciudades.FindAsync(id);
+            var ciudades = await context.Ciudades.FindAsync(id);
             if (ciudades != null)
             {
-                _context.Ciudades.Remove(ciudades);
+                context.Ciudades.Remove(ciudades);
             }
 
-            await _context.SaveChangesAsync();
+            await context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
         private bool CiudadesExists(int id)
         {
-            return _context.Ciudades.Any(e => e.Id == id);
+            return context.Ciudades.Any(e => e.Id == id);
         }
     }
 }

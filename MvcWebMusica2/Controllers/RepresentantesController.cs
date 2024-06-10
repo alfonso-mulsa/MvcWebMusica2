@@ -9,19 +9,12 @@ using MvcWebMusica2.Models;
 
 namespace MvcWebMusica2.Controllers
 {
-    public class RepresentantesController : Controller
+    public class RepresentantesController(GrupoBContext context) : Controller
     {
-        private readonly GrupoBContext _context;
-
-        public RepresentantesController(GrupoBContext context)
-        {
-            _context = context;
-        }
-
         // GET: Representantes
         public async Task<IActionResult> Index()
         {
-            var grupoBContext = _context.Representantes.Include(r => r.Ciudades);
+            var grupoBContext = context.Representantes.Include(r => r.Ciudades);
             return View(await grupoBContext.ToListAsync());
         }
 
@@ -33,7 +26,7 @@ namespace MvcWebMusica2.Controllers
                 return NotFound();
             }
 
-            var representantes = await _context.Representantes
+            var representantes = await context.Representantes
                 .Include(r => r.Ciudades)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (representantes == null)
@@ -47,7 +40,7 @@ namespace MvcWebMusica2.Controllers
         // GET: Representantes/Create
         public IActionResult Create()
         {
-            ViewData["CiudadesID"] = new SelectList(_context.Ciudades, "Id", "Nombre");
+            ViewData["CiudadesID"] = new SelectList(context.Ciudades, "Id", "Nombre");
             return View();
         }
 
@@ -60,11 +53,11 @@ namespace MvcWebMusica2.Controllers
         {
             if (ModelState.IsValid)
             {
-                _context.Add(representantes);
-                await _context.SaveChangesAsync();
+                context.Add(representantes);
+                await context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["CiudadesID"] = new SelectList(_context.Ciudades, "Id", "Nombre", representantes.CiudadesID);
+            ViewData["CiudadesID"] = new SelectList(context.Ciudades, "Id", "Nombre", representantes.CiudadesID);
             return View(representantes);
         }
 
@@ -76,12 +69,12 @@ namespace MvcWebMusica2.Controllers
                 return NotFound();
             }
 
-            var representantes = await _context.Representantes.FindAsync(id);
+            var representantes = await context.Representantes.FindAsync(id);
             if (representantes == null)
             {
                 return NotFound();
             }
-            ViewData["CiudadesID"] = new SelectList(_context.Ciudades, "Id", "Nombre", representantes.CiudadesID);
+            ViewData["CiudadesID"] = new SelectList(context.Ciudades, "Id", "Nombre", representantes.CiudadesID);
             return View(representantes);
         }
 
@@ -101,8 +94,8 @@ namespace MvcWebMusica2.Controllers
             {
                 try
                 {
-                    _context.Update(representantes);
-                    await _context.SaveChangesAsync();
+                    context.Update(representantes);
+                    await context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -117,7 +110,7 @@ namespace MvcWebMusica2.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["CiudadesID"] = new SelectList(_context.Ciudades, "Id", "Nombre", representantes.CiudadesID);
+            ViewData["CiudadesID"] = new SelectList(context.Ciudades, "Id", "Nombre", representantes.CiudadesID);
             return View(representantes);
         }
 
@@ -129,7 +122,7 @@ namespace MvcWebMusica2.Controllers
                 return NotFound();
             }
 
-            var representantes = await _context.Representantes
+            var representantes = await context.Representantes
                 .Include(r => r.Ciudades)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (representantes == null)
@@ -145,19 +138,19 @@ namespace MvcWebMusica2.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var representantes = await _context.Representantes.FindAsync(id);
+            var representantes = await context.Representantes.FindAsync(id);
             if (representantes != null)
             {
-                _context.Representantes.Remove(representantes);
+                context.Representantes.Remove(representantes);
             }
 
-            await _context.SaveChangesAsync();
+            await context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
         private bool RepresentantesExists(int id)
         {
-            return _context.Representantes.Any(e => e.Id == id);
+            return context.Representantes.Any(e => e.Id == id);
         }
     }
 }
