@@ -96,7 +96,7 @@ namespace MvcWebMusica2.Controllers
             {
                 try
                 {
-                    _repositorioGeneros.Modificar(id, generos);
+                    await _repositorioGeneros.Modificar(id, generos);
                 }
                 catch (DbUpdateConcurrencyException)
                 {

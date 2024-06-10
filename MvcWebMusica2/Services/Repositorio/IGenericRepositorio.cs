@@ -9,6 +9,6 @@ namespace MvcWebMusica2.Services.Repositorio
         Task<List<T>> DameTodos();
         Task<T?> DameUno(int? Id);
         Task<List<T>> Filtra(Expression<Func<T, bool>> predicado);
-        void Modificar(int Id, T element);
+        Task<int> Modificar(int Id, T element);
     }
 }

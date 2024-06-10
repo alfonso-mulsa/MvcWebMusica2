@@ -125,7 +125,7 @@ namespace MvcWebMusica2.Controllers
             {
                 try
                 {
-                    _repositorioArtistas.Modificar(id, artista);
+                    await _repositorioArtistas.Modificar(id, artista);
                 }
                 catch (DbUpdateConcurrencyException)
                 {

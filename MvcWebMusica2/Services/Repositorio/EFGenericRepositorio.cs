@@ -48,10 +48,10 @@ namespace MvcWebMusica2.Services.Repositorio
             return await _context.Set<T>().Where<T>(predicado).ToListAsync();
         }
 
-        public async void Modificar(int Id, T element)
+        public async Task<int> Modificar(int Id, T element)
         {
             _context.Set<T>().Update(element);
-            await _context.SaveChangesAsync();
+            return await _context.SaveChangesAsync();
         }
     }
 }

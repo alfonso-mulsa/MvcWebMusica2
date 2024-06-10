@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.CodeAnalysis;
 using Microsoft.EntityFrameworkCore;
 using MvcWebMusica2.Models;
 using MvcWebMusica2.Services.Repositorio;
@@ -140,7 +141,7 @@ namespace MvcWebMusica2.Controllers
             {
                 try
                 {
-                    _repositorioAlbumes.Modificar(id, album);
+                    await _repositorioAlbumes.Modificar(id, album);
                 }
                 catch (DbUpdateConcurrencyException)
                 {
