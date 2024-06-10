@@ -34,13 +34,13 @@
 @foreach (var item in Model) {
         <tr>
             <td>
-                @Html.DisplayFor(modelItem => item.Grupos.Nombre)
+                @Html.DisplayFor(modelItem => item.Grupos!.Nombre)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Nombre)
             </td>
             <td class="text-center">
-                @Html.DisplayFor(modelItem => item.Generos.Nombre)
+                @Html.DisplayFor(modelItem => item.Generos!.Nombre)
             </td>
             <td class="text-center">
                 @Html.DisplayFor(modelItem => item.Fecha)

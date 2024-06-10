@@ -23,7 +23,7 @@ namespace MvcWebMusica2.Controllers
         // GET: Generos
         public async Task<IActionResult> Index()
         {
-            return View(_repositorioGeneros.DameTodos());
+            return View(await _repositorioGeneros.DameTodos());
         }
 
         // GET: Generos/Details/5
@@ -34,7 +34,7 @@ namespace MvcWebMusica2.Controllers
                 return NotFound();
             }
 
-            var generos = _repositorioGeneros.DameUno(id);
+            var generos = await _repositorioGeneros.DameUno(id);
             if (generos == null)
             {
                 return NotFound();
@@ -58,7 +58,7 @@ namespace MvcWebMusica2.Controllers
         {
             if (ModelState.IsValid)
             {
-                _repositorioGeneros.Agregar(generos);
+                await _repositorioGeneros.Agregar(generos);
                 return RedirectToAction(nameof(Index));
             }
             return View(generos);
@@ -72,7 +72,7 @@ namespace MvcWebMusica2.Controllers
                 return NotFound();
             }
 
-            var generos = _repositorioGeneros.DameUno(id);
+            var generos = await _repositorioGeneros.DameUno(id);
             if (generos == null)
             {
                 return NotFound();
@@ -122,7 +122,7 @@ namespace MvcWebMusica2.Controllers
                 return NotFound();
             }
 
-            var generos = _repositorioGeneros.DameUno(id);
+            var generos = await _repositorioGeneros.DameUno(id);
             if (generos == null)
             {
                 return NotFound();
@@ -136,10 +136,10 @@ namespace MvcWebMusica2.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var generos = _repositorioGeneros.DameUno(id);
+            var generos = await _repositorioGeneros.DameUno(id);
             if (generos != null)
             {
-                _repositorioGeneros.Borrar(id);
+                await _repositorioGeneros.Borrar(id);
             }
 
             return RedirectToAction(nameof(Index));

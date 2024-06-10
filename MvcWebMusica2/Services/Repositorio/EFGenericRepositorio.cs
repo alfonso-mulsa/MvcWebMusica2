@@ -7,19 +7,20 @@ namespace MvcWebMusica2.Services.Repositorio
     public class EFGenericRepositorio<T> : IGenericRepositorio<T> where T : class
     {
         private readonly GrupoBContext _context = new();
-        public bool Agregar(T element)
+        public async Task<bool> Agregar(T element)
         {
-            _context.Set<T>().Add(element);
-            _context.SaveChanges();
+            await _context.Set<T>().AddAsync(element);
+            await _context.SaveChangesAsync();
             return true;
         }
 
-        public bool Borrar(int Id)
+        public async Task<bool> Borrar(int Id)
         {
-            if (DameUno(Id) != null)
+            var elementoABorrar = await DameUno(Id);
+            if (elementoABorrar != null)
             {
-                _context.Set<T>().Remove(DameUno(Id));
-                _context.SaveChanges();
+                _context.Set<T>().Remove(elementoABorrar);
+                await _context.SaveChangesAsync();
                 return true;
             }
             else
@@ -28,29 +29,29 @@ namespace MvcWebMusica2.Services.Repositorio
             }
         }
 
-        public List<T> DameTodos()
+        public async Task<List<T>> DameTodos()
         {
-            return _context.Set<T>().AsNoTracking().ToList();
+            return await _context.Set<T>().AsNoTracking().ToListAsync();
         }
 
-        public T? DameUno(int? Id)
+        public async Task<T?> DameUno(int? id)
         {
-            if (Id == null)
+            if (id == null)
             {
                 return null;
             }
-            return _context.Set<T>().Find(Id);
+            return await _context.Set<T>().FindAsync(id);
         }
 
-        public List<T> Filtra(Expression<Func<T, bool>> predicado)
+        public async Task<List<T>> Filtra(Expression<Func<T, bool>> predicado)
         {
-            return _context.Set<T>().Where<T>(predicado).ToList();
+            return await _context.Set<T>().Where<T>(predicado).ToListAsync();
         }
 
-        public void Modificar(int Id, T element)
+        public async void Modificar(int Id, T element)
         {
             _context.Set<T>().Update(element);
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
         }
     }
 }

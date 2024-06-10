@@ -32,12 +32,12 @@ namespace MvcWebMusica2.Controllers
         // GET: Albumes
         public async Task<IActionResult> Index()
         {
-            var listaAlbumes= _repositorioAlbumes.DameTodos();
+            var listaAlbumes = await _repositorioAlbumes.DameTodos();
             foreach (var album in listaAlbumes)
             {
-                album.Generos = _repositorioGeneros.DameUno(album.GenerosId);
-                album.Grupos = _repositorioGrupos.DameUno(album.GruposId);
-                album.Canciones = _repositorioCanciones.Filtra(x => x.AlbumesId == album.Id);
+                album.Generos = await _repositorioGeneros.DameUno(album.GenerosId);
+                album.Grupos = await _repositorioGrupos.DameUno(album.GruposId);
+                album.Canciones = await _repositorioCanciones.Filtra(x => x.AlbumesId == album.Id);
             }
             return View(listaAlbumes);
         }
@@ -45,13 +45,13 @@ namespace MvcWebMusica2.Controllers
         // GET: Albumes y Canciones
         public async Task<IActionResult> AlbumesYCanciones()
         {
-            var listaAlbumes = _repositorioAlbumes.DameTodos();
+            var listaAlbumes = await _repositorioAlbumes.DameTodos();
 
             foreach (var album in listaAlbumes)
             {
-                album.Generos = _repositorioGeneros.DameUno(album.GenerosId);
-                album.Grupos = _repositorioGrupos.DameUno(album.GruposId);
-                album.Canciones = _repositorioCanciones.Filtra(x => x.AlbumesId == album.Id);
+                album.Generos = await _repositorioGeneros.DameUno(album.GenerosId);
+                album.Grupos = await _repositorioGrupos.DameUno(album.GruposId);
+                album.Canciones = await _repositorioCanciones.Filtra(x => x.AlbumesId == album.Id);
             }
 
             return View(listaAlbumes);
@@ -65,24 +65,27 @@ namespace MvcWebMusica2.Controllers
                 return NotFound();
             }
 
-            var album = _repositorioAlbumes.DameUno(id);
-            album.Generos = _repositorioGeneros.DameUno(album.GenerosId);
-            album.Grupos = _repositorioGrupos.DameUno(album.GruposId);
-            album.Canciones = _repositorioCanciones.Filtra(x => x.AlbumesId == album.Id);
+            var album = await _repositorioAlbumes.DameUno(id);
 
             if (album == null)
             {
                 return NotFound();
+            }
+            else
+            {
+                album.Generos = await _repositorioGeneros.DameUno(album.GenerosId);
+                album.Grupos = await _repositorioGrupos.DameUno(album.GruposId);
+                album.Canciones = await _repositorioCanciones.Filtra(x => x.AlbumesId == album.Id);
             }
 
             return View(album);
         }
 
         // GET: Albumes/Create
-        public IActionResult Create()
+        public async Task<IActionResult> Create()
         {
-            ViewData["GenerosId"] = new SelectList(_repositorioGeneros.DameTodos(), "Id", "Nombre");
-            ViewData["GruposId"] = new SelectList(_repositorioGrupos.DameTodos(), "Id", "Nombre");
+            ViewData["GenerosId"] = new SelectList(await _repositorioGeneros.DameTodos(), "Id", "Nombre");
+            ViewData["GruposId"] = new SelectList(await _repositorioGrupos.DameTodos(), "Id", "Nombre");
             return View();
         }
 
@@ -95,11 +98,11 @@ namespace MvcWebMusica2.Controllers
         {
             if (ModelState.IsValid)
             {
-                _repositorioAlbumes.Agregar(album);
+                await _repositorioAlbumes.Agregar(album);
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["GenerosId"] = new SelectList(_repositorioGeneros.DameTodos(), "Id", "Nombre", album.GenerosId);
-            ViewData["GruposId"] = new SelectList(_repositorioGrupos.DameTodos(), "Id", "Nombre", album.GruposId);
+            ViewData["GenerosId"] = new SelectList(await _repositorioGeneros.DameTodos(), "Id", "Nombre", album.GenerosId);
+            ViewData["GruposId"] = new SelectList(await _repositorioGrupos.DameTodos(), "Id", "Nombre", album.GruposId);
             return View(album);
         }
 
@@ -111,13 +114,13 @@ namespace MvcWebMusica2.Controllers
                 return NotFound();
             }
 
-            var album = _repositorioAlbumes.DameUno(id);
+            var album = await _repositorioAlbumes.DameUno(id);
             if (album == null)
             {
                 return NotFound();
             }
-            ViewData["GenerosId"] = new SelectList(_repositorioGeneros.DameTodos(), "Id", "Nombre", album.GenerosId);
-            ViewData["GruposId"] = new SelectList(_repositorioGrupos.DameTodos(), "Id", "Nombre", album.GruposId);
+            ViewData["GenerosId"] = new SelectList(await _repositorioGeneros.DameTodos(), "Id", "Nombre", album.GenerosId);
+            ViewData["GruposId"] = new SelectList(await _repositorioGrupos.DameTodos(), "Id", "Nombre", album.GruposId);
             return View(album);
         }
 
@@ -152,8 +155,8 @@ namespace MvcWebMusica2.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["GenerosId"] = new SelectList(_repositorioGeneros.DameTodos(), "Id", "Nombre", album.GenerosId);
-            ViewData["GruposId"] = new SelectList(_repositorioGrupos.DameTodos(), "Id", "Nombre", album.GruposId);
+            ViewData["GenerosId"] = new SelectList(await _repositorioGeneros.DameTodos(), "Id", "Nombre", album.GenerosId);
+            ViewData["GruposId"] = new SelectList(await _repositorioGrupos.DameTodos(), "Id", "Nombre", album.GruposId);
             return View(album);
         }
 
@@ -165,10 +168,17 @@ namespace MvcWebMusica2.Controllers
                 return NotFound();
             }
 
-            var album = _repositorioAlbumes.DameUno(id);
+            var album = await _repositorioAlbumes.DameUno(id);
+
             if (album == null)
             {
                 return NotFound();
+            }
+            else
+            {
+                album.Generos = await _repositorioGeneros.DameUno(album.GenerosId);
+                album.Grupos = await _repositorioGrupos.DameUno(album.GruposId);
+                album.Canciones = await _repositorioCanciones.Filtra(x => x.AlbumesId == album.Id);
             }
 
             return View(album);
@@ -179,10 +189,10 @@ namespace MvcWebMusica2.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var album = _repositorioAlbumes.DameUno(id);
+            var album = await _repositorioAlbumes.DameUno(id);
             if (album != null)
             {
-                _repositorioAlbumes.Borrar(id);
+                await _repositorioAlbumes.Borrar(id);
             }
 
             return RedirectToAction(nameof(Index));

@@ -31,13 +31,13 @@
 @foreach (var item in Model) {
         <tr>
             <td>
-                @Html.DisplayFor(modelItem => item.Giras.Nombre)
+                @Html.DisplayFor(modelItem => item.Giras!.Nombre)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Fecha)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Ciudades.Nombre)
+                @Html.DisplayFor(modelItem => item.Ciudades!.Nombre)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Direccion)

@@ -43,16 +43,16 @@
                 @Html.DisplayFor(modelItem => item.grupo)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Generos.Nombre)
+                @Html.DisplayFor(modelItem => item.Generos!.Nombre)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.FechaCreacion)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Ciudades.Nombre)
+                @Html.DisplayFor(modelItem => item.Ciudades!.Nombre)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Representantes.NombreCompleto)
+                @Html.DisplayFor(modelItem => item.Representantes!.NombreCompleto)
             </td>
             <td>
                 <a asp-action="Edit" asp-route-id="@item.Id"><i class="fa-solid fa-pen-to-square" title="Editar"></i></a> |

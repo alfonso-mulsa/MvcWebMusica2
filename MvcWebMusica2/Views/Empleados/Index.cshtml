@@ -28,7 +28,7 @@
                 @Html.DisplayFor(modelItem => item.NombreCompleto)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Roles.Descripcion)
+                @Html.DisplayFor(modelItem => item.Roles!.Descripcion)
             </td>
             <td>
                 <a asp-action="Edit" asp-route-id="@item.Id"><i class="fa-solid fa-pen-to-square" title="Editar"></i></a> |

@@ -27,9 +27,6 @@
             <th>
                 @Html.DisplayNameFor(model => model.Generos)
             </th>
-            <th>
-                Funciones
-            </th>
             <th></th>
         </tr>
     </thead>
@@ -43,20 +40,13 @@
                 @Html.DisplayFor(modelItem => item.FechaDeNacimiento)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Ciudades.Nombre)
+                @Html.DisplayFor(modelItem => item.Ciudades!.Nombre)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Grupos.Nombre)
+                @Html.DisplayFor(modelItem => item.Grupos!.Nombre)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Generos.Nombre)
-            </td>
-            <td>
-                @foreach (var item2 in item.FuncionesArtistas)
-                {
-                    @Html.DisplayFor(modelItem => item2.Funciones.Nombre)
-                    <br/>
-                }
+                @Html.DisplayFor(modelItem => item.Generos!.Nombre)
             </td>
             <td>
                 <a asp-action="Edit" asp-route-id="@item.Id"><i class="fa-solid fa-pen-to-square" title="Editar"></i></a> |

@@ -28,10 +28,10 @@
 @foreach (var item in Model) {
         <tr>
             <td>
-                @Html.DisplayFor(modelItem => item.VideoClips.Canciones)
+                @Html.DisplayFor(modelItem => item.VideoClips!.Canciones)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Plataformas.Nombre)
+                @Html.DisplayFor(modelItem => item.Plataformas!.Nombre)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.url)

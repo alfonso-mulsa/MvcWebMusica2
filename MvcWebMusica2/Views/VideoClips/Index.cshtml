@@ -25,7 +25,7 @@
 @foreach (var item in Model) {
         <tr>
             <td>
-                @Html.DisplayFor(modelItem => item.Canciones.Titulo)
+                @Html.DisplayFor(modelItem => item.Canciones!.Titulo)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Fecha)

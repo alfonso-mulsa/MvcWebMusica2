@@ -31,7 +31,7 @@
         {
             <tr class="bg-dark bg-opacity-25">
                 <td colspan="2">
-                    @Html.DisplayFor(modelItem => item.Grupos.Nombre)
+                    @Html.DisplayFor(modelItem => item.Grupos!.Nombre)
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.Nombre)
@@ -40,22 +40,24 @@
                     @Html.DisplayFor(modelItem => item.Fecha)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.Generos.Nombre)
+                    @Html.DisplayFor(modelItem => item.Generos!.Nombre)
                 </td>
-                @if (item.Canciones.Count() == 0)
-                {
-                    <td class ="text-danger fw-bold text-center">
-                        @item.Canciones.Count()
-                    </td>
-                }
-                else
+                @* @if (!item.Canciones.Any() .Count() == 0) *@
+                @if (item.Canciones.Any())
                 {
                     <td class="text-center">
                         @item.Canciones.Count()
                     </td>
                 }
+                else
+                {
+                    <td class ="text-danger fw-bold text-center">
+                        @item.Canciones.Count()
+                    </td>
+                }
             </tr>
-            @if (item.Canciones.Count() > 0)
+            @* @if (item.Canciones.Count() > 0) *@
+            @if (item.Canciones.Any())
             {
                 <tr>
                     <th class="border-bottom-0" width="7%"></th>

@@ -29,7 +29,7 @@
                     @Html.DisplayFor(modelItem => item.Nombre)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.Paises.Nombre)
+                    @Html.DisplayFor(modelItem => item.Paises!.Nombre)
                 </td>
                 <td>
                     <a asp-action="Edit" asp-route-id="@item.Id"><i class="fa-solid fa-pen-to-square" title="Editar"></i></a> |
