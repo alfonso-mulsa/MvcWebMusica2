@@ -42,17 +42,17 @@
                 <td>
                     @Html.DisplayFor(modelItem => item.Generos!.Nombre)
                 </td>
-                @* @if (!item.Canciones.Any() .Count() == 0) *@
+                @* @if (!item.Canciones.Count() == 0) *@
                 @if (item.Canciones.Any())
                 {
                     <td class="text-center">
-                        @item.Canciones.Count()
+                        @item.Canciones.Count
                     </td>
                 }
                 else
                 {
                     <td class ="text-danger fw-bold text-center">
-                        @item.Canciones.Count()
+                        @item.Canciones.Count
                     </td>
                 }
             </tr>

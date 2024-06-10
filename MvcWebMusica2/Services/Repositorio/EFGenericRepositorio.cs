@@ -45,7 +45,7 @@ namespace MvcWebMusica2.Services.Repositorio
 
         public async Task<List<T>> Filtra(Expression<Func<T, bool>> predicado)
         {
-            return await _context.Set<T>().Where<T>(predicado).ToListAsync();
+            return await _context.Set<T>().Where(predicado).ToListAsync();
         }
 
         public async Task<int> Modificar(int Id, T element)
