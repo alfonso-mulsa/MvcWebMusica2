@@ -43,8 +43,6 @@ public partial class GrupoBContext : DbContext
 
     public virtual DbSet<Representantes> Representantes { get; set; }
 
-    public virtual DbSet<Representates> Representates { get; set; }
-
     public virtual DbSet<Roles> Roles { get; set; }
 
     public virtual DbSet<VideoClips> VideoClips { get; set; }
