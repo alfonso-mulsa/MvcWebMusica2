@@ -4,21 +4,21 @@
     ViewData["Title"] = "Albumes Y Canciones";
 }
 
-<h1>Albumes Y Canciones</h1>
+<h1 class="text-center">Albumes Y Canciones</h1>
 
-<table class="table">
-    <thead>
+<table class="table table-bordered border-primary table-hover">
+    <thead class="bg-dark bg-opacity-75 text-light">
         <tr>
-            <th>
+            <th class="text-center">
                 @Html.DisplayNameFor(model => model.Nombre)
             </th>
-            <th>
+            <th class="text-center">
                 @Html.DisplayNameFor(model => model.Grupos)
             </th>
-            <th>
+            <th class="text-center">
                 @Html.DisplayNameFor(model => model.Fecha)
             </th>
-            <th>
+            <th class="text-center">
                 @Html.DisplayNameFor(model => model.Generos)
             </th>
         </tr>
@@ -26,23 +26,25 @@
     <tbody>
         @foreach (var item in Model)
         {
-            <tr class="bg-dark bg-opacity-25">
+            <tr class="bg-info bg-opacity-25">
                 <td>
                     @Html.DisplayFor(modelItem => item.Nombre)
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.Grupos!.Nombre)
                 </td>
-                <td>
+                <td class="text-center">
                     @Html.DisplayFor(modelItem => item.Fecha)
                 </td>
-                <td>
+                <td class="text-center">
                     @Html.DisplayFor(modelItem => item.Generos!.Nombre)
                 </td>
             </tr>
             <tr>
-                @await Component.InvokeAsync("ListaCanciones", item.Id)
+                <td colspan="4">
+                    @await Component.InvokeAsync("CancionesPorAlbum", item.Id)
+                </td>
             </tr>
         }
-        </tbody>
-    </table>
+    </tbody>
+</table>

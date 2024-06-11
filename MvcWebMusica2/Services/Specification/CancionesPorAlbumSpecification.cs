@@ -2,7 +2,7 @@
 
 namespace MvcWebMusica2.Services.Specification
 {
-    public class CancionSpecification(int AlbumId) : ICancionSpecification
+    public class CancionesPorAlbumSpecification(int AlbumId) : ICancionSpecification
     {
         public bool IsValid(Canciones cancion)
         {
