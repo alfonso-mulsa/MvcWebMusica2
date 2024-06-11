@@ -6,14 +6,14 @@
 
 <h1>Albumes Y Canciones</h1>
 
-<table class="table tabla-sin-orden">
+<table class="table">
     <thead>
         <tr>
-            <th colspan="2">
-                @Html.DisplayNameFor(model => model.Grupos)
-            </th>
             <th>
                 @Html.DisplayNameFor(model => model.Nombre)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Grupos)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.Fecha)
@@ -21,20 +21,17 @@
             <th>
                 @Html.DisplayNameFor(model => model.Generos)
             </th>
-            <th class="text-center">
-                Nº canciones
-            </th>
         </tr>
     </thead>
     <tbody>
         @foreach (var item in Model)
         {
             <tr class="bg-dark bg-opacity-25">
-                <td colspan="2">
-                    @Html.DisplayFor(modelItem => item.Grupos!.Nombre)
-                </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.Nombre)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Grupos!.Nombre)
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.Fecha)
@@ -42,67 +39,10 @@
                 <td>
                     @Html.DisplayFor(modelItem => item.Generos!.Nombre)
                 </td>
-                @* @if (!item.Canciones.Count() == 0) *@
-                @if (item.Canciones.Any())
-                {
-                    <td class="text-center">
-                        @item.Canciones.Count
-                    </td>
-                }
-                else
-                {
-                    <td class ="text-danger fw-bold text-center">
-                        @item.Canciones.Count
-                    </td>
-                }
             </tr>
-            @* @if (item.Canciones.Count() > 0) *@
-            @if (item.Canciones.Any())
-            {
-                <tr>
-                    <th class="border-bottom-0" width="7%"></th>
-                    <th class="bg-dark bg-opacity-50 text-white">
-                        @Html.DisplayNameFor(model => item.Canciones.First().Titulo)
-                    </th>
-                    <th class="bg-dark bg-opacity-50 text-white">
-                        @Html.DisplayNameFor(model => item.Canciones.First().Duracion)
-                    </th>
-                    <th class="bg-dark bg-opacity-50 text-center text-white">
-                        @Html.DisplayNameFor(model => item.Canciones.First().Single)
-                    </th>
-                    <th class="bg-transparent border-bottom-0"></th>
-                    <th class="bg-transparent border-bottom-0"></th>
-                </tr>
-            }
-            else
-            {
-                <tr>
-                    <td class="border-bottom-0" width="7%"></td>
-                    <td class="text-danger fw-bold text-center" colspan="3">
-                        Este album no contiene canciones
-                    </td>
-                    <td class="bg-transparent border-bottom-0"></td>
-                    <td class="bg-transparent border-bottom-0"></td>
-                </tr>
-            }
-
-            @foreach (var item2 in item.Canciones)
-            {
-                <tr>
-                    <td class="border-bottom-0" width="7%"></td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item2.Titulo)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item2.Duracion)
-                    </td>
-                    <td class="text-center">
-                        @Html.DisplayFor(modelItem => item2.Single)
-                    </td>
-                    <td class="bg-transparent border-bottom-0"></td>
-                    <td class="bg-transparent border-bottom-0"></td>
-                </tr>
-            }
+            <tr>
+                @await Component.InvokeAsync("ListaCanciones", item.Id)
+            </tr>
         }
         </tbody>
     </table>
