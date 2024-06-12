@@ -11,7 +11,7 @@ namespace MvcWebMusica2.Models
         public int Id { get; set; }
 
         [Required(ErrorMessage = "Campo requerido.")]
-        [DisplayName("Título Canción")]
+        [DisplayName("Título")]
         [MaxLength(50, ErrorMessage = "La longitud debe ser menor de 50 caracteres.")]
         public string? Titulo { get; set; }
 

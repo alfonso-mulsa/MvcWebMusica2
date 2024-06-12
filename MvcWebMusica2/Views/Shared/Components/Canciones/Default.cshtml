@@ -1,40 +1,53 @@
 ﻿@model System.Collections.Generic.IEnumerable<MvcWebMusica2.Models.Canciones>
 
-<table class="table table-bordered border-primary table-hover">
+<table class="table ">
+    @* <table class="table table-bordered border-primary table-hover">
     <thead class="table-primary">
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Titulo)
-            </th>
-            <th class="text-center">
-                @Html.DisplayNameFor(model => model.Duracion)
-            </th>
-            <th class="text-center">
-                @Html.DisplayNameFor(model => model.Single)
-            </th>
-        </tr>
-    </thead>
+    <tr>
+    <th>
+    @Html.DisplayNameFor(model => model.Titulo)
+    </th>
+    <th class="text-center">
+    @Html.DisplayNameFor(model => model.Duracion)
+    </th>
+    <th class="text-center">
+    @Html.DisplayNameFor(model => model.Single)
+    </th>
+    </tr>
+    </thead> *@
     <tbody>
         @if (!Model.Any())
         {
             <tr>
-                <td colspan="3" class="text-center text-danger fw-bold">
+                <td colspan="3" class="text-center text-danger fw-bold border-0">
                     No hay canciones
                 </td>
             </tr>
         }
         @foreach (var item in Model)
         {
-            <tr>
+            <tr class="border-primary">
                 <td>
                     @Html.DisplayFor(modelItem => item.Titulo)
                 </td>
                 <td class="text-center">
                     @Html.DisplayFor(modelItem => item.Duracion)
                 </td>
-                <td class="text-center">
+                @* <td>
                     @Html.DisplayFor(modelItem => item.Single)
-                </td>
+                </td> *@
+                @if (item.Single)
+                {
+                    <td class="text-center">
+                        <i class="fa-solid fa-check text-success"></i>&nbsp;Single
+                    </td>
+                }
+                else
+                {
+                    <td class="text-center">
+                        <i class="fa-solid fa-xmark text-danger"></i>&nbsp;Single
+                    </td>
+                }
             </tr>
         }
     </tbody>
