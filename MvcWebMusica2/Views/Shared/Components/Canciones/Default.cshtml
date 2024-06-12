@@ -1,20 +1,22 @@
 ﻿@model System.Collections.Generic.IEnumerable<MvcWebMusica2.Models.Canciones>
 
-<table class="table ">
-    @* <table class="table table-bordered border-primary table-hover">
-    <thead class="table-primary">
-    <tr>
-    <th>
-    @Html.DisplayNameFor(model => model.Titulo)
-    </th>
-    <th class="text-center">
-    @Html.DisplayNameFor(model => model.Duracion)
-    </th>
-    <th class="text-center">
-    @Html.DisplayNameFor(model => model.Single)
-    </th>
-    </tr>
-    </thead> *@
+<table class="table table-hover mb-0">
+    @if (ViewData["CabeceraTabla"] == "true")
+    {
+        <thead>
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.Titulo)
+                </th>
+                <th class="text-center">
+                    @Html.DisplayNameFor(model => model.Duracion)
+                </th>
+                <th class="text-center">
+                    @Html.DisplayNameFor(model => model.Single)
+                </th>
+            </tr>
+        </thead>
+    }
     <tbody>
         @if (!Model.Any())
         {
@@ -34,8 +36,8 @@
                     @Html.DisplayFor(modelItem => item.Duracion)
                 </td>
                 @* <td>
-                    @Html.DisplayFor(modelItem => item.Single)
-                </td> *@
+            @Html.DisplayFor(modelItem => item.Single)
+            </td> *@
                 @if (item.Single)
                 {
                     <td class="text-center">

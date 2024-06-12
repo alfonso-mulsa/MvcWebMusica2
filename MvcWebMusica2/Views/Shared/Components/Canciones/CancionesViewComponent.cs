@@ -11,6 +11,8 @@ namespace MvcWebMusica2.Views.Shared.Components.Canciones
         {
             var listaCanciones = await repositorioCanciones.DameTodos();
             var cancionesFiltradas = listaCanciones.Where(especificacion.IsValid);
+            //ViewData["CabeceraTabla"] = true;
+            ViewData["CabeceraTabla"] = "false";
             return View(cancionesFiltradas);
         }
     }

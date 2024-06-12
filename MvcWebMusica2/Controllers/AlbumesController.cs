@@ -41,9 +41,6 @@ namespace MvcWebMusica2.Controllers
         public async Task<IActionResult> AlbumesYCanciones()
         {
             var listaAlbumes = await repositorioAlbumes.DameTodos();
-            //var listaAlbumes = new List<Albumes>();
-            //var album2 = await repositorioAlbumes.DameUno(1);
-            //listaAlbumes.Add(album2);
 
             foreach (var album in listaAlbumes)
             {
