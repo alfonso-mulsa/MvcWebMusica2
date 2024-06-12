@@ -1,0 +1,41 @@
+﻿@model System.Collections.Generic.IEnumerable<MvcWebMusica2.Models.Canciones>
+
+<table class="table table-bordered border-primary table-hover">
+    <thead class="table-primary">
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Titulo)
+            </th>
+            <th class="text-center">
+                @Html.DisplayNameFor(model => model.Duracion)
+            </th>
+            <th class="text-center">
+                @Html.DisplayNameFor(model => model.Single)
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @if (!Model.Any())
+        {
+            <tr>
+                <td colspan="3" class="text-center text-danger fw-bold">
+                    No hay canciones
+                </td>
+            </tr>
+        }
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Titulo)
+                </td>
+                <td class="text-center">
+                    @Html.DisplayFor(modelItem => item.Duracion)
+                </td>
+                <td class="text-center">
+                    @Html.DisplayFor(modelItem => item.Single)
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

@@ -1,108 +1,52 @@
-﻿@model IEnumerable<MvcWebMusica2.Models.Albumes>
+﻿@using MvcWebMusica2.Services.Specification
+@model IEnumerable<MvcWebMusica2.Models.Albumes>
 
 @{
     ViewData["Title"] = "Albumes Y Canciones";
 }
 
-<h1>Albumes Y Canciones</h1>
+<h1 class="text-center">Albumes Y Canciones</h1>
 
-<table class="table tabla-sin-orden">
-    <thead>
+<table class="table table-bordered border-primary table-hover">
+    <thead class="bg-dark bg-opacity-75 text-light">
         <tr>
-            <th colspan="2">
-                @Html.DisplayNameFor(model => model.Grupos)
-            </th>
-            <th>
+            <th class="text-center">
                 @Html.DisplayNameFor(model => model.Nombre)
             </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Fecha)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Generos)
+            <th class="text-center">
+                @Html.DisplayNameFor(model => model.Grupos)
             </th>
             <th class="text-center">
-                Nº canciones
+                @Html.DisplayNameFor(model => model.Fecha)
+            </th>
+            <th class="text-center">
+                @Html.DisplayNameFor(model => model.Generos)
             </th>
         </tr>
     </thead>
     <tbody>
         @foreach (var item in Model)
         {
-            <tr class="bg-dark bg-opacity-25">
-                <td colspan="2">
-                    @Html.DisplayFor(modelItem => item.Grupos!.Nombre)
-                </td>
+            <tr class="bg-info bg-opacity-25">
                 <td>
                     @Html.DisplayFor(modelItem => item.Nombre)
                 </td>
                 <td>
+                    @Html.DisplayFor(modelItem => item.Grupos!.Nombre)
+                </td>
+                <td class="text-center">
                     @Html.DisplayFor(modelItem => item.Fecha)
                 </td>
-                <td>
+                <td class="text-center">
                     @Html.DisplayFor(modelItem => item.Generos!.Nombre)
                 </td>
-                @* @if (!item.Canciones.Count() == 0) *@
-                @if (item.Canciones.Any())
-                {
-                    <td class="text-center">
-                        @item.Canciones.Count
-                    </td>
-                }
-                else
-                {
-                    <td class ="text-danger fw-bold text-center">
-                        @item.Canciones.Count
-                    </td>
-                }
             </tr>
-            @* @if (item.Canciones.Count() > 0) *@
-            @if (item.Canciones.Any())
-            {
-                <tr>
-                    <th class="border-bottom-0" width="7%"></th>
-                    <th class="bg-dark bg-opacity-50 text-white">
-                        @Html.DisplayNameFor(model => item.Canciones.First().Titulo)
-                    </th>
-                    <th class="bg-dark bg-opacity-50 text-white">
-                        @Html.DisplayNameFor(model => item.Canciones.First().Duracion)
-                    </th>
-                    <th class="bg-dark bg-opacity-50 text-center text-white">
-                        @Html.DisplayNameFor(model => item.Canciones.First().Single)
-                    </th>
-                    <th class="bg-transparent border-bottom-0"></th>
-                    <th class="bg-transparent border-bottom-0"></th>
-                </tr>
-            }
-            else
-            {
-                <tr>
-                    <td class="border-bottom-0" width="7%"></td>
-                    <td class="text-danger fw-bold text-center" colspan="3">
-                        Este album no contiene canciones
-                    </td>
-                    <td class="bg-transparent border-bottom-0"></td>
-                    <td class="bg-transparent border-bottom-0"></td>
-                </tr>
-            }
-
-            @foreach (var item2 in item.Canciones)
-            {
-                <tr>
-                    <td class="border-bottom-0" width="7%"></td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item2.Titulo)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item2.Duracion)
-                    </td>
-                    <td class="text-center">
-                        @Html.DisplayFor(modelItem => item2.Single)
-                    </td>
-                    <td class="bg-transparent border-bottom-0"></td>
-                    <td class="bg-transparent border-bottom-0"></td>
-                </tr>
-            }
+            <tr>
+                <td colspan="3" class="border-end-0">
+                    @await Component.InvokeAsync("Canciones", new CancionesPorAlbumSpecification(item.Id))
+                </td>
+                <td class="border-start-0"></td>
+            </tr>
         }
-        </tbody>
-    </table>
+    </tbody>
+</table>
