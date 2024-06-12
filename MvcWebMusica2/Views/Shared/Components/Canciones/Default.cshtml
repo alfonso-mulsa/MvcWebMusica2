@@ -1,7 +1,7 @@
 ﻿@model System.Collections.Generic.IEnumerable<MvcWebMusica2.Models.Canciones>
 
 <table class="table table-hover mb-0">
-    @if (ViewData["CabeceraTabla"] == "true")
+    @if ((bool)ViewData["CabeceraTabla"]!)
     {
         <thead>
             <tr>
@@ -18,39 +18,52 @@
         </thead>
     }
     <tbody>
-        @if (!Model.Any())
-        {
-            <tr>
-                <td colspan="3" class="text-center text-danger fw-bold border-0">
-                    No hay canciones
-                </td>
-            </tr>
-        }
-        @foreach (var item in Model)
-        {
-            <tr class="border-primary">
-                <td>
-                    @Html.DisplayFor(modelItem => item.Titulo)
-                </td>
-                <td class="text-center">
-                    @Html.DisplayFor(modelItem => item.Duracion)
-                </td>
-                @* <td>
-            @Html.DisplayFor(modelItem => item.Single)
-            </td> *@
-                @if (item.Single)
-                {
-                    <td class="text-center">
-                        <i class="fa-solid fa-check text-success"></i>&nbsp;Single
+        @{
+            if (!Model.Any())
+            {
+                <tr>
+                    <td colspan="3" class="text-center text-danger fw-bold border-0">
+                        No hay canciones
                     </td>
+                </tr>
+            }
+
+            foreach (var item in Model)
+            {
+                if (item.Single)
+                {
+                    TempData["CeldaSingle"] = "<i class='fa-solid fa-check text-success'></i>";
                 }
                 else
                 {
-                    <td class="text-center">
-                        <i class="fa-solid fa-xmark text-danger"></i>&nbsp;Single
-                    </td>
+                    TempData["CeldaSingle"] = "<i class='fa-solid fa-xmark text-danger'></i>";
                 }
-            </tr>
+
+                if (!(bool)ViewData["CabeceraTabla"]!)
+                {
+                    TempData["CeldaSingle"] += "&nbsp;Single";
+                }
+
+                if (item == Model.Last())
+                {
+                    TempData["BordeInferior"] = "border-bottom-0";
+                }
+                else
+                {
+                    TempData["BordeInferior"] = "border-danger";
+                }
+                <tr>
+                    <td class=@TempData["BordeInferior"]>
+                            @Html.DisplayFor(modelItem => item.Titulo)
+                    </td>
+                    <td class="text-center @TempData["BordeInferior"]">
+                            @Html.DisplayFor(modelItem => item.Duracion)
+                    </td>
+                    <td class="text-center @TempData["BordeInferior"]">
+                            @Html.Raw(TempData["CeldaSingle"])
+                    </td>
+                </tr>
+            }
         }
     </tbody>
 </table>
