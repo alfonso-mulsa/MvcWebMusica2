@@ -1,4 +1,5 @@
-﻿@model IEnumerable<MvcWebMusica2.Models.Representantes>
+﻿@using MvcWebMusica2.Services.Specification
+@model IEnumerable<MvcWebMusica2.Models.Representantes>
 
 @{
     ViewData["Title"] = "Representantes";
@@ -30,6 +31,8 @@
             <th>
                 @Html.DisplayNameFor(model => model.Telefono)
             </th>
+            <!-- VIEW COMPONENT -->
+            <th> Grupos que representa </th>
             <th></th>
         </tr>
     </thead>
@@ -53,6 +56,10 @@
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Telefono)
+            </td>
+            @* <!-- VIEW COMPONENT --> *@
+            <td>
+                @await Component.InvokeAsync("Representantes", new RepresentanteSpecification(item.Id))
             </td>
             <td>
                 <a asp-action="Edit" asp-route-id="@item.Id"><i class="fa-solid fa-pen-to-square" title="Editar"></i></a> |
