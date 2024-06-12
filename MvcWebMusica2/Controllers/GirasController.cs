@@ -31,6 +31,10 @@ namespace MvcWebMusica2.Controllers
         public async Task<IActionResult> InfoGiras()
         {
             var listaGiras = await repositorioGiras.DameTodos();
+            foreach (var giras in listaGiras)
+            {
+                giras.Grupos = await repositorioGrupos.DameUno(giras.GruposId);
+            }
             return View(listaGiras);
         }
 
