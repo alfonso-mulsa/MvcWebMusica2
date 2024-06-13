@@ -68,7 +68,7 @@ namespace MvcWebMusica2.Controllers
         {
             if (ModelState.IsValid)
             {
-                repositorioCanciones.Agregar(cancion);
+                await repositorioCanciones.Agregar(cancion);
                 return RedirectToAction(nameof(Index));
             }
             ViewData["AlbumesId"] = new SelectList(await repositorioAlbumes.DameTodos(), "Id", "Nombre", cancion.AlbumesId);

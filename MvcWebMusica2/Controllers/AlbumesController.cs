@@ -43,15 +43,11 @@ namespace MvcWebMusica2.Controllers
         public async Task<IActionResult> AlbumesYCanciones()
         {
             var listaAlbumes = await repositorioAlbumes.DameTodos();
-            //var listaAlbumes = new List<Albumes>();
-            //var album2 = await repositorioAlbumes.DameUno(1);
-            //listaAlbumes.Add(album2);
 
             foreach (var album in listaAlbumes)
             {
                 album.Generos = await repositorioGeneros.DameUno(album.GenerosId);
                 album.Grupos = await repositorioGrupos.DameUno(album.GruposId);
-                //album.Canciones = await repositorioCanciones.Filtra(x => x.AlbumesId == album.Id);
             }
 
             return View(listaAlbumes);
