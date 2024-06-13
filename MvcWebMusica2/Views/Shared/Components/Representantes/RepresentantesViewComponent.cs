@@ -3,9 +3,9 @@ using MvcWebMusica2.Services.Repositorio;
 using MvcWebMusica2.Services.Specification;
 using MvcWebMusica2.Models;
 
-namespace MvcWebMusica2.Views.Shared.Components
+namespace MvcWebMusica2.Views.Shared.Components.Representantes
 {
-    public class RepresentantesViewComponent (IGenericRepositorio<Grupos> coleccion) : ViewComponent
+    public class RepresentantesViewComponent(IGenericRepositorio<Grupos> coleccion) : ViewComponent
     {
         public async Task<IViewComponentResult> InvokeAsync(IGrupoSpecification especificacion)
         {
