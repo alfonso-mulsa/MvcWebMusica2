@@ -99,6 +99,14 @@ body {
 
 /******* submenus ***********/
 
+.fa-file-excel:hover {
+    color: #085723 !important;
+}
+
+.fa-file-excel:active:focus {
+    color: #085723 !important;
+}
+
 /* ============ desktop view ============ */
 @media all and (min-width: 992px) {
     .dropdown-menu li {
