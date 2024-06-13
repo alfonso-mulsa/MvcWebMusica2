@@ -46,7 +46,6 @@ namespace MvcWebMusica2.Controllers
             {
                 album.Generos = await repositorioGeneros.DameUno(album.GenerosId);
                 album.Grupos = await repositorioGrupos.DameUno(album.GruposId);
-                //album.Canciones = await repositorioCanciones.Filtra(x => x.AlbumesId == album.Id);
             }
 
             return View(listaAlbumes);
