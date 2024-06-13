@@ -55,6 +55,7 @@ namespace MvcWebMusica2.Controllers
             //}
 
             //return View(grupos);
+
             if (id == null)
             {
                 return NotFound();
@@ -80,6 +81,7 @@ namespace MvcWebMusica2.Controllers
             //ViewData["GenerosId"] = new SelectList(context.Generos, "Id", "Nombre");
             //ViewData["RepresentantesId"] = new SelectList(context.Representantes, "Id", "NombreCompleto");
             //return View();
+
             ViewData["CiudadesId"] = new SelectList(await repositorioCiudades.DameTodos(), "Id", "Nombre");
             ViewData["GenerosId"] = new SelectList(await repositorioGeneros.DameTodos(), "Id", "Nombre");
             ViewData["RepresentantesId"] = new SelectList(await repositorioRepresentantes.DameTodos(), "Id", "NombreCompleto");
@@ -284,6 +286,12 @@ namespace MvcWebMusica2.Controllers
         public async Task<FileResult> DescargarExcel()
         {
             var grupos = await repositorioGrupos.DameTodos();
+            foreach (var grupo in grupos)
+            {
+                grupo.Ciudades = await repositorioCiudades.DameUno(grupo.CiudadesId);
+                grupo.Generos = await repositorioGeneros.DameUno(grupo.GenerosId);
+                grupo.Representantes = await repositorioRepresentantes.DameUno(grupo.RepresentantesId);
+            }
             var nombreArchivo = $"Grupos.xlsx";
             return GenerarExcel(nombreArchivo, grupos);
         }
@@ -294,7 +302,6 @@ namespace MvcWebMusica2.Controllers
             dataTable.Columns.AddRange(new DataColumn[]
             {
                 new DataColumn("Nombre"),
-                new DataColumn("Grupo"),
                 new DataColumn("FechaCreacion"),
                 new DataColumn("Ciudades"),
                 new DataColumn("Géneros"),

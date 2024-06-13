@@ -163,46 +163,50 @@ namespace MvcWebMusica2.Controllers
             return repositorioCanciones.DameUno(id) != null;
         }
 
-        //[HttpGet]
-        //public async Task<FileResult> DescargarExcel()
-        //{
-        //    var canciones = await repositorioCanciones.DameTodos();
-        //    var nombreArchivo = $"Canciones.xlsx";
-        //    return GenerarExcel(nombreArchivo, canciones);
-        //}
+        [HttpGet]
+        public async Task<FileResult> DescargarExcel()
+        {
+            var canciones = await repositorioCanciones.DameTodos();
+            foreach (var cancion in canciones)
+            {
+                cancion.Albumes = await repositorioAlbumes.DameUno(cancion.AlbumesId);
+            }
+            var nombreArchivo = $"Canciones.xlsx";
+            return GenerarExcel(nombreArchivo, canciones);
+        }
 
-        //private FileResult GenerarExcel(string nombreArchivo, IEnumerable<Canciones> canciones)
-        //{
-        //    DataTable dataTable = new DataTable("Canciones");
-        //    dataTable.Columns.AddRange(new DataColumn[]
-        //    {
-        //        new DataColumn("Titulo"),
-        //        new DataColumn("Duracion"),
-        //        new DataColumn("Single"),
-        //        new DataColumn("Albumes")
-        //    });
+        private FileResult GenerarExcel(string nombreArchivo, IEnumerable<Canciones> canciones)
+        {
+            DataTable dataTable = new DataTable("Canciones");
+            dataTable.Columns.AddRange(new DataColumn[]
+            {
+                new DataColumn("Titulo"),
+                new DataColumn("Duracion"),
+                new DataColumn("Single"),
+                new DataColumn("Albumes")
+            });
 
-        //    foreach (var cancion in canciones)
-        //    {
-        //        dataTable.Rows.Add(
-        //            cancion.Titulo,
-        //            cancion.Duracion,
-        //            cancion.Single,
-        //            cancion.Albumes.Nombre);
-        //    }
+            foreach (var cancion in canciones)
+            {
+                dataTable.Rows.Add(
+                    cancion.Titulo,
+                    cancion.Duracion,
+                    cancion.Single,
+                    cancion.Albumes.Nombre);
+            }
 
-        //    using (XLWorkbook wb = new XLWorkbook())
-        //    {
-        //        wb.Worksheets.Add(dataTable);
+            using (XLWorkbook wb = new XLWorkbook())
+            {
+                wb.Worksheets.Add(dataTable);
 
-        //        using (MemoryStream stream = new MemoryStream())
-        //        {
-        //            wb.SaveAs(stream);
-        //            return File(stream.ToArray(),
-        //                "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
-        //                nombreArchivo);
-        //        }
-        //    }
-        //}
+                using (MemoryStream stream = new MemoryStream())
+                {
+                    wb.SaveAs(stream);
+                    return File(stream.ToArray(),
+                        "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+                        nombreArchivo);
+                }
+            }
+        }
     }
 }

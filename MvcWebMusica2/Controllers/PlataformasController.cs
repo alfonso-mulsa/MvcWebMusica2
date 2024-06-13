@@ -9,15 +9,18 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using MvcWebMusica2.Models;
+using MvcWebMusica2.Services.Repositorio;
 
 namespace MvcWebMusica2.Controllers
 {
-    public class PlataformasController(GrupoBContext context) : Controller
+    public class PlataformasController(
+        IGenericRepositorio<Plataformas> repositorioPlataformas
+        ) : Controller
     {
         // GET: Plataformas
         public async Task<IActionResult> Index()
         {
-            return View(await context.Plataformas.ToListAsync());
+            return View(await repositorioPlataformas.DameTodos());
         }
 
         // GET: Plataformas/Details/5
@@ -28,8 +31,7 @@ namespace MvcWebMusica2.Controllers
                 return NotFound();
             }
 
-            var plataformas = await context.Plataformas
-                .FirstOrDefaultAsync(m => m.Id == id);
+            var plataformas = await repositorioPlataformas.DameUno(id);
             if (plataformas == null)
             {
                 return NotFound();
@@ -39,7 +41,7 @@ namespace MvcWebMusica2.Controllers
         }
 
         // GET: Plataformas/Create
-        public IActionResult Create()
+        public async Task<IActionResult> Create()
         {
             return View();
         }
@@ -53,8 +55,7 @@ namespace MvcWebMusica2.Controllers
         {
             if (ModelState.IsValid)
             {
-                context.Add(plataformas);
-                await context.SaveChangesAsync();
+                repositorioPlataformas.Agregar(plataformas);
                 return RedirectToAction(nameof(Index));
             }
             return View(plataformas);
@@ -68,7 +69,7 @@ namespace MvcWebMusica2.Controllers
                 return NotFound();
             }
 
-            var plataformas = await context.Plataformas.FindAsync(id);
+            var plataformas = await repositorioPlataformas.DameUno(id);
             if (plataformas == null)
             {
                 return NotFound();
@@ -92,8 +93,7 @@ namespace MvcWebMusica2.Controllers
             {
                 try
                 {
-                    context.Update(plataformas);
-                    await context.SaveChangesAsync();
+                    await repositorioPlataformas.Modificar(id, plataformas);
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -119,8 +119,7 @@ namespace MvcWebMusica2.Controllers
                 return NotFound();
             }
 
-            var plataformas = await context.Plataformas
-                .FirstOrDefaultAsync(m => m.Id == id);
+            var plataformas = await repositorioPlataformas.DameUno(id);
             if (plataformas == null)
             {
                 return NotFound();
@@ -134,55 +133,54 @@ namespace MvcWebMusica2.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var plataformas = await context.Plataformas.FindAsync(id);
+            var plataformas = await repositorioPlataformas.DameUno(id);
             if (plataformas != null)
             {
-                context.Plataformas.Remove(plataformas);
+                await repositorioPlataformas.Borrar(id);
             }
 
-            await context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
         private bool PlataformasExists(int id)
         {
-            return context.Plataformas.Any(e => e.Id == id);
+            return repositorioPlataformas.DameUno(id) != null;
         }
 
-        //[HttpGet]
-        //public async Task<FileResult> DescargarExcel()
-        //{
-        //    var plataformas = await repositorioPlataformas.DameTodos();
-        //    var nombreArchivo = $"Plataformas.xlsx";
-        //    return GenerarExcel(nombreArchivo, plataformas);
-        //}
+        [HttpGet]
+        public async Task<FileResult> DescargarExcel()
+        {
+            var plataformas = await repositorioPlataformas.DameTodos();
+            var nombreArchivo = $"Plataformas.xlsx";
+            return GenerarExcel(nombreArchivo, plataformas);
+        }
 
-        //private FileResult GenerarExcel(string nombreArchivo, IEnumerable<Plataformas> plataformas)
-        //{
-        //    DataTable dataTable = new DataTable("Plataformas");
-        //    dataTable.Columns.AddRange(new DataColumn[]
-        //    {
-        //        new DataColumn("Nombre")
-        //    });
+        private FileResult GenerarExcel(string nombreArchivo, IEnumerable<Plataformas> plataformas)
+        {
+            DataTable dataTable = new DataTable("Plataformas");
+            dataTable.Columns.AddRange(new DataColumn[]
+            {
+                new DataColumn("Nombre")
+            });
 
-        //    foreach (var plataforma in plataformas)
-        //    {
-        //        dataTable.Rows.Add(
-        //            plataforma.Nombre);
-        //    }
+            foreach (var plataforma in plataformas)
+            {
+                dataTable.Rows.Add(
+                    plataforma.Nombre);
+            }
 
-        //    using (XLWorkbook wb = new XLWorkbook())
-        //    {
-        //        wb.Worksheets.Add(dataTable);
+            using (XLWorkbook wb = new XLWorkbook())
+            {
+                wb.Worksheets.Add(dataTable);
 
-        //        using (MemoryStream stream = new MemoryStream())
-        //        {
-        //            wb.SaveAs(stream);
-        //            return File(stream.ToArray(),
-        //                "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
-        //                nombreArchivo);
-        //        }
-        //    }
-        //}
+                using (MemoryStream stream = new MemoryStream())
+                {
+                    wb.SaveAs(stream);
+                    return File(stream.ToArray(),
+                        "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+                        nombreArchivo);
+                }
+            }
+        }
     }
 }

@@ -207,6 +207,11 @@ namespace MvcWebMusica2.Controllers
         public async Task<FileResult> DescargarExcel()
         {
             var albumes = await repositorioAlbumes.DameTodos();
+            foreach (var album in albumes)
+            {
+                album.Generos = await repositorioGeneros.DameUno(album.GenerosId);
+                album.Grupos = await repositorioGrupos.DameUno(album.GruposId);
+            }
             var nombreArchivo = $"Albumes.xlsx";
             return GenerarExcel(nombreArchivo, albumes);
         }

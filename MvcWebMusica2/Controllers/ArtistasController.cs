@@ -181,48 +181,54 @@ namespace MvcWebMusica2.Controllers
             return repositorioArtistas.DameUno(id) != null;
         }
 
-        //[HttpGet]
-        //public async Task<FileResult> DescargarExcel()
-        //{
-        //    var artistas = await repositorioArtistas.DameTodos();
-        //    var nombreArchivo = $"Artistas.xlsx";
-        //    return GenerarExcel(nombreArchivo, artistas);
-        //}
+        [HttpGet]
+        public async Task<FileResult> DescargarExcel()
+        {
+            var artistas = await repositorioArtistas.DameTodos();
+            foreach (var artista in artistas)
+            {
+                artista.Ciudades = await repositorioCiudades.DameUno(artista.CiudadesId);
+                artista.Generos = await repositorioGeneros.DameUno(artista.GenerosId);
+                artista.Grupos = await repositorioGrupos.DameUno(artista.GruposId);
+            }
+            var nombreArchivo = $"Artistas.xlsx";
+            return GenerarExcel(nombreArchivo, artistas);
+        }
 
-        //private FileResult GenerarExcel(string nombreArchivo, IEnumerable<Artistas> artistas)
-        //{
-        //    DataTable dataTable = new DataTable("Artistas");
-        //    dataTable.Columns.AddRange(new DataColumn[]
-        //    {
-        //        new DataColumn("Nombre"),
-        //        new DataColumn("FechaDeNacimiento"),
-        //        new DataColumn("Ciudades"),
-        //        new DataColumn("Generos"),
-        //        new DataColumn("Grupos")
-        //    });
+        private FileResult GenerarExcel(string nombreArchivo, IEnumerable<Artistas> artistas)
+        {
+            DataTable dataTable = new DataTable("Artistas");
+            dataTable.Columns.AddRange(new DataColumn[]
+            {
+                new DataColumn("Nombre"),
+                new DataColumn("FechaDeNacimiento"),
+                new DataColumn("Ciudades"),
+                new DataColumn("Generos"),
+                new DataColumn("Grupos")
+            });
 
-        //    foreach (var artista in artistas)
-        //    {
-        //        dataTable.Rows.Add(
-        //            artista.Nombre,
-        //            artista.FechaDeNacimiento,
-        //            artista.Ciudades.Nombre,
-        //            artista.Generos.Nombre,
-        //            artista.Grupos.Nombre);
-        //    }
+            foreach (var artista in artistas)
+            {
+                dataTable.Rows.Add(
+                    artista.Nombre,
+                    artista.FechaDeNacimiento,
+                    artista.Ciudades.Nombre,
+                    artista.Generos.Nombre,
+                    artista.Grupos.Nombre);
+            }
 
-        //    using (XLWorkbook wb = new XLWorkbook())
-        //    {
-        //        wb.Worksheets.Add(dataTable);
+            using (XLWorkbook wb = new XLWorkbook())
+            {
+                wb.Worksheets.Add(dataTable);
 
-        //        using (MemoryStream stream = new MemoryStream())
-        //        {
-        //            wb.SaveAs(stream);
-        //            return File(stream.ToArray(),
-        //                "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
-        //                nombreArchivo);
-        //        }
-        //    }
-        //}
+                using (MemoryStream stream = new MemoryStream())
+                {
+                    wb.SaveAs(stream);
+                    return File(stream.ToArray(),
+                        "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+                        nombreArchivo);
+                }
+            }
+        }
     }
 }
