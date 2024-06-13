@@ -1,7 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Threading.Tasks;
+using ClosedXML.Excel;
+using DocumentFormat.OpenXml.InkML;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -144,6 +147,42 @@ namespace MvcWebMusica2.Controllers
         private bool PlataformasExists(int id)
         {
             return context.Plataformas.Any(e => e.Id == id);
+        }
+
+        [HttpGet]
+        public async Task<FileResult> DescargarExcel()
+        {
+            var plataformas = await repositorioPlataformas.DameTodos();
+            var nombreArchivo = $"Plataformas.xlsx";
+            return GenerarExcel(nombreArchivo, plataformas);
+        }
+
+        private FileResult GenerarExcel(string nombreArchivo, IEnumerable<Plataformas> plataformas)
+        {
+            DataTable dataTable = new DataTable("Plataformas");
+            dataTable.Columns.AddRange(new DataColumn[]
+            {
+                new DataColumn("Nombre")
+            });
+
+            foreach (var plataforma in plataformas)
+            {
+                dataTable.Rows.Add(
+                    plataforma.Nombre);
+            }
+
+            using (XLWorkbook wb = new XLWorkbook())
+            {
+                wb.Worksheets.Add(dataTable);
+
+                using (MemoryStream stream = new MemoryStream())
+                {
+                    wb.SaveAs(stream);
+                    return File(stream.ToArray(),
+                        "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+                        nombreArchivo);
+                }
+            }
         }
     }
 }

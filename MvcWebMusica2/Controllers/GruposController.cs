@@ -1,8 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using ClosedXML.Excel;
+using DocumentFormat.OpenXml.InkML;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -275,6 +278,52 @@ namespace MvcWebMusica2.Controllers
         {
             //return context.Grupos.Any(e => e.Id == id);
             return repositorioGrupos.DameUno(id) != null;
+        }
+
+        [HttpGet]
+        public async Task<FileResult> DescargarExcel()
+        {
+            var grupos = await repositorioGrupos.DameTodos();
+            var nombreArchivo = $"Grupos.xlsx";
+            return GenerarExcel(nombreArchivo, grupos);
+        }
+
+        private FileResult GenerarExcel(string nombreArchivo, IEnumerable<Grupos> grupos)
+        {
+            DataTable dataTable = new DataTable("Grupos");
+            dataTable.Columns.AddRange(new DataColumn[]
+            {
+                new DataColumn("Nombre"),
+                new DataColumn("Grupo"),
+                new DataColumn("FechaCreacion"),
+                new DataColumn("Ciudades"),
+                new DataColumn("Géneros"),
+                new DataColumn("Representantes")
+            });
+
+            foreach (var grupo in grupos)
+            {
+                dataTable.Rows.Add(
+                    grupo.Nombre,
+                    grupo.Grupo,
+                    grupo.FechaCreacion,
+                    grupo.Ciudades,
+                    grupo.Generos,
+                    grupo.Representantes);
+            }
+
+            using (XLWorkbook wb = new XLWorkbook())
+            {
+                wb.Worksheets.Add(dataTable);
+
+                using (MemoryStream stream = new MemoryStream())
+                {
+                    wb.SaveAs(stream);
+                    return File(stream.ToArray(),
+                        "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+                        nombreArchivo);
+                }
+            }
         }
     }
 }

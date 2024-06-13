@@ -1,7 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Threading.Tasks;
+using ClosedXML.Excel;
+using DocumentFormat.OpenXml.InkML;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -157,6 +160,46 @@ namespace MvcWebMusica2.Controllers
         private bool VideoClipsPlataformasExists(int id)
         {
             return context.VideoClipsPlataformas.Any(e => e.Id == id);
+        }
+
+        [HttpGet]
+        public async Task<FileResult> DescargarExcel()
+        {
+            var videoClipsPlataformas = await repositorioVideoClipsPlataformas.DameTodos();
+            var nombreArchivo = $"VideoclipsPlataformas.xlsx";
+            return GenerarExcel(nombreArchivo, videoClipsPlataformas);
+        }
+
+        private FileResult GenerarExcel(string nombreArchivo, IEnumerable<VideoClipsPlataformas> videoClipsPlataformas)
+        {
+            DataTable dataTable = new DataTable("VideoClipsPlataformas");
+            dataTable.Columns.AddRange(new DataColumn[]
+            {
+                new DataColumn("Url"),
+                new DataColumn("Plataformas"),
+                new DataColumn("VideClips")
+            });
+
+            foreach (var videoClipPlataformas in videoClipsPlataformas)
+            {
+                dataTable.Rows.Add(
+                    videoClipPlataformas.Url,
+                    videoClipPlataformas.Plataformas,
+                    videoClipPlataformas.VideoClips);
+            }
+
+            using (XLWorkbook wb = new XLWorkbook())
+            {
+                wb.Worksheets.Add(dataTable);
+
+                using (MemoryStream stream = new MemoryStream())
+                {
+                    wb.SaveAs(stream);
+                    return File(stream.ToArray(),
+                        "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+                        nombreArchivo);
+                }
+            }
         }
     }
 }

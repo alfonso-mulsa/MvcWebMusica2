@@ -1,7 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Threading.Tasks;
+using ClosedXML.Excel;
+using DocumentFormat.OpenXml.InkML;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -176,6 +179,50 @@ namespace MvcWebMusica2.Controllers
         private bool ArtistasExists(int id)
         {
             return repositorioArtistas.DameUno(id) != null;
+        }
+
+        [HttpGet]
+        public async Task<FileResult> DescargarExcel()
+        {
+            var artistas = await repositorioArtistas.DameTodos();
+            var nombreArchivo = $"Artistas.xlsx";
+            return GenerarExcel(nombreArchivo, artistas);
+        }
+
+        private FileResult GenerarExcel(string nombreArchivo, IEnumerable<Artistas> artistas)
+        {
+            DataTable dataTable = new DataTable("Artistas");
+            dataTable.Columns.AddRange(new DataColumn[]
+            {
+                new DataColumn("Nombre"),
+                new DataColumn("FechaDeNacimiento"),
+                new DataColumn("Ciudades"),
+                new DataColumn("Generos"),
+                new DataColumn("Grupos")
+            });
+
+            foreach (var artista in artistas)
+            {
+                dataTable.Rows.Add(
+                    artista.Nombre,
+                    artista.FechaDeNacimiento,
+                    artista.Ciudades,
+                    artista.Generos,
+                    artista.Grupos);
+            }
+
+            using (XLWorkbook wb = new XLWorkbook())
+            {
+                wb.Worksheets.Add(dataTable);
+
+                using (MemoryStream stream = new MemoryStream())
+                {
+                    wb.SaveAs(stream);
+                    return File(stream.ToArray(),
+                        "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+                        nombreArchivo);
+                }
+            }
         }
     }
 }
