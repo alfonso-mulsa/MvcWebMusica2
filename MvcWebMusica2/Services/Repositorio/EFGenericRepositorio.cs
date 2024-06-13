@@ -31,7 +31,7 @@ namespace MvcWebMusica2.Services.Repositorio
 
         public async Task<List<T>> DameTodos()
         {
-            return await _context.Set<T>().AsNoTracking().ToListAsync();
+            return _context.Set<T>().AsParallel().ToList();
         }
 
         public async Task<T?> DameUno(int? id)
@@ -45,7 +45,7 @@ namespace MvcWebMusica2.Services.Repositorio
 
         public async Task<List<T>> Filtra(Expression<Func<T, bool>> predicado)
         {
-            return await _context.Set<T>().Where(predicado).ToListAsync();
+            return  _context.Set<T>().Where(predicado).AsParallel().ToList();
         }
 
         public async Task<int> Modificar(int Id, T element)
