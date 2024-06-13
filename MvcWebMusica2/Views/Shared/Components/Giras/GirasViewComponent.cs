@@ -18,7 +18,7 @@ namespace MvcWebMusica2.Views.Shared.Components.Giras
                     Concierto.Direccion = ciudadEncontrada.Nombre;
             }
             
-            var itemsFiltrados = items.Where(especificacion.IsValid);
+            var itemsFiltrados = items.AsParallel().Where(especificacion.IsValid);
 
 
             return View(itemsFiltrados);
