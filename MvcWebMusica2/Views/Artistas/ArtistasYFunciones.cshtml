@@ -1,4 +1,5 @@
-﻿@model IEnumerable<MvcWebMusica2.Models.Artistas>
+﻿@using MvcWebMusica2.Services.Specification
+@model IEnumerable<MvcWebMusica2.Models.Artistas>
 
 @{
     ViewData["Title"] = "Indice de Artistas";
@@ -25,7 +26,7 @@
             <tr>
                 <td>
                     @Html.DisplayFor(modelItem => item.Nombre)
-                    @await Component.InvokeAsync("Libros", new AutorSpecification(item.Id))
+                    @await Component.InvokeAsync("ArtistasFunciones", new FuncionesSpecification(item.Id))
                 </td>
                 <td>
                     <a asp-action="Edit" asp-route-id="@item.Id"><i class="fa-solid fa-pen-to-square" title="Editar"></i></a> |
