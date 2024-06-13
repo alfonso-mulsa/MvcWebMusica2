@@ -162,46 +162,46 @@ namespace MvcWebMusica2.Controllers
             return context.Conciertos.Any(e => e.Id == id);
         }
 
-        [HttpGet]
-        public async Task<FileResult> DescargarExcel()
-        {
-            var conciertos = await repositorioConciertos.DameTodos();
-            var nombreArchivo = $"Conciertos.xlsx";
-            return GenerarExcel(nombreArchivo, conciertos);
-        }
+        //[HttpGet]
+        //public async Task<FileResult> DescargarExcel()
+        //{
+        //    var conciertos = await repositorioConciertos.DameTodos();
+        //    var nombreArchivo = $"Conciertos.xlsx";
+        //    return GenerarExcel(nombreArchivo, conciertos);
+        //}
 
-        private FileResult GenerarExcel(string nombreArchivo, IEnumerable<Conciertos> conciertos)
-        {
-            DataTable dataTable = new DataTable("Conciertos");
-            dataTable.Columns.AddRange(new DataColumn[]
-            {
-                new DataColumn("Fecha"),
-                new DataColumn("Direccion"),
-                new DataColumn("Ciudades"),
-                new DataColumn("Giras")
-            });
+        //private FileResult GenerarExcel(string nombreArchivo, IEnumerable<Conciertos> conciertos)
+        //{
+        //    DataTable dataTable = new DataTable("Conciertos");
+        //    dataTable.Columns.AddRange(new DataColumn[]
+        //    {
+        //        new DataColumn("Fecha"),
+        //        new DataColumn("Direccion"),
+        //        new DataColumn("Ciudades"),
+        //        new DataColumn("Giras")
+        //    });
 
-            foreach (var concierto in conciertos)
-            {
-                dataTable.Rows.Add(
-                    concierto.Fecha,
-                    concierto.Direccion,
-                    concierto.Ciudades,
-                    concierto.Giras);
-            }
+        //    foreach (var concierto in conciertos)
+        //    {
+        //        dataTable.Rows.Add(
+        //            concierto.Fecha,
+        //            concierto.Direccion,
+        //            concierto.Ciudades.Nombre,
+        //            concierto.Giras.Nombre);
+        //    }
 
-            using (XLWorkbook wb = new XLWorkbook())
-            {
-                wb.Worksheets.Add(dataTable);
+        //    using (XLWorkbook wb = new XLWorkbook())
+        //    {
+        //        wb.Worksheets.Add(dataTable);
 
-                using (MemoryStream stream = new MemoryStream())
-                {
-                    wb.SaveAs(stream);
-                    return File(stream.ToArray(),
-                        "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
-                        nombreArchivo);
-                }
-            }
-        }
+        //        using (MemoryStream stream = new MemoryStream())
+        //        {
+        //            wb.SaveAs(stream);
+        //            return File(stream.ToArray(),
+        //                "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+        //                nombreArchivo);
+        //        }
+        //    }
+        //}
     }
 }

@@ -162,44 +162,44 @@ namespace MvcWebMusica2.Controllers
             return context.VideoClipsPlataformas.Any(e => e.Id == id);
         }
 
-        [HttpGet]
-        public async Task<FileResult> DescargarExcel()
-        {
-            var videoClipsPlataformas = await repositorioVideoClipsPlataformas.DameTodos();
-            var nombreArchivo = $"VideoclipsPlataformas.xlsx";
-            return GenerarExcel(nombreArchivo, videoClipsPlataformas);
-        }
+        //[HttpGet]
+        //public async Task<FileResult> DescargarExcel()
+        //{
+        //    var videoClipsPlataformas = await repositorioVideoClipsPlataformas.DameTodos();
+        //    var nombreArchivo = $"VideoclipsPlataformas.xlsx";
+        //    return GenerarExcel(nombreArchivo, videoClipsPlataformas);
+        //}
 
-        private FileResult GenerarExcel(string nombreArchivo, IEnumerable<VideoClipsPlataformas> videoClipsPlataformas)
-        {
-            DataTable dataTable = new DataTable("VideoClipsPlataformas");
-            dataTable.Columns.AddRange(new DataColumn[]
-            {
-                new DataColumn("Url"),
-                new DataColumn("Plataformas"),
-                new DataColumn("VideClips")
-            });
+        //private FileResult GenerarExcel(string nombreArchivo, IEnumerable<VideoClipsPlataformas> videoClipsPlataformas)
+        //{
+        //    DataTable dataTable = new DataTable("VideoClipsPlataformas");
+        //    dataTable.Columns.AddRange(new DataColumn[]
+        //    {
+        //        new DataColumn("Url"),
+        //        new DataColumn("Plataformas"),
+        //        new DataColumn("VideClips")
+        //    });
 
-            foreach (var videoClipPlataformas in videoClipsPlataformas)
-            {
-                dataTable.Rows.Add(
-                    videoClipPlataformas.Url,
-                    videoClipPlataformas.Plataformas,
-                    videoClipPlataformas.VideoClips);
-            }
+        //    foreach (var videoClipPlataformas in videoClipsPlataformas)
+        //    {
+        //        dataTable.Rows.Add(
+        //            videoClipPlataformas.url,
+        //            videoClipPlataformas.Plataformas.Nombre,
+        //            videoClipPlataformas.VideoClips.Id);
+        //    }
 
-            using (XLWorkbook wb = new XLWorkbook())
-            {
-                wb.Worksheets.Add(dataTable);
+        //    using (XLWorkbook wb = new XLWorkbook())
+        //    {
+        //        wb.Worksheets.Add(dataTable);
 
-                using (MemoryStream stream = new MemoryStream())
-                {
-                    wb.SaveAs(stream);
-                    return File(stream.ToArray(),
-                        "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
-                        nombreArchivo);
-                }
-            }
-        }
+        //        using (MemoryStream stream = new MemoryStream())
+        //        {
+        //            wb.SaveAs(stream);
+        //            return File(stream.ToArray(),
+        //                "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+        //                nombreArchivo);
+        //        }
+        //    }
+        //}
     }
 }

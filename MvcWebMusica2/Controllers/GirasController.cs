@@ -177,48 +177,46 @@ namespace MvcWebMusica2.Controllers
             return repositorioGiras.DameUno(id) !=null;
         }
 
-        // DESCARGAR EXCEL
+        //[HttpGet]
+        //public async Task<FileResult> DescargarExcel()
+        //{
+        //    var giras = await repositorioGiras.DameTodos();
+        //    var nombreArchivo = $"Giras.xlsx";
+        //    return GenerarExcel(nombreArchivo, giras);
+        //}
 
-        [HttpGet]
-        public async Task<FileResult> DescargarExcel()
-        {
-            var giras = await repositorioGiras.DameTodos();
-            var nombreArchivo = $"Giras.xlsx";
-            return GenerarExcel(nombreArchivo, giras);
-        }
+        //private FileResult GenerarExcel(string nombreArchivo, IEnumerable<Giras> giras)
+        //{
+        //    DataTable dataTable = new DataTable("Giras");
+        //    dataTable.Columns.AddRange(new DataColumn[]
+        //    {
+        //        new DataColumn("Nombre"),
+        //        new DataColumn("FechaInicio"),
+        //        new DataColumn("FechaFin"),
+        //        new DataColumn("Grupos")
+        //    });
 
-        private FileResult GenerarExcel(string nombreArchivo, IEnumerable<Giras> giras)
-        {
-            DataTable dataTable = new DataTable("Giras");
-            dataTable.Columns.AddRange(new DataColumn[]
-            {
-                new DataColumn("Nombre"),
-                new DataColumn("FechaInicio"),
-                new DataColumn("FechaFin"),
-                new DataColumn("Grupos")
-            });
+        //    foreach (var gira in giras)
+        //    {
+        //        dataTable.Rows.Add(
+        //            gira.Nombre,
+        //            gira.FechaInicio,
+        //            gira.FechaFin,
+        //            gira.Grupos.Nombre);
+        //    }
 
-            foreach (var gira in giras)
-            {
-                dataTable.Rows.Add(
-                    gira.Nombre,
-                    gira.FechaInicio,
-                    gira.FechaFin,
-                    gira.Grupos);
-            }
+        //    using (XLWorkbook wb = new XLWorkbook())
+        //    {
+        //        wb.Worksheets.Add(dataTable);
 
-            using (XLWorkbook wb = new XLWorkbook())
-            {
-                wb.Worksheets.Add(dataTable);
-
-                using (MemoryStream stream = new MemoryStream())
-                {
-                    wb.SaveAs(stream);
-                    return File(stream.ToArray(),
-                        "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
-                        nombreArchivo);
-                }
-            }
-        }
+        //        using (MemoryStream stream = new MemoryStream())
+        //        {
+        //            wb.SaveAs(stream);
+        //            return File(stream.ToArray(),
+        //                "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+        //                nombreArchivo);
+        //        }
+        //    }
+        //}
     }
 }

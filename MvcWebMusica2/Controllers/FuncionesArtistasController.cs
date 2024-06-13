@@ -162,42 +162,42 @@ namespace MvcWebMusica2.Controllers
             return context.FuncionesArtistas.Any(e => e.Id == id);
         }
 
-        [HttpGet]
-        public async Task<FileResult> DescargarExcel()
-        {
-            var funcionesArtistas = await repositorioFuncionesArtistas.DameTodos();
-            var nombreArchivo = $"FuncionesArtistas.xlsx";
-            return GenerarExcel(nombreArchivo, funcionesArtistas);
-        }
+        //[HttpGet]
+        //public async Task<FileResult> DescargarExcel()
+        //{
+        //    var funcionesArtistas = await repositorioFuncionesArtistas.DameTodos();
+        //    var nombreArchivo = $"FuncionesArtistas.xlsx";
+        //    return GenerarExcel(nombreArchivo, funcionesArtistas);
+        //}
 
-        private FileResult GenerarExcel(string nombreArchivo, IEnumerable<FuncionesArtistas> funcionesArtistas)
-        {
-            DataTable dataTable = new DataTable("FuncionesArtistas");
-            dataTable.Columns.AddRange(new DataColumn[]
-            {
-                new DataColumn("Artistas"),
-                new DataColumn("Funciones")
-            });
+        //private FileResult GenerarExcel(string nombreArchivo, IEnumerable<FuncionesArtistas> funcionesArtistas)
+        //{
+        //    DataTable dataTable = new DataTable("FuncionesArtistas");
+        //    dataTable.Columns.AddRange(new DataColumn[]
+        //    {
+        //        new DataColumn("Artistas"),
+        //        new DataColumn("Funciones")
+        //    });
 
-            foreach (var funcionesArtista in funcionesArtistas)
-            {
-                dataTable.Rows.Add(
-                    funcionesArtista.Artistas,
-                    funcionesArtista.Funciones);
-            }
+        //    foreach (var funcionesArtista in funcionesArtistas)
+        //    {
+        //        dataTable.Rows.Add(
+        //            funcionesArtista.Artistas.Nombre,
+        //            funcionesArtista.Funciones.Nombre);
+        //    }
 
-            using (XLWorkbook wb = new XLWorkbook())
-            {
-                wb.Worksheets.Add(dataTable);
+        //    using (XLWorkbook wb = new XLWorkbook())
+        //    {
+        //        wb.Worksheets.Add(dataTable);
 
-                using (MemoryStream stream = new MemoryStream())
-                {
-                    wb.SaveAs(stream);
-                    return File(stream.ToArray(),
-                        "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
-                        nombreArchivo);
-                }
-            }
-        }
+        //        using (MemoryStream stream = new MemoryStream())
+        //        {
+        //            wb.SaveAs(stream);
+        //            return File(stream.ToArray(),
+        //                "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+        //                nombreArchivo);
+        //        }
+        //    }
+        //}
     }
 }

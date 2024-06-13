@@ -285,9 +285,9 @@ namespace MvcWebMusica2.Controllers
                     representante.NombreCompleto,
                     representante.FechaNacimiento,
                     representante.Identificacion,
-                    representante.Mail,
+                    representante.mail,
                     representante.Telefono,
-                    representante.Ciudades);
+                    representante.Ciudades.Nombre);
             }
 
             using (XLWorkbook wb = new XLWorkbook())

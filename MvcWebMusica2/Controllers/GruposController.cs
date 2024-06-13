@@ -305,11 +305,10 @@ namespace MvcWebMusica2.Controllers
             {
                 dataTable.Rows.Add(
                     grupo.Nombre,
-                    grupo.Grupo,
                     grupo.FechaCreacion,
-                    grupo.Ciudades,
-                    grupo.Generos,
-                    grupo.Representantes);
+                    grupo.Ciudades.Nombre,
+                    grupo.Generos.Nombre,
+                    grupo.Representantes.NombreCompleto);
             }
 
             using (XLWorkbook wb = new XLWorkbook())
