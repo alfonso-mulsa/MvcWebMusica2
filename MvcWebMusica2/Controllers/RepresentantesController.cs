@@ -1,7 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Threading.Tasks;
+using ClosedXML.Excel;
+using DocumentFormat.OpenXml.InkML;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -253,6 +256,56 @@ namespace MvcWebMusica2.Controllers
             //return context.Representantes.Any(e => e.Id == id);
 
             return repositorioRepresentantes.DameUno(id) != null;
+        }
+
+        [HttpGet]
+        public async Task<FileResult> DescargarExcel()
+        {
+            var representantes = await repositorioRepresentantes.DameTodos();
+            foreach (var representante in representantes)
+            {
+                representante.Ciudades = await repositorioCiudades.DameUno(representante.CiudadesID);
+            }
+            var nombreArchivo = $"Representantes.xlsx";
+            return GenerarExcel(nombreArchivo, representantes);
+        }
+
+        private FileResult GenerarExcel(string nombreArchivo, IEnumerable<Representantes> representantes)
+        {
+            DataTable dataTable = new DataTable("Representantes");
+            dataTable.Columns.AddRange(new DataColumn[]
+            {
+                new DataColumn("NombreCompleto"),
+                new DataColumn("FechaNacimiento"),
+                new DataColumn("Identificacion"),
+                new DataColumn("Mail"),
+                new DataColumn("Telefono"),
+                new DataColumn("Ciudades")
+            });
+
+            foreach (var representante in representantes)
+            {
+                dataTable.Rows.Add(
+                    representante.NombreCompleto,
+                    representante.FechaNacimiento,
+                    representante.Identificacion,
+                    representante.mail,
+                    representante.Telefono,
+                    representante.Ciudades.Nombre);
+            }
+
+            using (XLWorkbook wb = new XLWorkbook())
+            {
+                wb.Worksheets.Add(dataTable);
+
+                using (MemoryStream stream = new MemoryStream())
+                {
+                    wb.SaveAs(stream);
+                    return File(stream.ToArray(),
+                        "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+                        nombreArchivo);
+                }
+            }
         }
     }
 }
