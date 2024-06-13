@@ -1,48 +1,87 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Threading.Tasks;
+using ClosedXML.Excel;
+using DocumentFormat.OpenXml.InkML;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using MvcWebMusica2.Models;
+using MvcWebMusica2.Services.Repositorio;
 
 namespace MvcWebMusica2.Controllers
 {
-    public class FuncionesArtistasController(GrupoBContext context) : Controller
+    public class FuncionesArtistasController(
+        IGenericRepositorio<FuncionesArtistas> repositorioFuncionesArtistas,
+        IGenericRepositorio<Artistas> repositorioArtistas,
+        IGenericRepositorio<Funciones> repositorioFunciones
+        ) : Controller
     {
         // GET: FuncionesArtistas
         public async Task<IActionResult> Index()
         {
-            var grupoBContext = context.FuncionesArtistas.Include(f => f.Artistas).Include(f => f.Funciones);
-            return View(await grupoBContext.ToListAsync());
+            //var grupoBContext = context.FuncionesArtistas.Include(f => f.Artistas).Include(f => f.Funciones);
+            //return View(await grupoBContext.ToListAsync());
+
+            var listaFuncionesArtistas = await repositorioFuncionesArtistas.DameTodos();
+            foreach (var funcionArtista in listaFuncionesArtistas)
+            {
+                funcionArtista.Artistas = await repositorioArtistas.DameUno(funcionArtista.ArtistasId);
+                funcionArtista.Funciones = await repositorioFunciones.DameUno(funcionArtista.FuncionesId);
+            }
+            return View(listaFuncionesArtistas);
         }
 
         // GET: FuncionesArtistas/Details/5
         public async Task<IActionResult> Details(int? id)
         {
+            //if (id == null)
+            //{
+            //    return NotFound();
+            //}
+
+            //var funcionesArtistas = await context.FuncionesArtistas
+            //    .Include(f => f.Artistas)
+            //    .Include(f => f.Funciones)
+            //    .FirstOrDefaultAsync(m => m.Id == id);
+            //if (funcionesArtistas == null)
+            //{
+            //    return NotFound();
+            //}
+
+            //return View(funcionesArtistas);
+
             if (id == null)
             {
                 return NotFound();
             }
 
-            var funcionesArtistas = await context.FuncionesArtistas
-                .Include(f => f.Artistas)
-                .Include(f => f.Funciones)
-                .FirstOrDefaultAsync(m => m.Id == id);
+            var funcionesArtistas = await repositorioFuncionesArtistas.DameUno(id);
+
             if (funcionesArtistas == null)
             {
                 return NotFound();
+            }
+            else
+            {
+                funcionesArtistas.Artistas = await repositorioArtistas.DameUno(funcionesArtistas.ArtistasId);
+                funcionesArtistas.Funciones = await repositorioFunciones.DameUno(funcionesArtistas.FuncionesId);
             }
 
             return View(funcionesArtistas);
         }
 
         // GET: FuncionesArtistas/Create
-        public IActionResult Create()
+        public async Task<IActionResult> CreateAsync()
         {
-            ViewData["ArtistasId"] = new SelectList(context.Artistas, "Id", "Nombre");
-            ViewData["FuncionesId"] = new SelectList(context.Funciones, "Id", "Nombre");
+            //ViewData["ArtistasId"] = new SelectList(context.Artistas, "Id", "Nombre");
+            //ViewData["FuncionesId"] = new SelectList(context.Funciones, "Id", "Nombre");
+            //return View();
+
+            ViewData["ArtistasId"] = new SelectList(await repositorioArtistas.DameTodos(), "Id", "Nombre");
+            ViewData["FuncionesId"] = new SelectList(await repositorioFunciones.DameTodos(), "Id", "Nombre");
             return View();
         }
 
@@ -53,32 +92,55 @@ namespace MvcWebMusica2.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Id,FuncionesId,ArtistasId")] FuncionesArtistas funcionesArtistas)
         {
+            //if (ModelState.IsValid)
+            //{
+            //    context.Add(funcionesArtistas);
+            //    await context.SaveChangesAsync();
+            //    return RedirectToAction(nameof(Index));
+            //}
+            //ViewData["ArtistasId"] = new SelectList(context.Artistas, "Id", "Nombre", funcionesArtistas.ArtistasId);
+            //ViewData["FuncionesId"] = new SelectList(context.Funciones, "Id", "Nombre", funcionesArtistas.FuncionesId);
+            //return View(funcionesArtistas);
+
             if (ModelState.IsValid)
             {
-                context.Add(funcionesArtistas);
-                await context.SaveChangesAsync();
+                await repositorioFuncionesArtistas.Agregar(funcionesArtistas);
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["ArtistasId"] = new SelectList(context.Artistas, "Id", "Nombre", funcionesArtistas.ArtistasId);
-            ViewData["FuncionesId"] = new SelectList(context.Funciones, "Id", "Nombre", funcionesArtistas.FuncionesId);
+            ViewData["ArtistasId"] = new SelectList(await repositorioArtistas.DameTodos(), "Id", "Nombre", funcionesArtistas.ArtistasId);
+            ViewData["FuncionesId"] = new SelectList(await repositorioFunciones.DameTodos(), "Id", "Nombre", funcionesArtistas.FuncionesId);
             return View(funcionesArtistas);
         }
 
         // GET: FuncionesArtistas/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
+            //if (id == null)
+            //{
+            //    return NotFound();
+            //}
+
+            //var funcionesArtistas = await context.FuncionesArtistas.FindAsync(id);
+            //if (funcionesArtistas == null)
+            //{
+            //    return NotFound();
+            //}
+            //ViewData["ArtistasId"] = new SelectList(context.Artistas, "Id", "Nombre", funcionesArtistas.ArtistasId);
+            //ViewData["FuncionesId"] = new SelectList(context.Funciones, "Id", "Nombre", funcionesArtistas.FuncionesId);
+            //return View(funcionesArtistas);
+
             if (id == null)
             {
                 return NotFound();
             }
 
-            var funcionesArtistas = await context.FuncionesArtistas.FindAsync(id);
+            var funcionesArtistas = await repositorioFuncionesArtistas.DameUno(id);
             if (funcionesArtistas == null)
             {
                 return NotFound();
             }
-            ViewData["ArtistasId"] = new SelectList(context.Artistas, "Id", "Nombre", funcionesArtistas.ArtistasId);
-            ViewData["FuncionesId"] = new SelectList(context.Funciones, "Id", "Nombre", funcionesArtistas.FuncionesId);
+            ViewData["ArtistasId"] = new SelectList(await repositorioArtistas.DameTodos(), "Id", "Nombre", funcionesArtistas.ArtistasId);
+            ViewData["FuncionesId"] = new SelectList(await repositorioFunciones.DameTodos(), "Id", "Nombre", funcionesArtistas.FuncionesId);
             return View(funcionesArtistas);
         }
 
@@ -89,6 +151,35 @@ namespace MvcWebMusica2.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("Id,FuncionesId,ArtistasId")] FuncionesArtistas funcionesArtistas)
         {
+            //if (id != funcionesArtistas.Id)
+            //{
+            //    return NotFound();
+            //}
+
+            //if (ModelState.IsValid)
+            //{
+            //    try
+            //    {
+            //        context.Update(funcionesArtistas);
+            //        await context.SaveChangesAsync();
+            //    }
+            //    catch (DbUpdateConcurrencyException)
+            //    {
+            //        if (!FuncionesArtistasExists(funcionesArtistas.Id))
+            //        {
+            //            return NotFound();
+            //        }
+            //        else
+            //        {
+            //            throw;
+            //        }
+            //    }
+            //    return RedirectToAction(nameof(Index));
+            //}
+            //ViewData["ArtistasId"] = new SelectList(context.Artistas, "Id", "Nombre", funcionesArtistas.ArtistasId);
+            //ViewData["FuncionesId"] = new SelectList(context.Funciones, "Id", "Nombre", funcionesArtistas.FuncionesId);
+            //return View(funcionesArtistas);
+
             if (id != funcionesArtistas.Id)
             {
                 return NotFound();
@@ -98,8 +189,7 @@ namespace MvcWebMusica2.Controllers
             {
                 try
                 {
-                    context.Update(funcionesArtistas);
-                    await context.SaveChangesAsync();
+                    await repositorioFuncionesArtistas.Modificar(id, funcionesArtistas);
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -114,26 +204,45 @@ namespace MvcWebMusica2.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["ArtistasId"] = new SelectList(context.Artistas, "Id", "Nombre", funcionesArtistas.ArtistasId);
-            ViewData["FuncionesId"] = new SelectList(context.Funciones, "Id", "Nombre", funcionesArtistas.FuncionesId);
+            ViewData["ArtistasId"] = new SelectList(await repositorioArtistas.DameTodos(), "Id", "Nombre", funcionesArtistas.ArtistasId);
+            ViewData["FuncionesId"] = new SelectList(await repositorioFunciones.DameTodos(), "Id", "Nombre", funcionesArtistas.FuncionesId);
             return View(funcionesArtistas);
         }
 
         // GET: FuncionesArtistas/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
+            //if (id == null)
+            //{
+            //    return NotFound();
+            //}
+
+            //var funcionesArtistas = await context.FuncionesArtistas
+            //    .Include(f => f.Artistas)
+            //    .Include(f => f.Funciones)
+            //    .FirstOrDefaultAsync(m => m.Id == id);
+            //if (funcionesArtistas == null)
+            //{
+            //    return NotFound();
+            //}
+
+            //return View(funcionesArtistas);
+
             if (id == null)
             {
                 return NotFound();
             }
 
-            var funcionesArtistas = await context.FuncionesArtistas
-                .Include(f => f.Artistas)
-                .Include(f => f.Funciones)
-                .FirstOrDefaultAsync(m => m.Id == id);
+            var funcionesArtistas = await repositorioFuncionesArtistas.DameUno(id);
+
             if (funcionesArtistas == null)
             {
                 return NotFound();
+            }
+            else
+            {
+                funcionesArtistas.Artistas = await repositorioArtistas.DameUno(funcionesArtistas.ArtistasId);
+                funcionesArtistas.Funciones = await repositorioFunciones.DameUno(funcionesArtistas.FuncionesId);
             }
 
             return View(funcionesArtistas);
@@ -144,19 +253,72 @@ namespace MvcWebMusica2.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var funcionesArtistas = await context.FuncionesArtistas.FindAsync(id);
+            //var funcionesArtistas = await context.FuncionesArtistas.FindAsync(id);
+            //if (funcionesArtistas != null)
+            //{
+            //    context.FuncionesArtistas.Remove(funcionesArtistas);
+            //}
+
+            //await context.SaveChangesAsync();
+            //return RedirectToAction(nameof(Index));
+
+            var funcionesArtistas = await repositorioFuncionesArtistas.DameUno(id);
             if (funcionesArtistas != null)
             {
-                context.FuncionesArtistas.Remove(funcionesArtistas);
+                await repositorioFuncionesArtistas.Borrar(id);
             }
 
-            await context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
         private bool FuncionesArtistasExists(int id)
         {
-            return context.FuncionesArtistas.Any(e => e.Id == id);
+            //return context.FuncionesArtistas.Any(e => e.Id == id);
+
+            return repositorioFuncionesArtistas.DameUno(id) != null;
+        }
+
+        [HttpGet]
+        public async Task<FileResult> DescargarExcel()
+        {
+            var funcionesArtistas = await repositorioFuncionesArtistas.DameTodos();
+            foreach (var funcionArtista in funcionesArtistas)
+            {
+                funcionArtista.Artistas = await repositorioArtistas.DameUno(funcionArtista.ArtistasId);
+                funcionArtista.Funciones = await repositorioFunciones.DameUno(funcionArtista.FuncionesId);
+            }
+            var nombreArchivo = $"FuncionesArtistas.xlsx";
+            return GenerarExcel(nombreArchivo, funcionesArtistas);
+        }
+
+        private FileResult GenerarExcel(string nombreArchivo, IEnumerable<FuncionesArtistas> funcionesArtistas)
+        {
+            DataTable dataTable = new DataTable("FuncionesArtistas");
+            dataTable.Columns.AddRange(new DataColumn[]
+            {
+                new DataColumn("Artistas"),
+                new DataColumn("Funciones")
+            });
+
+            foreach (var funcionesArtista in funcionesArtistas)
+            {
+                dataTable.Rows.Add(
+                    funcionesArtista.Artistas.Nombre,
+                    funcionesArtista.Funciones.Nombre);
+            }
+
+            using (XLWorkbook wb = new XLWorkbook())
+            {
+                wb.Worksheets.Add(dataTable);
+
+                using (MemoryStream stream = new MemoryStream())
+                {
+                    wb.SaveAs(stream);
+                    return File(stream.ToArray(),
+                        "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+                        nombreArchivo);
+                }
+            }
         }
     }
 }

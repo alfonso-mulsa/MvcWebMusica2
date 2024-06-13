@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using MvcWebMusica2.Models;
+using System.Linq;
 using System.Linq.Expressions;
 
 namespace MvcWebMusica2.Services.Repositorio
@@ -32,6 +33,7 @@ namespace MvcWebMusica2.Services.Repositorio
         public async Task<List<T>> DameTodos()
         {
             return _context.Set<T>().AsParallel().ToList();
+            //return await _context.Set<T>().AsNoTracking().ToListAsync();
         }
 
         public async Task<T?> DameUno(int? id)
@@ -45,7 +47,8 @@ namespace MvcWebMusica2.Services.Repositorio
 
         public async Task<List<T>> Filtra(Expression<Func<T, bool>> predicado)
         {
-            return  _context.Set<T>().Where(predicado).AsParallel().ToList();
+            return _context.Set<T>().Where<T>(predicado).AsParallel().ToList();
+            //return await _context.Set<T>().Where<T>(predicado).ToListAsync();
         }
 
         public async Task<int> Modificar(int Id, T element)

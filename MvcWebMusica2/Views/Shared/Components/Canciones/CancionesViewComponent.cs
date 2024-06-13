@@ -10,7 +10,8 @@ namespace MvcWebMusica2.Views.Shared.Components.Canciones
         public async Task<IViewComponentResult> InvokeAsync(ICancionSpecification especificacion)
         {
             var listaCanciones = await repositorioCanciones.DameTodos();
-            var cancionesFiltradas = listaCanciones.Where(especificacion.IsValid);
+            var cancionesFiltradas = listaCanciones.AsParallel().Where(especificacion.IsValid);
+            ViewData["CabeceraTabla"] = false;
             return View(cancionesFiltradas);
         }
     }
