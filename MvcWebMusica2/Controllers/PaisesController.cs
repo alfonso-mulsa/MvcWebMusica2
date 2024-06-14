@@ -1,20 +1,20 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Data;
+using ClosedXML.Excel;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using MvcWebMusica2.Models;
+using MvcWebMusica2.Services.Repositorio;
 
 namespace MvcWebMusica2.Controllers
 {
-    public class PaisesController(GrupoBContext context) : Controller
+    public class PaisesController(
+        IGenericRepositorio<Paises> repositorioPaises
+        ) : Controller
     {
         // GET: Paises
         public async Task<IActionResult> Index()
         {
-            return View(await context.Paises.ToListAsync());
+            return View(await repositorioPaises.DameTodos());
         }
 
         // GET: Paises/Details/5
@@ -25,8 +25,7 @@ namespace MvcWebMusica2.Controllers
                 return NotFound();
             }
 
-            var paises = await context.Paises
-                .FirstOrDefaultAsync(m => m.Id == id);
+            var paises = await repositorioPaises.DameUno(id);
             if (paises == null)
             {
                 return NotFound();
@@ -50,8 +49,7 @@ namespace MvcWebMusica2.Controllers
         {
             if (ModelState.IsValid)
             {
-                context.Add(paises);
-                await context.SaveChangesAsync();
+                await repositorioPaises.Agregar(paises);
                 return RedirectToAction(nameof(Index));
             }
             return View(paises);
@@ -65,7 +63,7 @@ namespace MvcWebMusica2.Controllers
                 return NotFound();
             }
 
-            var paises = await context.Paises.FindAsync(id);
+            var paises = await repositorioPaises.DameUno(id);
             if (paises == null)
             {
                 return NotFound();
@@ -89,8 +87,7 @@ namespace MvcWebMusica2.Controllers
             {
                 try
                 {
-                    context.Update(paises);
-                    await context.SaveChangesAsync();
+                    await repositorioPaises.Modificar(id, paises);
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -116,8 +113,7 @@ namespace MvcWebMusica2.Controllers
                 return NotFound();
             }
 
-            var paises = await context.Paises
-                .FirstOrDefaultAsync(m => m.Id == id);
+            var paises = await repositorioPaises.DameUno(id);
             if (paises == null)
             {
                 return NotFound();
@@ -131,19 +127,55 @@ namespace MvcWebMusica2.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var paises = await context.Paises.FindAsync(id);
+            var paises = await repositorioPaises.DameUno(id);
             if (paises != null)
             {
-                context.Paises.Remove(paises);
+                await repositorioPaises.Borrar(id);
             }
 
-            await context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
         private bool PaisesExists(int id)
         {
-            return context.Paises.Any(e => e.Id == id);
+            return repositorioPaises.DameUno(id) != null;
+        }
+
+        [HttpGet]
+        public async Task<FileResult> DescargarExcel(int id)
+        {
+            var paises = await repositorioPaises.DameTodos();
+
+            var nombreArchivo = "Paises.xlsx";
+            return GenerarExcel(nombreArchivo, paises);
+        }
+
+        private FileResult GenerarExcel(string nombreArchivo, IEnumerable<Paises> paises)
+        {
+            DataTable dataTable = new DataTable("Paises");
+            dataTable.Columns.AddRange(new DataColumn[]
+            {
+                new("Nombre")
+            });
+
+            foreach (var pais in paises)
+            {
+                dataTable.Rows.Add(
+                    pais.Nombre);
+            }
+
+            using (XLWorkbook wb = new XLWorkbook())
+            {
+                wb.Worksheets.Add(dataTable);
+
+                using (MemoryStream stream = new MemoryStream())
+                {
+                    wb.SaveAs(stream);
+                    return File(stream.ToArray(),
+                        "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+                        nombreArchivo);
+                }
+            }
         }
     }
 }

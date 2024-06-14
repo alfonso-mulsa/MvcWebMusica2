@@ -1,7 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Data;
+using ClosedXML.Excel;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -14,7 +12,10 @@ namespace MvcWebMusica2.Controllers
         IGenericRepositorio<Artistas> repositorioArtistas,
         IGenericRepositorio<Ciudades> repositorioCiudades,
         IGenericRepositorio<Generos> repositorioGeneros,
-        IGenericRepositorio<Grupos> repositorioGrupos)
+        IGenericRepositorio<Grupos> repositorioGrupos,
+        IGenericRepositorio<FuncionesArtistas> repositorioFuncionesArtistas,
+        IGenericRepositorio<Funciones> repositorioFunciones)
+
         : Controller
     {
         //private readonly GrupoBContext _context;
@@ -28,7 +29,32 @@ namespace MvcWebMusica2.Controllers
                 artista.Ciudades = await repositorioCiudades.DameUno(artista.CiudadesId);
                 artista.Generos = await repositorioGeneros.DameUno(artista.GenerosId);
                 artista.Grupos = await repositorioGrupos.DameUno(artista.GruposId);
+
             }
+            return View(listaArtistas);
+        }
+
+        // GET: Aristas y Funciones
+        public async Task<IActionResult> ArtistasYFunciones()
+        {
+            var listaArtistas = await repositorioArtistas.DameTodos();
+
+            //foreach (var artista in listaArtistas)
+            //{
+            //    artista.FuncionesArtistas = await repositorioFuncionesArtistas.Filtra
+            //        (x => x.ArtistasId == artista.Id);
+            //    //foreach (var funcion in artista.FuncionesArtistas)
+            //    //{
+            //    //    funcion.Funciones = await repositorioFunciones.DameUno(funcion.FuncionesId);
+            //    //}
+
+
+
+            //    //album.Generos = await repositorioGeneros.DameUno(album.GenerosId);
+            //    //album.Grupos = await repositorioGrupos.DameUno(album.GruposId);
+            //    //album.Canciones = await repositorioCanciones.Filtra(x => x.AlbumesId == album.Id);
+            //}
+
             return View(listaArtistas);
         }
 
@@ -176,6 +202,57 @@ namespace MvcWebMusica2.Controllers
         private bool ArtistasExists(int id)
         {
             return repositorioArtistas.DameUno(id) != null;
+        }
+
+        [HttpGet]
+        public async Task<FileResult> DescargarExcel()
+        {
+            var artistas = await repositorioArtistas.DameTodos();
+            foreach (var artista in artistas)
+            {
+                artista.Ciudades = await repositorioCiudades.DameUno(artista.CiudadesId);
+                artista.Generos = await repositorioGeneros.DameUno(artista.GenerosId);
+                artista.Grupos = await repositorioGrupos.DameUno(artista.GruposId);
+            }
+            var nombreArchivo = "Artistas.xlsx";
+            return GenerarExcel(nombreArchivo, artistas);
+        }
+
+        private FileResult GenerarExcel(string nombreArchivo, IEnumerable<Artistas> artistas)
+        {
+            DataTable dataTable = new DataTable("Artistas");
+            dataTable.Columns.AddRange(new DataColumn[]
+            {
+                new("Nombre"),
+                new("FechaDeNacimiento"),
+                new("Ciudades"),
+                new("Generos"),
+                new("Grupos")
+            });
+
+            foreach (var artista in artistas)
+            {
+                dataTable.Rows.Add(
+                    artista.Nombre,
+                    artista.FechaDeNacimiento,
+                    artista.Ciudades?.Nombre,
+                    artista.Generos?.Nombre,
+                    artista.Grupos?.Nombre
+                    );
+            }
+
+            using (XLWorkbook wb = new XLWorkbook())
+            {
+                wb.Worksheets.Add(dataTable);
+
+                using (MemoryStream stream = new MemoryStream())
+                {
+                    wb.SaveAs(stream);
+                    return File(stream.ToArray(),
+                        "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+                        nombreArchivo);
+                }
+            }
         }
     }
 }

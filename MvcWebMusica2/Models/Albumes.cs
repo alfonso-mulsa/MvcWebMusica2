@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-
-namespace MvcWebMusica2.Models;
+﻿namespace MvcWebMusica2.Models;
 
 public partial class Albumes
 {
@@ -16,7 +12,7 @@ public partial class Albumes
 
     public DateOnly? Fecha { get; set; }
 
-    public virtual ICollection<Canciones> Canciones { get; set; } = new List<Canciones>();
+    public virtual ICollection<Canciones> Canciones { get; set; } = [];
 
     public virtual Generos? Generos { get; set; }
 

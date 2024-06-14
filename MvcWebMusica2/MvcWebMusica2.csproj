@@ -7,6 +7,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="ClosedXML" Version="0.102.2" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="8.0.5">
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
       <PrivateAssets>all</PrivateAssets>
@@ -20,11 +21,16 @@
   </ItemGroup>
 
   <ItemGroup>
-    <UpToDateCheckInput Remove="Views\Shared\Components\Artistas\Default.cshtml" />
+    <Folder Include="Pages\Shared\Components\" />
   </ItemGroup>
 
   <ItemGroup>
-    <_ContentIncludedByDefault Remove="Views\Shared\Components\Artistas\Default.cshtml" />
+    <UpToDateCheckInput Remove="Views\Artistas\ArtistasYFunciones.cshtml" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <_ContentIncludedByDefault Remove="Views\Artistas\ArtistasYFunciones.cshtml" />
+
   </ItemGroup>
 
 </Project>

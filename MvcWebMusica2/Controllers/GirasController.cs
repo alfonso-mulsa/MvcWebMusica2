@@ -1,21 +1,39 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Data;
+using ClosedXML.Excel;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using MvcWebMusica2.Models;
+using MvcWebMusica2.Services.Repositorio;
 
 namespace MvcWebMusica2.Controllers
 {
-    public class GirasController(GrupoBContext context) : Controller
+    public class GirasController(
+        IGenericRepositorio<Giras> repositorioGiras,
+        IGenericRepositorio<Grupos> repositorioGrupos)
+        : Controller
     {
         // GET: Giras
         public async Task<IActionResult> Index()
         {
-            var grupoBContext = context.Giras.Include(g => g.Grupos);
-            return View(await grupoBContext.ToListAsync());
+            var listaGiras = await repositorioGiras.DameTodos();
+            foreach (var giras in listaGiras)
+            {
+                giras.Grupos = await repositorioGrupos.DameUno(giras.GruposId);
+            }
+            return View(listaGiras);
+        }
+
+        // GET: Informacion de las Giras
+
+        public async Task<IActionResult> InfoGiras()
+        {
+            var listaGiras = await repositorioGiras.DameTodos();
+            foreach (var giras in listaGiras)
+            {
+                giras.Grupos = await repositorioGrupos.DameUno(giras.GruposId);
+            }
+            return View(listaGiras);
         }
 
         // GET: Giras/Details/5
@@ -26,21 +44,23 @@ namespace MvcWebMusica2.Controllers
                 return NotFound();
             }
 
-            var giras = await context.Giras
-                .Include(g => g.Grupos)
-                .FirstOrDefaultAsync(m => m.Id == id);
+            var giras = await repositorioGiras.DameUno(id);
             if (giras == null)
             {
                 return NotFound();
+            }
+            else
+            {
+                giras.Grupos = await repositorioGrupos.DameUno(giras.GruposId);
             }
 
             return View(giras);
         }
 
         // GET: Giras/Create
-        public IActionResult Create()
+        public async Task<IActionResult> Create()
         {
-            ViewData["GruposId"] = new SelectList(context.Grupos, "Id", "Nombre");
+            ViewData["GruposId"] = new SelectList(await repositorioGrupos.DameTodos(), "Id", "Nombre");
             return View();
         }
 
@@ -53,11 +73,10 @@ namespace MvcWebMusica2.Controllers
         {
             if (ModelState.IsValid)
             {
-                context.Add(giras);
-                await context.SaveChangesAsync();
+                await repositorioGiras.Agregar(giras);
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["GruposId"] = new SelectList(context.Grupos, "Id", "Nombre", giras.GruposId);
+            ViewData["GruposId"] = new SelectList(await repositorioGrupos.DameTodos(), "Id", "Nombre", giras.GruposId);
             return View(giras);
         }
 
@@ -69,12 +88,12 @@ namespace MvcWebMusica2.Controllers
                 return NotFound();
             }
 
-            var giras = await context.Giras.FindAsync(id);
+            var giras = await repositorioGiras.DameUno(id);
             if (giras == null)
             {
                 return NotFound();
             }
-            ViewData["GruposId"] = new SelectList(context.Grupos, "Id", "Nombre", giras.GruposId);
+            ViewData["GruposId"] = new SelectList(await repositorioGrupos.DameTodos(), "Id", "Nombre", giras.GruposId);
             return View(giras);
         }
 
@@ -94,8 +113,7 @@ namespace MvcWebMusica2.Controllers
             {
                 try
                 {
-                    context.Update(giras);
-                    await context.SaveChangesAsync();
+                    await repositorioGiras.Modificar(id, giras);
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -110,7 +128,7 @@ namespace MvcWebMusica2.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["GruposId"] = new SelectList(context.Grupos, "Id", "Nombre", giras.GruposId);
+            ViewData["GruposId"] = new SelectList(await repositorioGrupos.DameTodos(), "Id", "Nombre", giras.GruposId);
             return View(giras);
         }
 
@@ -122,12 +140,14 @@ namespace MvcWebMusica2.Controllers
                 return NotFound();
             }
 
-            var giras = await context.Giras
-                .Include(g => g.Grupos)
-                .FirstOrDefaultAsync(m => m.Id == id);
+            var giras = await repositorioGiras.DameUno(id);
             if (giras == null)
             {
                 return NotFound();
+            }
+            else
+            {
+                giras.Grupos = await repositorioGrupos.DameUno(giras.GruposId);
             }
 
             return View(giras);
@@ -138,19 +158,64 @@ namespace MvcWebMusica2.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var giras = await context.Giras.FindAsync(id);
+            var giras = await repositorioGiras.DameUno(id);
             if (giras != null)
             {
-                context.Giras.Remove(giras);
+                await repositorioGiras.Borrar(id);
             }
 
-            await context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
         private bool GirasExists(int id)
         {
-            return context.Giras.Any(e => e.Id == id);
+            return repositorioGiras.DameUno(id) !=null;
+        }
+
+        [HttpGet]
+        public async Task<FileResult> DescargarExcel()
+        {
+            var giras = await repositorioGiras.DameTodos();
+            foreach (var gira in giras)
+            {
+                gira.Grupos = await repositorioGrupos.DameUno(gira.GruposId);
+            }
+            var nombreArchivo = "Giras.xlsx";
+            return GenerarExcel(nombreArchivo, giras);
+        }
+
+        private FileResult GenerarExcel(string nombreArchivo, IEnumerable<Giras> giras)
+        {
+            DataTable dataTable = new DataTable("Giras");
+            dataTable.Columns.AddRange(new DataColumn[]
+            {
+                new("Nombre"),
+                new("FechaInicio"),
+                new("FechaFin"),
+                new("Grupos")
+            });
+
+            foreach (var gira in giras)
+            {
+                dataTable.Rows.Add(
+                    gira.Nombre,
+                    gira.FechaInicio,
+                    gira.FechaFin,
+                    gira.Grupos?.Nombre);
+            }
+
+            using (XLWorkbook wb = new XLWorkbook())
+            {
+                wb.Worksheets.Add(dataTable);
+
+                using (MemoryStream stream = new MemoryStream())
+                {
+                    wb.SaveAs(stream);
+                    return File(stream.ToArray(),
+                        "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+                        nombreArchivo);
+                }
+            }
         }
     }
 }

@@ -1,21 +1,28 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Data;
+using ClosedXML.Excel;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using MvcWebMusica2.Models;
+using MvcWebMusica2.Services.Repositorio;
 
 namespace MvcWebMusica2.Controllers
 {
-    public class CancionesController(GrupoBContext context) : Controller
+    public class CancionesController(
+        IGenericRepositorio<Canciones> repositorioCanciones,
+        IGenericRepositorio<Albumes> repositorioAlbumes
+        )
+        : Controller
     {
         // GET: Canciones
         public async Task<IActionResult> Index()
         {
-            var grupoBContext = context.Canciones.Include(c => c.Albumes);
-            return View(await grupoBContext.ToListAsync());
+            var listaCanciones = await repositorioCanciones.DameTodos();
+            foreach (var cancion in listaCanciones)
+            {
+                cancion.Albumes = await repositorioAlbumes.DameUno(cancion.AlbumesId);
+            }
+            return View(listaCanciones);
         }
 
         // GET: Canciones/Details/5
@@ -26,21 +33,24 @@ namespace MvcWebMusica2.Controllers
                 return NotFound();
             }
 
-            var canciones = await context.Canciones
-                .Include(c => c.Albumes)
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (canciones == null)
+            var cancion = await repositorioCanciones.DameUno(id);
+            
+            if (cancion == null)
             {
                 return NotFound();
             }
+            else
+            {
+                cancion.Albumes = await repositorioAlbumes.DameUno(cancion.AlbumesId);
+            }
 
-            return View(canciones);
+            return View(cancion);
         }
 
         // GET: Canciones/Create
-        public IActionResult Create()
+        public async Task<IActionResult> Create()
         {
-            ViewData["AlbumesId"] = new SelectList(context.Albumes, "Id", "Nombre");
+            ViewData["AlbumesId"] = new SelectList(await repositorioAlbumes.DameTodos(), "Id", "Nombre");
             return View();
         }
 
@@ -49,16 +59,15 @@ namespace MvcWebMusica2.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Titulo,Duracion,AlbumesId,Single")] Canciones canciones)
+        public async Task<IActionResult> Create([Bind("Id,Titulo,Duracion,AlbumesId,Single")] Canciones cancion)
         {
             if (ModelState.IsValid)
             {
-                context.Add(canciones);
-                await context.SaveChangesAsync();
+                await repositorioCanciones.Agregar(cancion);
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["AlbumesId"] = new SelectList(context.Albumes, "Id", "Nombre", canciones.AlbumesId);
-            return View(canciones);
+            ViewData["AlbumesId"] = new SelectList(await repositorioAlbumes.DameTodos(), "Id", "Nombre", cancion.AlbumesId);
+            return View(cancion);
         }
 
         // GET: Canciones/Edit/5
@@ -69,13 +78,13 @@ namespace MvcWebMusica2.Controllers
                 return NotFound();
             }
 
-            var canciones = await context.Canciones.FindAsync(id);
-            if (canciones == null)
+            var cancion = await repositorioCanciones.DameUno(id);
+            if (cancion == null)
             {
                 return NotFound();
             }
-            ViewData["AlbumesId"] = new SelectList(context.Albumes, "Id", "Nombre", canciones.AlbumesId);
-            return View(canciones);
+            ViewData["AlbumesId"] = new SelectList(await repositorioAlbumes.DameTodos(), "Id", "Nombre", cancion.AlbumesId);
+            return View(cancion);
         }
 
         // POST: Canciones/Edit/5
@@ -83,9 +92,9 @@ namespace MvcWebMusica2.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Titulo,Duracion,AlbumesId,Single")] Canciones canciones)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Titulo,Duracion,AlbumesId,Single")] Canciones cancion)
         {
-            if (id != canciones.Id)
+            if (id != cancion.Id)
             {
                 return NotFound();
             }
@@ -94,12 +103,11 @@ namespace MvcWebMusica2.Controllers
             {
                 try
                 {
-                    context.Update(canciones);
-                    await context.SaveChangesAsync();
+                    await repositorioCanciones.Modificar(id, cancion);
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!CancionesExists(canciones.Id))
+                    if (!CancionesExists(cancion.Id))
                     {
                         return NotFound();
                     }
@@ -110,8 +118,8 @@ namespace MvcWebMusica2.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["AlbumesId"] = new SelectList(context.Albumes, "Id", "Nombre", canciones.AlbumesId);
-            return View(canciones);
+            ViewData["AlbumesId"] = new SelectList(await repositorioAlbumes.DameTodos(), "Id", "Nombre", cancion.AlbumesId);
+            return View(cancion);
         }
 
         // GET: Canciones/Delete/5
@@ -122,15 +130,13 @@ namespace MvcWebMusica2.Controllers
                 return NotFound();
             }
 
-            var canciones = await context.Canciones
-                .Include(c => c.Albumes)
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (canciones == null)
+            var cancion = await repositorioCanciones.DameUno(id);
+            if (cancion == null)
             {
                 return NotFound();
             }
 
-            return View(canciones);
+            return View(cancion);
         }
 
         // POST: Canciones/Delete/5
@@ -138,19 +144,64 @@ namespace MvcWebMusica2.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var canciones = await context.Canciones.FindAsync(id);
-            if (canciones != null)
+            var cancion = await repositorioCanciones.DameUno(id);
+            if (cancion != null)
             {
-                context.Canciones.Remove(canciones);
+                await repositorioCanciones.Borrar(id);
             }
 
-            await context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
         private bool CancionesExists(int id)
         {
-            return context.Canciones.Any(e => e.Id == id);
+            return repositorioCanciones.DameUno(id) != null;
+        }
+
+        [HttpGet]
+        public async Task<FileResult> DescargarExcel()
+        {
+            var canciones = await repositorioCanciones.DameTodos();
+            foreach (var cancion in canciones)
+            {
+                cancion.Albumes = await repositorioAlbumes.DameUno(cancion.AlbumesId);
+            }
+            var nombreArchivo = "Canciones.xlsx";
+            return GenerarExcel(nombreArchivo, canciones);
+        }
+
+        private FileResult GenerarExcel(string nombreArchivo, IEnumerable<Canciones> canciones)
+        {
+            DataTable dataTable = new DataTable("Canciones");
+            dataTable.Columns.AddRange(new DataColumn[]
+            {
+                new("Titulo"),
+                new("Duracion"),
+                new("Single"),
+                new("Albumes")
+            });
+
+            foreach (var cancion in canciones)
+            {
+                dataTable.Rows.Add(
+                    cancion.Titulo,
+                    cancion.Duracion,
+                    cancion.Single,
+                    cancion.Albumes?.Nombre);
+            }
+
+            using (XLWorkbook wb = new XLWorkbook())
+            {
+                wb.Worksheets.Add(dataTable);
+
+                using (MemoryStream stream = new MemoryStream())
+                {
+                    wb.SaveAs(stream);
+                    return File(stream.ToArray(),
+                        "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+                        nombreArchivo);
+                }
+            }
         }
     }
 }

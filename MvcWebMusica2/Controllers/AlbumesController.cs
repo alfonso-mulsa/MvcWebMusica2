@@ -1,14 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Data;
+using ClosedXML.Excel;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.CodeAnalysis;
 using Microsoft.EntityFrameworkCore;
 using MvcWebMusica2.Models;
 using MvcWebMusica2.Services.Repositorio;
-using MvcWebMusica2.ViewModels;
 
 namespace MvcWebMusica2.Controllers
 {
@@ -46,7 +42,6 @@ namespace MvcWebMusica2.Controllers
             {
                 album.Generos = await repositorioGeneros.DameUno(album.GenerosId);
                 album.Grupos = await repositorioGrupos.DameUno(album.GruposId);
-                album.Canciones = await repositorioCanciones.Filtra(x => x.AlbumesId == album.Id);
             }
 
             return View(listaAlbumes);
@@ -196,6 +191,53 @@ namespace MvcWebMusica2.Controllers
         private bool AlbumesExists(int id)
         {
             return repositorioAlbumes.DameUno(id) != null;
+        }
+
+        [HttpGet]
+        public async Task<FileResult> DescargarExcel()
+        {
+            var albumes = await repositorioAlbumes.DameTodos();
+            foreach (var album in albumes)
+            {
+                album.Generos = await repositorioGeneros.DameUno(album.GenerosId);
+                album.Grupos = await repositorioGrupos.DameUno(album.GruposId);
+            }
+            var nombreArchivo = "Albumes.xlsx";
+            return GenerarExcel(nombreArchivo, albumes);
+        }
+
+        private FileResult GenerarExcel(string nombreArchivo, IEnumerable<Albumes> albumes)
+        {
+            DataTable dataTable = new DataTable("Albumes");
+            dataTable.Columns.AddRange(new DataColumn[]
+            {
+                new("Nombre"),
+                new("Fecha"),
+                new("Generos"),
+                new("Grupos")
+            });
+
+            foreach (var album in albumes)
+            {
+                dataTable.Rows.Add(
+                    album.Nombre,
+                    album.Fecha,
+                    album.Generos?.Nombre,
+                    album.Grupos?.Nombre);
+            }
+
+            using (XLWorkbook wb = new XLWorkbook())
+            {
+                wb.Worksheets.Add(dataTable);
+
+                using (MemoryStream stream = new MemoryStream())
+                {
+                    wb.SaveAs(stream);
+                    return File(stream.ToArray(),
+                        "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+                        nombreArchivo);
+                }
+            }
         }
     }
 }

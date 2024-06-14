@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-
-namespace MvcWebMusica2.Models;
+﻿namespace MvcWebMusica2.Models;
 
 public partial class Representantes
 {

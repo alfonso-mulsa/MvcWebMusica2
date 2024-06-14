@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-
-namespace MvcWebMusica2.Models;
+﻿namespace MvcWebMusica2.Models;
 
 public partial class Artistas
 {
@@ -19,7 +16,7 @@ public partial class Artistas
 
     public virtual Ciudades? Ciudades { get; set; }
 
-    public virtual ICollection<FuncionesArtistas> FuncionesArtistas { get; set; } = new List<FuncionesArtistas>();
+    public virtual ICollection<FuncionesArtistas> FuncionesArtistas { get; set; } = [];
 
     public virtual Generos? Generos { get; set; }
 
