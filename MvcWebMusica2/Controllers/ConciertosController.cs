@@ -1,10 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Data;
 using ClosedXML.Excel;
-using DocumentFormat.OpenXml.InkML;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -287,7 +282,7 @@ namespace MvcWebMusica2.Controllers
                 concierto.Ciudades = await repositorioCiudades.DameUno(concierto.CiudadesId);
                 concierto.Giras = await repositorioGiras.DameUno(concierto.GirasId);
             }
-            var nombreArchivo = $"Conciertos.xlsx";
+            var nombreArchivo = "Conciertos.xlsx";
             return GenerarExcel(nombreArchivo, conciertos);
         }
 
@@ -296,10 +291,10 @@ namespace MvcWebMusica2.Controllers
             DataTable dataTable = new DataTable("Conciertos");
             dataTable.Columns.AddRange(new DataColumn[]
             {
-                new DataColumn("Fecha"),
-                new DataColumn("Direccion"),
-                new DataColumn("Ciudades"),
-                new DataColumn("Giras")
+                new("Fecha"),
+                new("Direccion"),
+                new("Ciudades"),
+                new("Giras")
             });
 
             foreach (var concierto in conciertos)
@@ -307,8 +302,8 @@ namespace MvcWebMusica2.Controllers
                 dataTable.Rows.Add(
                     concierto.Fecha,
                     concierto.Direccion,
-                    concierto.Ciudades.Nombre,
-                    concierto.Giras.Nombre);
+                    concierto.Ciudades?.Nombre,
+                    concierto.Giras?.Nombre);
             }
 
             using (XLWorkbook wb = new XLWorkbook())

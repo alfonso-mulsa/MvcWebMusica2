@@ -1,6 +1,6 @@
-﻿using Microsoft.EntityFrameworkCore;
-using MvcWebMusica2.Models;
-using System.Linq;
+
+﻿using MvcWebMusica2.Models;
+
 using System.Linq.Expressions;
 
 namespace MvcWebMusica2.Services.Repositorio
@@ -30,11 +30,30 @@ namespace MvcWebMusica2.Services.Repositorio
             }
         }
 
+        // Aconsejado por ReSharper
+        //public Task<List<T>> DameTodos()
+        //{
+        //    return Task.FromResult(_context.Set<T>().AsParallel().ToList());
+        //    //return await _context.Set<T>().AsNoTracking().ToListAsync();
+        //}
+
         public async Task<List<T>> DameTodos()
         {
             return _context.Set<T>().AsParallel().ToList();
             //return await _context.Set<T>().AsNoTracking().ToListAsync();
         }
+
+        //    Metodo que permite especificar INCLUDE.
+        //public async Task<List<T>> DameTodos(params Expression<Func<T, object>>[] includes)
+        //{
+        //    IQueryable<T> query = _context.Set<T>();
+        //    foreach (var include in includes)
+        //    {
+        //        query = query.Include(include);
+        //    }
+        //    return await query.ToListAsync();
+        //}
+
 
         public async Task<T?> DameUno(int? id)
         {
@@ -45,9 +64,10 @@ namespace MvcWebMusica2.Services.Repositorio
             return await _context.Set<T>().FindAsync(id);
         }
 
-        public async Task<List<T>> Filtra(Expression<Func<T, bool>> predicado)
+        public Task<List<T>> Filtra(Expression<Func<T, bool>> predicado)
         {
-            return _context.Set<T>().Where<T>(predicado).AsParallel().ToList();
+            return Task.FromResult(_context.Set<T>().Where(predicado).AsParallel().ToList());
+            //return _context.Set<T>().Where<T>(predicado).AsParallel().ToList();
             //return await _context.Set<T>().Where<T>(predicado).ToListAsync();
         }
 

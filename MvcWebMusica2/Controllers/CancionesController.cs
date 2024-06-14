@@ -1,10 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Data;
 using ClosedXML.Excel;
-using DocumentFormat.OpenXml.InkML;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -171,7 +166,7 @@ namespace MvcWebMusica2.Controllers
             {
                 cancion.Albumes = await repositorioAlbumes.DameUno(cancion.AlbumesId);
             }
-            var nombreArchivo = $"Canciones.xlsx";
+            var nombreArchivo = "Canciones.xlsx";
             return GenerarExcel(nombreArchivo, canciones);
         }
 
@@ -180,10 +175,10 @@ namespace MvcWebMusica2.Controllers
             DataTable dataTable = new DataTable("Canciones");
             dataTable.Columns.AddRange(new DataColumn[]
             {
-                new DataColumn("Titulo"),
-                new DataColumn("Duracion"),
-                new DataColumn("Single"),
-                new DataColumn("Albumes")
+                new("Titulo"),
+                new("Duracion"),
+                new("Single"),
+                new("Albumes")
             });
 
             foreach (var cancion in canciones)
@@ -192,7 +187,7 @@ namespace MvcWebMusica2.Controllers
                     cancion.Titulo,
                     cancion.Duracion,
                     cancion.Single,
-                    cancion.Albumes.Nombre);
+                    cancion.Albumes?.Nombre);
             }
 
             using (XLWorkbook wb = new XLWorkbook())

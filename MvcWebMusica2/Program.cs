@@ -1,7 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using MvcWebMusica2.Models;
 using MvcWebMusica2.Services.Repositorio;
-using MvcWebMusica2.ViewModels;
 
 var builder = WebApplication.CreateBuilder(args);
 

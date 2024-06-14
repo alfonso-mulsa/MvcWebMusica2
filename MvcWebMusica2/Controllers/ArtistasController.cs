@@ -1,10 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Data;
 using ClosedXML.Excel;
-using DocumentFormat.OpenXml.InkML;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -17,7 +12,10 @@ namespace MvcWebMusica2.Controllers
         IGenericRepositorio<Artistas> repositorioArtistas,
         IGenericRepositorio<Ciudades> repositorioCiudades,
         IGenericRepositorio<Generos> repositorioGeneros,
-        IGenericRepositorio<Grupos> repositorioGrupos)
+        IGenericRepositorio<Grupos> repositorioGrupos,
+        IGenericRepositorio<FuncionesArtistas> repositorioFuncionesArtistas,
+        IGenericRepositorio<Funciones> repositorioFunciones)
+
         : Controller
     {
         //private readonly GrupoBContext _context;
@@ -31,7 +29,32 @@ namespace MvcWebMusica2.Controllers
                 artista.Ciudades = await repositorioCiudades.DameUno(artista.CiudadesId);
                 artista.Generos = await repositorioGeneros.DameUno(artista.GenerosId);
                 artista.Grupos = await repositorioGrupos.DameUno(artista.GruposId);
+
             }
+            return View(listaArtistas);
+        }
+
+        // GET: Aristas y Funciones
+        public async Task<IActionResult> ArtistasYFunciones()
+        {
+            var listaArtistas = await repositorioArtistas.DameTodos();
+
+            //foreach (var artista in listaArtistas)
+            //{
+            //    artista.FuncionesArtistas = await repositorioFuncionesArtistas.Filtra
+            //        (x => x.ArtistasId == artista.Id);
+            //    //foreach (var funcion in artista.FuncionesArtistas)
+            //    //{
+            //    //    funcion.Funciones = await repositorioFunciones.DameUno(funcion.FuncionesId);
+            //    //}
+
+
+
+            //    //album.Generos = await repositorioGeneros.DameUno(album.GenerosId);
+            //    //album.Grupos = await repositorioGrupos.DameUno(album.GruposId);
+            //    //album.Canciones = await repositorioCanciones.Filtra(x => x.AlbumesId == album.Id);
+            //}
+
             return View(listaArtistas);
         }
 
@@ -191,7 +214,7 @@ namespace MvcWebMusica2.Controllers
                 artista.Generos = await repositorioGeneros.DameUno(artista.GenerosId);
                 artista.Grupos = await repositorioGrupos.DameUno(artista.GruposId);
             }
-            var nombreArchivo = $"Artistas.xlsx";
+            var nombreArchivo = "Artistas.xlsx";
             return GenerarExcel(nombreArchivo, artistas);
         }
 
@@ -200,11 +223,11 @@ namespace MvcWebMusica2.Controllers
             DataTable dataTable = new DataTable("Artistas");
             dataTable.Columns.AddRange(new DataColumn[]
             {
-                new DataColumn("Nombre"),
-                new DataColumn("FechaDeNacimiento"),
-                new DataColumn("Ciudades"),
-                new DataColumn("Generos"),
-                new DataColumn("Grupos")
+                new("Nombre"),
+                new("FechaDeNacimiento"),
+                new("Ciudades"),
+                new("Generos"),
+                new("Grupos")
             });
 
             foreach (var artista in artistas)
@@ -212,9 +235,10 @@ namespace MvcWebMusica2.Controllers
                 dataTable.Rows.Add(
                     artista.Nombre,
                     artista.FechaDeNacimiento,
-                    artista.Ciudades.Nombre,
-                    artista.Generos.Nombre,
-                    artista.Grupos.Nombre);
+                    artista.Ciudades?.Nombre,
+                    artista.Generos?.Nombre,
+                    artista.Grupos?.Nombre
+                    );
             }
 
             using (XLWorkbook wb = new XLWorkbook())

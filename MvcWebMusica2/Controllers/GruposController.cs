@@ -1,11 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data;
-using System.Linq;
-using System.Text.RegularExpressions;
-using System.Threading.Tasks;
+
+﻿using System.Data;
 using ClosedXML.Excel;
-using DocumentFormat.OpenXml.InkML;
+
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -20,21 +16,36 @@ namespace MvcWebMusica2.Controllers
         IGenericRepositorio<Generos> repositorioGeneros,
         IGenericRepositorio<Representantes> repositorioRepresentantes) 
         : Controller
+
     {
         // GET: Grupos
         public async Task<IActionResult> Index()
         {
+
             //var grupoBContext = context.Grupos.Include(g => g.Ciudades).Include(g => g.Generos).Include(g => g.Representantes);
             //return View(await grupoBContext.ToListAsync());
+
             var listaGrupos = await repositorioGrupos.DameTodos();
             foreach (var grupo in listaGrupos)
             {
                 grupo.Ciudades = await repositorioCiudades.DameUno(grupo.CiudadesId);
                 grupo.Generos = await repositorioGeneros.DameUno(grupo.GenerosId);
                 grupo.Representantes = await repositorioRepresentantes.DameUno(grupo.RepresentantesId);
+
             }
             return View(listaGrupos);
+
         }
+
+
+        public async Task<IActionResult> ArtistasYGrupos()
+        {
+
+            var listaGrupos = await repositorioGrupos.DameTodos();
+            return View(listaGrupos);
+
+        }
+
 
         // GET: Grupos/Details/5
         public async Task<IActionResult> Details(int? id)
@@ -61,11 +72,19 @@ namespace MvcWebMusica2.Controllers
                 return NotFound();
             }
 
+
             var grupo = await repositorioGrupos.DameUno(id);
 
             if (grupo == null)
+
             {
                 return NotFound();
+            }
+            else
+            {
+                grupo.Ciudades = await repositorioCiudades.DameUno(grupo.CiudadesId);
+                grupo.Generos = await repositorioGeneros.DameUno(grupo.GenerosId);
+                grupo.Representantes = await repositorioRepresentantes.DameUno(grupo.RepresentantesId);
             }
 
             grupo.Ciudades = await repositorioCiudades.DameUno(grupo.CiudadesId);
@@ -77,10 +96,12 @@ namespace MvcWebMusica2.Controllers
         // GET: Grupos/Create
         public async Task<IActionResult> Create()
         {
+
             //ViewData["CiudadesId"] = new SelectList(context.Ciudades, "Id", "Nombre");
             //ViewData["GenerosId"] = new SelectList(context.Generos, "Id", "Nombre");
             //ViewData["RepresentantesId"] = new SelectList(context.Representantes, "Id", "NombreCompleto");
             //return View();
+
 
             ViewData["CiudadesId"] = new SelectList(await repositorioCiudades.DameTodos(), "Id", "Nombre");
             ViewData["GenerosId"] = new SelectList(await repositorioGeneros.DameTodos(), "Id", "Nombre");
@@ -109,11 +130,13 @@ namespace MvcWebMusica2.Controllers
             if (ModelState.IsValid)
             {
                 await repositorioGrupos.Agregar(grupos);
+
                 return RedirectToAction(nameof(Index));
             }
             ViewData["CiudadesId"] = new SelectList(await repositorioCiudades.DameTodos(), "Id", "Nombre");
             ViewData["GenerosId"] = new SelectList(await repositorioGeneros.DameTodos(), "Id", "Nombre");
             ViewData["RepresentantesId"] = new SelectList(await repositorioRepresentantes.DameTodos(), "Id", "NombreCompleto");
+
             return View(grupos);
         }
 
@@ -140,6 +163,7 @@ namespace MvcWebMusica2.Controllers
                 return NotFound();
             }
 
+
             var grupo = await repositorioGrupos.DameUno(id);
             if (grupo == null)
             {
@@ -149,6 +173,7 @@ namespace MvcWebMusica2.Controllers
             ViewData["GenerosId"] = new SelectList(await repositorioGeneros.DameTodos(), "Id", "Nombre");
             ViewData["RepresentantesId"] = new SelectList(await repositorioRepresentantes.DameTodos(), "Id", "NombreCompleto");
             return View(grupo);
+
         }
 
         // POST: Grupos/Edit/5
@@ -209,9 +234,11 @@ namespace MvcWebMusica2.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
+
             ViewData["CiudadesId"] = new SelectList(await repositorioCiudades.DameTodos(), "Id", "Nombre");
             ViewData["GenerosId"] = new SelectList(await repositorioGeneros.DameTodos(), "Id", "Nombre");
             ViewData["RepresentantesId"] = new SelectList(await repositorioRepresentantes.DameTodos(), "Id", "NombreCompleto");
+
             return View(grupos);
         }
 
@@ -240,11 +267,19 @@ namespace MvcWebMusica2.Controllers
                 return NotFound();
             }
 
+
             var grupo = await repositorioGrupos.DameUno(id);
 
             if (grupo == null)
+
             {
                 return NotFound();
+            }
+            else
+            {
+                grupo.Ciudades = await repositorioCiudades.DameUno(grupo.CiudadesId);
+                grupo.Generos = await repositorioGeneros.DameUno(grupo.GenerosId);
+                grupo.Representantes = await repositorioRepresentantes.DameUno(grupo.RepresentantesId);
             }
 
             ViewData["CiudadesId"] = new SelectList(await repositorioCiudades.DameTodos(), "Id", "Nombre");
@@ -258,6 +293,7 @@ namespace MvcWebMusica2.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
+
             //var grupos = await context.Grupos.FindAsync(id);
             //if (grupos != null)
             //{
@@ -271,6 +307,7 @@ namespace MvcWebMusica2.Controllers
             if (grupos != null)
             {
                 await repositorioGrupos.Borrar(id);
+
             }
 
             return RedirectToAction(nameof(Index));
@@ -278,6 +315,7 @@ namespace MvcWebMusica2.Controllers
 
         private bool GruposExists(int id)
         {
+
             //return context.Grupos.Any(e => e.Id == id);
             return repositorioGrupos.DameUno(id) != null;
         }
@@ -292,7 +330,7 @@ namespace MvcWebMusica2.Controllers
                 grupo.Generos = await repositorioGeneros.DameUno(grupo.GenerosId);
                 grupo.Representantes = await repositorioRepresentantes.DameUno(grupo.RepresentantesId);
             }
-            var nombreArchivo = $"Grupos.xlsx";
+            var nombreArchivo = "Grupos.xlsx";
             return GenerarExcel(nombreArchivo, grupos);
         }
 
@@ -301,11 +339,11 @@ namespace MvcWebMusica2.Controllers
             DataTable dataTable = new DataTable("Grupos");
             dataTable.Columns.AddRange(new DataColumn[]
             {
-                new DataColumn("Nombre"),
-                new DataColumn("FechaCreacion"),
-                new DataColumn("Ciudades"),
-                new DataColumn("Géneros"),
-                new DataColumn("Representantes")
+                new("Nombre"),
+                new("FechaCreacion"),
+                new("Ciudades"),
+                new("Géneros"),
+                new("Representantes")
             });
 
             foreach (var grupo in grupos)
@@ -313,9 +351,9 @@ namespace MvcWebMusica2.Controllers
                 dataTable.Rows.Add(
                     grupo.Nombre,
                     grupo.FechaCreacion,
-                    grupo.Ciudades.Nombre,
-                    grupo.Generos.Nombre,
-                    grupo.Representantes.NombreCompleto);
+                    grupo.Ciudades?.Nombre,
+                    grupo.Generos?.Nombre,
+                    grupo.Representantes?.NombreCompleto);
             }
 
             using (XLWorkbook wb = new XLWorkbook())
@@ -330,6 +368,7 @@ namespace MvcWebMusica2.Controllers
                         nombreArchivo);
                 }
             }
+
         }
     }
 }

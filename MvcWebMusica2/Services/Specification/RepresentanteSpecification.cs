@@ -1,7 +1,4 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using MvcWebMusica2.Models;
-using MvcWebMusica2.Services.Specification;
-using System.Xml.Linq;
+﻿using MvcWebMusica2.Models;
 
 namespace MvcWebMusica2.Services.Specification
 {
