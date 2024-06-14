@@ -5,7 +5,7 @@ using System.ComponentModel.DataAnnotations;
 namespace MvcWebMusica2.Models
 {
     [ModelMetadataType(typeof(RolesMetadata))]
-    //public partial class Roles { } // se supone que esta clase se puede eliminar
+    public partial class Roles { }
     public class RolesMetadata
     {
         public int Id { get; set; }

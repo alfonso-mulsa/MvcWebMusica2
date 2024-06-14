@@ -70,7 +70,7 @@ namespace MvcWebMusica2.Controllers
             //ViewData["RolesId"] = new SelectList(context.Roles, "Id", "Descripcion");
             //return View();
 
-            ViewData["RolesId"] = new SelectList(await repositorioRoles.DameTodos(), "Id", "Nombre");
+            ViewData["RolesId"] = new SelectList(await repositorioRoles.DameTodos(), "Id", "Descripcion");
             return View();
         }
 
@@ -95,7 +95,7 @@ namespace MvcWebMusica2.Controllers
                 await repositorioEmpleados.Agregar(empleados);
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["RolesId"] = new SelectList(await repositorioRoles.DameTodos(), "Id", "Nombre", empleados.RolesId);
+            ViewData["RolesId"] = new SelectList(await repositorioRoles.DameTodos(), "Id", "Descripcion", empleados.RolesId);
             return View(empleados);
         }
 
