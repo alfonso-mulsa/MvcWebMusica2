@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace MvcWebMusica2.Models
 {
     [ModelMetadataType(typeof(AlbumesMetadata))]
-    public partial class Albumes { }
+    //public partial class Albumes { } // se supone que esta clase se puede eliminar
     public class AlbumesMetadata
     {
         public int Id { get; set; }

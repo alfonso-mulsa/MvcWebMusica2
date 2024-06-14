@@ -202,7 +202,7 @@ namespace MvcWebMusica2.Controllers
                 album.Generos = await repositorioGeneros.DameUno(album.GenerosId);
                 album.Grupos = await repositorioGrupos.DameUno(album.GruposId);
             }
-            var nombreArchivo = $"Albumes.xlsx";
+            var nombreArchivo = "Albumes.xlsx";
             return GenerarExcel(nombreArchivo, albumes);
         }
 
@@ -222,8 +222,8 @@ namespace MvcWebMusica2.Controllers
                 dataTable.Rows.Add(
                     album.Nombre,
                     album.Fecha,
-                    album.Generos.Nombre,
-                    album.Grupos.Nombre);
+                    album.Generos?.Nombre,
+                    album.Grupos?.Nombre);
             }
 
             using (XLWorkbook wb = new XLWorkbook())

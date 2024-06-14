@@ -282,7 +282,7 @@ namespace MvcWebMusica2.Controllers
                 videoClipPlataforma.Plataformas = await repositorioPlataformas.DameUno(videoClipPlataforma.PlataformasId);
                 videoClipPlataforma.VideoClips = await repositorioVideoClips.DameUno(videoClipPlataforma.VideoClipsId);
             }
-            var nombreArchivo = $"VideoclipsPlataformas.xlsx";
+            var nombreArchivo = "VideoclipsPlataformas.xlsx";
             return GenerarExcel(nombreArchivo, videoClipsPlataformas);
         }
 
@@ -300,8 +300,8 @@ namespace MvcWebMusica2.Controllers
             {
                 dataTable.Rows.Add(
                     videoClipPlataformas.url,
-                    videoClipPlataformas.Plataformas.Nombre,
-                    videoClipPlataformas.VideoClips.Id);
+                    videoClipPlataformas.Plataformas?.Nombre,
+                    videoClipPlataformas.VideoClips?.Id);
             }
 
             using (XLWorkbook wb = new XLWorkbook())

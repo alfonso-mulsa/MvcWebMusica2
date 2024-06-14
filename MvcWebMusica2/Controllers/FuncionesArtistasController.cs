@@ -282,7 +282,7 @@ namespace MvcWebMusica2.Controllers
                 funcionArtista.Artistas = await repositorioArtistas.DameUno(funcionArtista.ArtistasId);
                 funcionArtista.Funciones = await repositorioFunciones.DameUno(funcionArtista.FuncionesId);
             }
-            var nombreArchivo = $"FuncionesArtistas.xlsx";
+            var nombreArchivo = "FuncionesArtistas.xlsx";
             return GenerarExcel(nombreArchivo, funcionesArtistas);
         }
 
@@ -298,8 +298,8 @@ namespace MvcWebMusica2.Controllers
             foreach (var funcionesArtista in funcionesArtistas)
             {
                 dataTable.Rows.Add(
-                    funcionesArtista.Artistas.Nombre,
-                    funcionesArtista.Funciones.Nombre);
+                    funcionesArtista.Artistas?.Nombre,
+                    funcionesArtista.Funciones?.Nombre);
             }
 
             using (XLWorkbook wb = new XLWorkbook())

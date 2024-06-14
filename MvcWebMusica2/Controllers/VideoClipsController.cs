@@ -266,7 +266,7 @@ namespace MvcWebMusica2.Controllers
             {
                 videoClip.Canciones = await repositorioCanciones.DameUno(videoClip.CancionesId);
             }
-            var nombreArchivo = $"Videoclips.xlsx";
+            var nombreArchivo = "Videoclips.xlsx";
             return GenerarExcel(nombreArchivo, VideoClips);
         }
 
@@ -283,7 +283,7 @@ namespace MvcWebMusica2.Controllers
             {
                 dataTable.Rows.Add(
                     videoClip.Fecha,
-                    videoClip.Canciones.Titulo);
+                    videoClip.Canciones?.Titulo);
             }
 
             using (XLWorkbook wb = new XLWorkbook())

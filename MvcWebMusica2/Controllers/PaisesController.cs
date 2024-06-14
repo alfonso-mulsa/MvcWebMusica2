@@ -1,12 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Data;
 using ClosedXML.Excel;
-using DocumentFormat.OpenXml.InkML;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using MvcWebMusica2.Models;
 using MvcWebMusica2.Services.Repositorio;
@@ -152,7 +146,7 @@ namespace MvcWebMusica2.Controllers
         {
             var paises = await repositorioPaises.DameTodos();
 
-            var nombreArchivo = $"Paises.xlsx";
+            var nombreArchivo = "Paises.xlsx";
             return GenerarExcel(nombreArchivo, paises);
         }
 

@@ -266,7 +266,7 @@ namespace MvcWebMusica2.Controllers
             {
                 ciudad.Paises = await repositorioPaises.DameUno(ciudad.PaisesID);
             }
-            var nombreArchivo = $"Ciudades.xlsx";
+            var nombreArchivo = "Ciudades.xlsx";
             return GenerarExcel(nombreArchivo, ciudades);
         }
 
@@ -283,7 +283,7 @@ namespace MvcWebMusica2.Controllers
             {
                 dataTable.Rows.Add(
                     ciudad.Nombre,
-                    ciudad.Paises.Nombre);
+                    ciudad.Paises?.Nombre);
             }
 
             using (XLWorkbook wb = new XLWorkbook())

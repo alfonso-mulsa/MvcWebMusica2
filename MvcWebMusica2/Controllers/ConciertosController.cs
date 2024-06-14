@@ -282,7 +282,7 @@ namespace MvcWebMusica2.Controllers
                 concierto.Ciudades = await repositorioCiudades.DameUno(concierto.CiudadesId);
                 concierto.Giras = await repositorioGiras.DameUno(concierto.GirasId);
             }
-            var nombreArchivo = $"Conciertos.xlsx";
+            var nombreArchivo = "Conciertos.xlsx";
             return GenerarExcel(nombreArchivo, conciertos);
         }
 
@@ -302,8 +302,8 @@ namespace MvcWebMusica2.Controllers
                 dataTable.Rows.Add(
                     concierto.Fecha,
                     concierto.Direccion,
-                    concierto.Ciudades.Nombre,
-                    concierto.Giras.Nombre);
+                    concierto.Ciudades?.Nombre,
+                    concierto.Giras?.Nombre);
             }
 
             using (XLWorkbook wb = new XLWorkbook())

@@ -186,7 +186,7 @@ namespace MvcWebMusica2.Controllers
                 artista.Generos = await repositorioGeneros.DameUno(artista.GenerosId);
                 artista.Grupos = await repositorioGrupos.DameUno(artista.GruposId);
             }
-            var nombreArchivo = $"Artistas.xlsx";
+            var nombreArchivo = "Artistas.xlsx";
             return GenerarExcel(nombreArchivo, artistas);
         }
 
@@ -207,8 +207,8 @@ namespace MvcWebMusica2.Controllers
                 dataTable.Rows.Add(
                     artista.Nombre,
                     artista.FechaDeNacimiento,
-                    artista.Ciudades.Nombre,
-                    artista.Generos.Nombre,
+                    artista.Ciudades?.Nombre,
+                    artista.Generos?.Nombre,
                     artista.Grupos?.Nombre
                     );
             }

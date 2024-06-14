@@ -166,7 +166,7 @@ namespace MvcWebMusica2.Controllers
             {
                 cancion.Albumes = await repositorioAlbumes.DameUno(cancion.AlbumesId);
             }
-            var nombreArchivo = $"Canciones.xlsx";
+            var nombreArchivo = "Canciones.xlsx";
             return GenerarExcel(nombreArchivo, canciones);
         }
 
@@ -187,7 +187,7 @@ namespace MvcWebMusica2.Controllers
                     cancion.Titulo,
                     cancion.Duracion,
                     cancion.Single,
-                    cancion.Albumes.Nombre);
+                    cancion.Albumes?.Nombre);
             }
 
             using (XLWorkbook wb = new XLWorkbook())

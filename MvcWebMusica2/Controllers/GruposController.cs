@@ -286,7 +286,7 @@ namespace MvcWebMusica2.Controllers
                 grupo.Generos = await repositorioGeneros.DameUno(grupo.GenerosId);
                 grupo.Representantes = await repositorioRepresentantes.DameUno(grupo.RepresentantesId);
             }
-            var nombreArchivo = $"Grupos.xlsx";
+            var nombreArchivo = "Grupos.xlsx";
             return GenerarExcel(nombreArchivo, grupos);
         }
 
@@ -307,9 +307,9 @@ namespace MvcWebMusica2.Controllers
                 dataTable.Rows.Add(
                     grupo.Nombre,
                     grupo.FechaCreacion,
-                    grupo.Ciudades.Nombre,
-                    grupo.Generos.Nombre,
-                    grupo.Representantes.NombreCompleto);
+                    grupo.Ciudades?.Nombre,
+                    grupo.Generos?.Nombre,
+                    grupo.Representantes?.NombreCompleto);
             }
 
             using (XLWorkbook wb = new XLWorkbook())

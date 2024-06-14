@@ -180,7 +180,7 @@ namespace MvcWebMusica2.Controllers
             {
                 gira.Grupos = await repositorioGrupos.DameUno(gira.GruposId);
             }
-            var nombreArchivo = $"Giras.xlsx";
+            var nombreArchivo = "Giras.xlsx";
             return GenerarExcel(nombreArchivo, giras);
         }
 
@@ -201,7 +201,7 @@ namespace MvcWebMusica2.Controllers
                     gira.Nombre,
                     gira.FechaInicio,
                     gira.FechaFin,
-                    gira.Grupos.Nombre);
+                    gira.Grupos?.Nombre);
             }
 
             using (XLWorkbook wb = new XLWorkbook())

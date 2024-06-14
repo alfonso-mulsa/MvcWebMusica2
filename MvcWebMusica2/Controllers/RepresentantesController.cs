@@ -261,7 +261,7 @@ namespace MvcWebMusica2.Controllers
             {
                 representante.Ciudades = await repositorioCiudades.DameUno(representante.CiudadesID);
             }
-            var nombreArchivo = $"Representantes.xlsx";
+            var nombreArchivo = "Representantes.xlsx";
             return GenerarExcel(nombreArchivo, representantes);
         }
 
@@ -286,7 +286,7 @@ namespace MvcWebMusica2.Controllers
                     representante.Identificacion,
                     representante.mail,
                     representante.Telefono,
-                    representante.Ciudades.Nombre);
+                    representante.Ciudades?.Nombre);
             }
 
             using (XLWorkbook wb = new XLWorkbook())

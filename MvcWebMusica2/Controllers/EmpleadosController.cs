@@ -267,7 +267,7 @@ namespace MvcWebMusica2.Controllers
             {
                 empleado.Roles = await repositorioRoles.DameUno(empleado.RolesId);
             }
-            var nombreArchivo = $"Empleados.xlsx";
+            var nombreArchivo = "Empleados.xlsx";
             return GenerarExcel(nombreArchivo, empleados);
         }
 
@@ -284,7 +284,7 @@ namespace MvcWebMusica2.Controllers
             {
                 dataTable.Rows.Add(
                     empleado.NombreCompleto,
-                    empleado.Roles.Descripcion);
+                    empleado.Roles?.Descripcion);
             }
 
             using (XLWorkbook wb = new XLWorkbook())

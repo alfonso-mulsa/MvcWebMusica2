@@ -53,7 +53,12 @@ namespace MvcWebMusica2.Controllers
         }
 
         // GET: Funciones/Create
-        public async Task<IActionResult> Create()
+        //public async Task<IActionResult> Create()
+        //{
+        //    return View();
+        //}
+
+        public IActionResult Create()
         {
             return View();
         }
@@ -239,7 +244,7 @@ namespace MvcWebMusica2.Controllers
         public async Task<FileResult> DescargarExcel()
         {
             var funciones = await repositorioFunciones.DameTodos();
-            var nombreArchivo = $"Funciones.xlsx";
+            var nombreArchivo = "Funciones.xlsx";
             return GenerarExcel(nombreArchivo, funciones);
         }
 

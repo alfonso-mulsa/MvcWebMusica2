@@ -28,6 +28,13 @@ namespace MvcWebMusica2.Services.Repositorio
             }
         }
 
+        // Aconsejado por ReSharper
+        //public Task<List<T>> DameTodos()
+        //{
+        //    return Task.FromResult(_context.Set<T>().AsParallel().ToList());
+        //    //return await _context.Set<T>().AsNoTracking().ToListAsync();
+        //}
+
         public async Task<List<T>> DameTodos()
         {
             return _context.Set<T>().AsParallel().ToList();
@@ -43,9 +50,10 @@ namespace MvcWebMusica2.Services.Repositorio
             return await _context.Set<T>().FindAsync(id);
         }
 
-        public async Task<List<T>> Filtra(Expression<Func<T, bool>> predicado)
+        public Task<List<T>> Filtra(Expression<Func<T, bool>> predicado)
         {
-            return _context.Set<T>().Where<T>(predicado).AsParallel().ToList();
+            return Task.FromResult(_context.Set<T>().Where(predicado).AsParallel().ToList());
+            //return _context.Set<T>().Where<T>(predicado).AsParallel().ToList();
             //return await _context.Set<T>().Where<T>(predicado).ToListAsync();
         }
 
