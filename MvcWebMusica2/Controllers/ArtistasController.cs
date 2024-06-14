@@ -44,21 +44,21 @@ namespace MvcWebMusica2.Controllers
         {
             var listaArtistas = await repositorioArtistas.DameTodos();
 
-            foreach (var artista in listaArtistas)
-            {
-                artista.FuncionesArtistas = await repositorioFuncionesArtistas.Filtra
-                    (x => x.ArtistasId == artista.Id);
-                foreach (var funcion in artista.FuncionesArtistas)
-                {
-                    funcion.Funciones = await repositorioFunciones.DameUno(funcion.FuncionesId);
-                }
+            //foreach (var artista in listaArtistas)
+            //{
+            //    artista.FuncionesArtistas = await repositorioFuncionesArtistas.Filtra
+            //        (x => x.ArtistasId == artista.Id);
+            //    //foreach (var funcion in artista.FuncionesArtistas)
+            //    //{
+            //    //    funcion.Funciones = await repositorioFunciones.DameUno(funcion.FuncionesId);
+            //    //}
 
 
 
-                //album.Generos = await repositorioGeneros.DameUno(album.GenerosId);
-                //album.Grupos = await repositorioGrupos.DameUno(album.GruposId);
-                //album.Canciones = await repositorioCanciones.Filtra(x => x.AlbumesId == album.Id);
-            }
+            //    //album.Generos = await repositorioGeneros.DameUno(album.GenerosId);
+            //    //album.Grupos = await repositorioGrupos.DameUno(album.GruposId);
+            //    //album.Canciones = await repositorioCanciones.Filtra(x => x.AlbumesId == album.Id);
+            //}
 
             return View(listaArtistas);
         }

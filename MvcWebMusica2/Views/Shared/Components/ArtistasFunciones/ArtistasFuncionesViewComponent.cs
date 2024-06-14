@@ -6,7 +6,8 @@ using System.Linq;
 
 namespace MvcWebMusica2.Views.Shared.Components
 {
-    public class ArtistasFuncionesViewComponent (IGenericRepositorio<FuncionesArtistas> coleccion): ViewComponent
+    public class ArtistasFuncionesViewComponent (IGenericRepositorio<FuncionesArtistas> coleccion,
+        IGenericRepositorio<Funciones> coleccionF): ViewComponent
     {
         public async Task<IViewComponentResult> InvokeAsync(IFuncionSpecification especificacion)
         {
@@ -17,6 +18,12 @@ namespace MvcWebMusica2.Views.Shared.Components
 
             var items = await coleccion.DameTodos();
             var itemsFiltrados = items.Where(especificacion.IsValid);
+            foreach (var itemsF in itemsFiltrados)
+            {
+                itemsF.Funciones = await coleccionF.DameUno(itemsF.FuncionesId);
+            }
+
+
             return View(itemsFiltrados);
 
         }
