@@ -2,15 +2,16 @@
 using MvcWebMusica2.Models;
 using MvcWebMusica2.Services.Repositorio;
 using MvcWebMusica2.Services.Specification;
+using System.Linq;
 
 namespace MvcWebMusica2.Views.Shared.Components
 {
-    public class GruposViewComponent (IGenericRepositorio<Grupos> coleccion): ViewComponent
+    public class ArtistasViewComponent(IGenericRepositorio<Artistas> coleccion) : ViewComponent
     {
-        public async Task<IViewComponentResult> InvokeAsync(int ArtistaId)
+        public async Task<IViewComponentResult> InvokeAsync(int GrupoId)
         {
             var items = await coleccion.DameTodos();
-            IGrupoSpecification especificacion = new ArtistaSpecification(ArtistaId);
+            IArtistaSpecification especificacion = new GrupoSpecification(GrupoId);
             var itemsFiltrados = items.Where(especificacion.IsValid);
             return View(itemsFiltrados);
         }

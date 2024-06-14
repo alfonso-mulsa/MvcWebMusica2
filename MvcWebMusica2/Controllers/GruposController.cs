@@ -1,21 +1,41 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using MvcWebMusica2.Models;
+using MvcWebMusica2.Services.Repositorio;
 
 namespace MvcWebMusica2.Controllers
 {
-    public class GruposController(GrupoBContext context) : Controller
+    public class GruposController(
+        IGenericRepositorio<Grupos> repositorioGrupos,
+        IGenericRepositorio<Ciudades> repositorioCiudades,
+        IGenericRepositorio<Generos> repositorioGeneros,
+        IGenericRepositorio<Representantes> repositorioRepresentantes) : Controller
     {
         // GET: Grupos
         public async Task<IActionResult> Index()
         {
-            var grupoBContext = context.Grupos.Include(g => g.Ciudades).Include(g => g.Generos).Include(g => g.Representantes);
-            return View(await grupoBContext.ToListAsync());
+            var listaGrupos = await repositorioGrupos.DameTodos();
+            foreach (var grupo in listaGrupos)
+            {
+                grupo.Ciudades = await repositorioCiudades.DameUno(grupo.CiudadesId);
+                grupo.Generos = await repositorioGeneros.DameUno(grupo.GenerosId);
+                grupo.Representantes = await repositorioRepresentantes.DameUno(grupo.RepresentantesId);
+
+            }
+            return View(listaGrupos);
+        }
+
+        public async Task<IActionResult> ArtistasYGrupos()
+        {
+            var listaGrupos = await repositorioGrupos.DameTodos();
+
+            return View(listaGrupos);
         }
 
         // GET: Grupos/Details/5
@@ -26,25 +46,28 @@ namespace MvcWebMusica2.Controllers
                 return NotFound();
             }
 
-            var grupos = await context.Grupos
-                .Include(g => g.Ciudades)
-                .Include(g => g.Generos)
-                .Include(g => g.Representantes)
-                .FirstOrDefaultAsync(m => m.Id == id);
+            var grupos = await repositorioGrupos.DameUno(id); 
+
             if (grupos == null)
             {
                 return NotFound();
+            }
+            else
+            {
+                grupos.Ciudades = await repositorioCiudades.DameUno(grupos.CiudadesId);
+                grupos.Generos = await repositorioGeneros.DameUno(grupos.GenerosId);
+                grupos.Representantes = await repositorioRepresentantes.DameUno(grupos.RepresentantesId);
             }
 
             return View(grupos);
         }
 
         // GET: Grupos/Create
-        public IActionResult Create()
+        public async Task<IActionResult> Create()
         {
-            ViewData["CiudadesId"] = new SelectList(context.Ciudades, "Id", "Nombre");
-            ViewData["GenerosId"] = new SelectList(context.Generos, "Id", "Nombre");
-            ViewData["RepresentantesId"] = new SelectList(context.Representantes, "Id", "NombreCompleto");
+            ViewData["CiudadesId"] = new SelectList(await repositorioCiudades.DameTodos(), "Id", "Nombre");
+            ViewData["GenerosId"] = new SelectList(await repositorioGeneros.DameTodos(), "Id", "Nombre");
+            ViewData["RepresentantesId"] = new SelectList(await repositorioRepresentantes.DameTodos(), "Id", "NombreCompleto");
             return View();
         }
 
@@ -57,13 +80,13 @@ namespace MvcWebMusica2.Controllers
         {
             if (ModelState.IsValid)
             {
-                context.Add(grupos);
-                await context.SaveChangesAsync();
+                await repositorioGrupos.Agregar(grupos);
+                
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["CiudadesId"] = new SelectList(context.Ciudades, "Id", "Nombre", grupos.CiudadesId);
-            ViewData["GenerosId"] = new SelectList(context.Generos, "Id", "Nombre", grupos.GenerosId);
-            ViewData["RepresentantesId"] = new SelectList(context.Representantes, "Id", "NombreCompleto", grupos.RepresentantesId);
+            ViewData["CiudadesId"] = new SelectList(await repositorioCiudades.DameTodos(), "Id", "Nombre", grupos.CiudadesId);
+            ViewData["GenerosId"] = new SelectList(await repositorioGeneros.DameTodos(), "Id", "Nombre", grupos.GenerosId);
+            ViewData["RepresentantesId"] = new SelectList(await repositorioRepresentantes.DameTodos(), "Id", "NombreCompleto", grupos.RepresentantesId);
             return View(grupos);
         }
 
@@ -75,14 +98,14 @@ namespace MvcWebMusica2.Controllers
                 return NotFound();
             }
 
-            var grupos = await context.Grupos.FindAsync(id);
+            var grupos = await repositorioGrupos.DameUno(id);
             if (grupos == null)
             {
                 return NotFound();
             }
-            ViewData["CiudadesId"] = new SelectList(context.Ciudades, "Id", "Nombre", grupos.CiudadesId);
-            ViewData["GenerosId"] = new SelectList(context.Generos, "Id", "Nombre", grupos.GenerosId);
-            ViewData["RepresentantesId"] = new SelectList(context.Representantes, "Id", "NombreCompleto", grupos.RepresentantesId);
+            ViewData["CiudadesId"] = new SelectList(await repositorioCiudades.DameTodos(), "Id", "Nombre", grupos.CiudadesId);
+            ViewData["GenerosId"] = new SelectList(await repositorioGeneros.DameTodos(), "Id", "Nombre", grupos.GenerosId);
+            ViewData["RepresentantesId"] = new SelectList(await repositorioRepresentantes.DameTodos(), "Id", "NombreCompleto", grupos.RepresentantesId);
             return View(grupos);
         }
 
@@ -102,8 +125,7 @@ namespace MvcWebMusica2.Controllers
             {
                 try
                 {
-                    context.Update(grupos);
-                    await context.SaveChangesAsync();
+                    await repositorioGrupos.Modificar(id, grupos);
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -118,9 +140,9 @@ namespace MvcWebMusica2.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["CiudadesId"] = new SelectList(context.Ciudades, "Id", "Nombre", grupos.CiudadesId);
-            ViewData["GenerosId"] = new SelectList(context.Generos, "Id", "Nombre", grupos.GenerosId);
-            ViewData["RepresentantesId"] = new SelectList(context.Representantes, "Id", "NombreCompleto", grupos.RepresentantesId);
+            ViewData["CiudadesId"] = new SelectList(await repositorioCiudades.DameTodos(), "Id", "Nombre", grupos.CiudadesId);
+            ViewData["GenerosId"] = new SelectList(await repositorioGeneros.DameTodos(), "Id", "Nombre", grupos.GenerosId);
+            ViewData["RepresentantesId"] = new SelectList(await repositorioRepresentantes.DameTodos(), "Id", "NombreCompleto", grupos.RepresentantesId);
             return View(grupos);
         }
 
@@ -132,14 +154,16 @@ namespace MvcWebMusica2.Controllers
                 return NotFound();
             }
 
-            var grupos = await context.Grupos
-                .Include(g => g.Ciudades)
-                .Include(g => g.Generos)
-                .Include(g => g.Representantes)
-                .FirstOrDefaultAsync(m => m.Id == id);
+            var grupos = await repositorioGrupos.DameUno(id);
             if (grupos == null)
             {
                 return NotFound();
+            }
+            else
+            {
+                grupos.Ciudades = await repositorioCiudades.DameUno(grupos.CiudadesId);
+                grupos.Generos = await repositorioGeneros.DameUno(grupos.GenerosId);
+                grupos.Representantes = await repositorioRepresentantes.DameUno(grupos.RepresentantesId);
             }
 
             return View(grupos);
@@ -150,19 +174,18 @@ namespace MvcWebMusica2.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var grupos = await context.Grupos.FindAsync(id);
+            var grupos = await repositorioGrupos.DameUno(id);
             if (grupos != null)
             {
-                context.Grupos.Remove(grupos);
+                repositorioGrupos.Borrar(id);
             }
 
-            await context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
         private bool GruposExists(int id)
         {
-            return context.Grupos.Any(e => e.Id == id);
+            return repositorioGrupos.DameUno(id) != null;
         }
     }
 }

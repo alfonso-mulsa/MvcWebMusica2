@@ -2,8 +2,8 @@
 
 namespace MvcWebMusica2.Services.Specification
 {
-    public interface IGrupoSpecification
+    public interface IArtistaSpecification
     {
-        bool IsValid(Grupos element);
+        bool IsValid(Artistas element);
     }
 }
