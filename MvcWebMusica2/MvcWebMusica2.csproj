@@ -30,6 +30,7 @@
 
   <ItemGroup>
     <_ContentIncludedByDefault Remove="Views\Artistas\ArtistasYFunciones.cshtml" />
+
   </ItemGroup>
 
 </Project>
