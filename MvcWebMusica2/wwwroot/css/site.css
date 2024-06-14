@@ -1,6 +1,3 @@
-/* Font Madimi One */
-@import url('https://fonts.googleapis.com/css2?family=Madimi+One&display=swap');
-
 html {
   font-size: 14px;
 }
@@ -53,31 +50,31 @@ body {
     background-size: cover;
 }
 
-    .masthead h1 {
-        font-family: "Madimi One", sans-serif;
-        font-weight: 400;
-        font-style: normal;
-        font-size: 8rem;
-        background: linear-gradient(to right, #FF0000 20%, #FFF000 80%);
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-        margin: 0;
-        padding: 0;
-    }
+.masthead h1 {
+    font-family: "Madimi One", sans-serif;
+    font-weight: 400;
+    font-style: normal;
+    font-size: 8rem;
+    background: linear-gradient(to right, #FF0000 20%, #FFF000 80%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    margin: 0;
+    padding: 0;
+}
 
-    .masthead h3 {
-        color: burlywood;
-    }
+.masthead h3 {
+    color: burlywood;
+}
 
-    .masthead h1, .masthead h3 {
-        animation-name: animTextoCabecera;
-        animation-duration: 1.2s;
-        animation-timing-function: linear;
-        animation-delay: 0s;
-        animation-iteration-count: 1;
-        animation-direction: normal;
-        animation-fill-mode: both;
-    }
+.masthead h1, .masthead h3 {
+    animation-name: animTextoCabecera;
+    animation-duration: 1.2s;
+    animation-timing-function: linear;
+    animation-delay: 0s;
+    animation-iteration-count: 1;
+    animation-direction: normal;
+    animation-fill-mode: both;
+}
 
 @keyframes animTextoCabecera {
     from {
@@ -101,16 +98,24 @@ body {
 
 /* AÑADIDO */
 /* FUENTES */
+/* Font Madimi One */
+@import url('https://fonts.googleapis.com/css2?family=Madimi+One&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Do+Hyeon&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=PT+Sans:ital,wght@0,400;0,700;1,400;1,700&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Josefin+Sans:ital,wght@0,100..700;1,100..700&display=swap');
 /* 
     Implementar fuentes: 
 
-    Do Hyeon : font-family: "Do Hyeon", sans-serif;     // - texto
-    PT sans : font-family: "PT Sans", sans-serif;       // - título
-    Josefin : font-family: "Josefin Sans", sans-serif;  // - especial
+    Madimi One : font-family: "Madimi One", sans-serif; //
+    Do Hyeon : font-family: "Do Hyeon", sans-serif;     // 
+    PT sans : font-family: "PT Sans", sans-serif;       //
+    Josefin : font-family: "Josefin Sans", sans-serif;  // 
 */
+
+/* Colores */
+.bg-negro {
+    background-color: #202020;
+}
 
 .fa-file-excel:hover {
     color: #085723 !important;
@@ -128,19 +133,19 @@ body {
     transition: .5s ease-in-out;
 }
 
-    .navbar-toggler,
-    .navbar-toggler:focus,
-    .navbar-toggler:active,
-    .navbar-toggler-icon:focus {
-        outline: none;
-        box-shadow: none;
-        border: 0;
-    }
+.navbar-toggler,
+.navbar-toggler:focus,
+.navbar-toggler:active,
+.navbar-toggler-icon:focus {
+    outline: none;
+    box-shadow: none;
+    border: 0;
+}
 
-        .navbar-toggler span {
-            margin: 0;
-            padding: 0;
-        }
+    .navbar-toggler span {
+        margin: 0;
+        padding: 0;
+    }
 
 .toggler-icon {
     display: block;
