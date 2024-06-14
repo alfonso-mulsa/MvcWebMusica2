@@ -17,7 +17,10 @@ namespace MvcWebMusica2.Controllers
         IGenericRepositorio<Artistas> repositorioArtistas,
         IGenericRepositorio<Ciudades> repositorioCiudades,
         IGenericRepositorio<Generos> repositorioGeneros,
-        IGenericRepositorio<Grupos> repositorioGrupos)
+        IGenericRepositorio<Grupos> repositorioGrupos,
+        IGenericRepositorio<FuncionesArtistas> repositorioFuncionesArtistas,
+        IGenericRepositorio<Funciones> repositorioFunciones)
+
         : Controller
     {
         //private readonly GrupoBContext _context;
@@ -31,7 +34,32 @@ namespace MvcWebMusica2.Controllers
                 artista.Ciudades = await repositorioCiudades.DameUno(artista.CiudadesId);
                 artista.Generos = await repositorioGeneros.DameUno(artista.GenerosId);
                 artista.Grupos = await repositorioGrupos.DameUno(artista.GruposId);
+
             }
+            return View(listaArtistas);
+        }
+
+        // GET: Aristas y Funciones
+        public async Task<IActionResult> ArtistasYFunciones()
+        {
+            var listaArtistas = await repositorioArtistas.DameTodos();
+
+            //foreach (var artista in listaArtistas)
+            //{
+            //    artista.FuncionesArtistas = await repositorioFuncionesArtistas.Filtra
+            //        (x => x.ArtistasId == artista.Id);
+            //    //foreach (var funcion in artista.FuncionesArtistas)
+            //    //{
+            //    //    funcion.Funciones = await repositorioFunciones.DameUno(funcion.FuncionesId);
+            //    //}
+
+
+
+            //    //album.Generos = await repositorioGeneros.DameUno(album.GenerosId);
+            //    //album.Grupos = await repositorioGrupos.DameUno(album.GruposId);
+            //    //album.Canciones = await repositorioCanciones.Filtra(x => x.AlbumesId == album.Id);
+            //}
+
             return View(listaArtistas);
         }
 

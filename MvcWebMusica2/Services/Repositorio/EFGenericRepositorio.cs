@@ -36,6 +36,18 @@ namespace MvcWebMusica2.Services.Repositorio
             //return await _context.Set<T>().AsNoTracking().ToListAsync();
         }
 
+        //    Metodo que permite especificar INCLUDE.
+        //public async Task<List<T>> DameTodos(params Expression<Func<T, object>>[] includes)
+        //{
+        //    IQueryable<T> query = _context.Set<T>();
+        //    foreach (var include in includes)
+        //    {
+        //        query = query.Include(include);
+        //    }
+        //    return await query.ToListAsync();
+        //}
+
+
         public async Task<T?> DameUno(int? id)
         {
             if (id == null)

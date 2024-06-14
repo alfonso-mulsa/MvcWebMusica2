@@ -24,4 +24,12 @@
     <Folder Include="Pages\Shared\Components\" />
   </ItemGroup>
 
+  <ItemGroup>
+    <UpToDateCheckInput Remove="Views\Artistas\ArtistasYFunciones.cshtml" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <_ContentIncludedByDefault Remove="Views\Artistas\ArtistasYFunciones.cshtml" />
+  </ItemGroup>
+
 </Project>
