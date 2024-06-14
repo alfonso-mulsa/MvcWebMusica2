@@ -1,11 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data;
-using System.Linq;
-using System.Text.RegularExpressions;
-using System.Threading.Tasks;
+﻿using System.Data;
 using ClosedXML.Excel;
-using DocumentFormat.OpenXml.InkML;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -301,11 +295,11 @@ namespace MvcWebMusica2.Controllers
             DataTable dataTable = new DataTable("Grupos");
             dataTable.Columns.AddRange(new DataColumn[]
             {
-                new DataColumn("Nombre"),
-                new DataColumn("FechaCreacion"),
-                new DataColumn("Ciudades"),
-                new DataColumn("Géneros"),
-                new DataColumn("Representantes")
+                new("Nombre"),
+                new("FechaCreacion"),
+                new("Ciudades"),
+                new("Géneros"),
+                new("Representantes")
             });
 
             foreach (var grupo in grupos)

@@ -1,6 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
-using MvcWebMusica2.Models;
-using System.Linq;
+﻿using MvcWebMusica2.Models;
 using System.Linq.Expressions;
 
 namespace MvcWebMusica2.Services.Repositorio

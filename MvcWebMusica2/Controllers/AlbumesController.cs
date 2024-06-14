@@ -1,16 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Data;
 using ClosedXML.Excel;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.CodeAnalysis;
 using Microsoft.EntityFrameworkCore;
 using MvcWebMusica2.Models;
 using MvcWebMusica2.Services.Repositorio;
-using MvcWebMusica2.ViewModels;
 
 namespace MvcWebMusica2.Controllers
 {
@@ -217,10 +211,10 @@ namespace MvcWebMusica2.Controllers
             DataTable dataTable = new DataTable("Albumes");
             dataTable.Columns.AddRange(new DataColumn[]
             {
-                new DataColumn("Nombre"),
-                new DataColumn("Fecha"),
-                new DataColumn("Generos"),
-                new DataColumn("Grupos")
+                new("Nombre"),
+                new("Fecha"),
+                new("Generos"),
+                new("Grupos")
             });
 
             foreach (var album in albumes)

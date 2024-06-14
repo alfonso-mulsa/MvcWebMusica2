@@ -1,10 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Data;
 using ClosedXML.Excel;
-using DocumentFormat.OpenXml.InkML;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -200,11 +195,11 @@ namespace MvcWebMusica2.Controllers
             DataTable dataTable = new DataTable("Artistas");
             dataTable.Columns.AddRange(new DataColumn[]
             {
-                new DataColumn("Nombre"),
-                new DataColumn("FechaDeNacimiento"),
-                new DataColumn("Ciudades"),
-                new DataColumn("Generos"),
-                new DataColumn("Grupos")
+                new("Nombre"),
+                new("FechaDeNacimiento"),
+                new("Ciudades"),
+                new("Generos"),
+                new("Grupos")
             });
 
             foreach (var artista in artistas)
@@ -214,7 +209,8 @@ namespace MvcWebMusica2.Controllers
                     artista.FechaDeNacimiento,
                     artista.Ciudades.Nombre,
                     artista.Generos.Nombre,
-                    artista.Grupos.Nombre);
+                    artista.Grupos?.Nombre
+                    );
             }
 
             using (XLWorkbook wb = new XLWorkbook())

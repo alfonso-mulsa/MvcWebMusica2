@@ -161,7 +161,7 @@ namespace MvcWebMusica2.Controllers
             DataTable dataTable = new DataTable("Paises");
             dataTable.Columns.AddRange(new DataColumn[]
             {
-                new DataColumn("Nombre")
+                new("Nombre")
             });
 
             foreach (var pais in paises)

@@ -1,10 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Data;
 using ClosedXML.Excel;
-using DocumentFormat.OpenXml.InkML;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -194,10 +189,10 @@ namespace MvcWebMusica2.Controllers
             DataTable dataTable = new DataTable("Giras");
             dataTable.Columns.AddRange(new DataColumn[]
             {
-                new DataColumn("Nombre"),
-                new DataColumn("FechaInicio"),
-                new DataColumn("FechaFin"),
-                new DataColumn("Grupos")
+                new("Nombre"),
+                new("FechaInicio"),
+                new("FechaFin"),
+                new("Grupos")
             });
 
             foreach (var gira in giras)
