@@ -85,36 +85,39 @@
     //    },
     //    colReorder: false,
     //});
-    let tabla1 = new DataTable('.tabla-export', {
-        search: {
-            return: false
-        },
-        ordering: false,
-        language: {
-            lengthMenu: 'Mostrar _MENU_ entradas por página',
-            emptyTable: 'No hay datos disponibles',
-            info: 'Mostrando _START_ a _END_ de _TOTAL_ entradas',
-            infoEmpty: 'Mostrando 0 a 0 de 0 entradas',
-            infoFiltered: '(filtradas de _MAX_ entradas totales)',
-            search: '',
-            searchPlaceholder: 'Filtrar entradas por...',
-            zeroRecords: 'No se encontraron entradas coincidentes.',
-        },
-        layout: {
-            topStart: ['buttons', 'search'],
-            topEnd: 'pageLength',
-            bottomStart: {
-                paging: {
-                    type: 'full_numbers'
-                }
+    let tablaExport = new DataTable('.tabla-export', {
+            search: {
+                return: false
             },
-            bottomEnd: 'info',
-        },
-        colReorder: false,
-    });
-    new DataTable.Buttons(tabla1, {
-        buttons: ['excel', 'pdf']
-    });
+            ordering: false,
+            language: {
+                lengthMenu: 'Mostrar _MENU_ entradas por página',
+                emptyTable: 'No hay datos disponibles',
+                info: 'Mostrando _START_ a _END_ de _TOTAL_ entradas',
+                infoEmpty: 'Mostrando 0 a 0 de 0 entradas',
+                infoFiltered: '(filtradas de _MAX_ entradas totales)',
+                search: '',
+                searchPlaceholder: 'Filtrar entradas por...',
+                zeroRecords: 'No se encontraron entradas coincidentes.',
+            },
+            buttons: ['pdf'],
+            layout: {
+                topStart: ['buttons', 'search'],
+                topEnd: 'pageLength',
+                bottomStart: {
+                    paging: {
+                        type: 'full_numbers'
+                    }
+                },
+                bottomEnd: 'info',
+            },
+            colReorder: false,
+        });
+
+    new DataTable.Buttons(tablaExport, {
+            buttons: ['excel', 'pdf']
+        });
+
     // ***************** Carrusel de fondo *******************
     const imagenes = ['/img/fondos/fondo1-byn.jpg', '/img/fondos/fondo2-byn.jpg', '/img/fondos/fondo3-byn.jpg', '/img/fondos/fondo4-byn.jpg'];
     var numFondo = 1;
