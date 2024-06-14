@@ -7,53 +7,62 @@
 }
 
 <h1 class="text-center">Albumes Y Canciones</h1>
+<div id="btn-export">
+
+</div>
+<script>
+    
+    
+
+    tabla1.buttons().container().appendTo('#btn-export');
+</script>
 
 <table class="table table-bordered border-primary table-hover tabla-export">
     <thead class="bg-dark bg-opacity-75 text-light">
-        <tr>
-            <th class="text-center">
-                @Html.DisplayNameFor(model => model.Nombre)
-            </th>
-            <th class="text-center">
-                @Html.DisplayNameFor(model => model.Grupos)
-            </th>
-            <th class="text-center">
-                @Html.DisplayNameFor(model => model.Fecha)
-            </th>
-            <th class="text-center">
-                @Html.DisplayNameFor(model => model.Generos)
-            </th>
-            <th class="text-center">
-                @Html.DisplayNameFor(model => model.Canciones)
-            </th>
-        </tr>
+    <tr>
+        <th class="text-center">
+            @Html.DisplayNameFor(model => model.Nombre)
+        </th>
+        <th class="text-center">
+            @Html.DisplayNameFor(model => model.Grupos)
+        </th>
+        <th class="text-center">
+            @Html.DisplayNameFor(model => model.Fecha)
+        </th>
+        <th class="text-center">
+            @Html.DisplayNameFor(model => model.Generos)
+        </th>
+        <th class="text-center">
+            @Html.DisplayNameFor(model => model.Canciones)
+        </th>
+    </tr>
     </thead>
     <tbody>
-        @foreach (var item in Model)
-        {
-            <tr class="bg-info bg-opacity-25">
-                <td class="align-middle">
-                    @Html.DisplayFor(modelItem => item.Nombre)
-                </td>
-                <td class="align-middle">
-                    @Html.DisplayFor(modelItem => item.Grupos!.Nombre)
-                </td>
-                <td class="text-center align-middle">
-                    @Html.DisplayFor(modelItem => item.Fecha)
-                </td>
-                <td class="text-center align-middle">
-                    @Html.DisplayFor(modelItem => item.Generos!.Nombre)
-                </td>
-                <td>
-                    @await Component.InvokeAsync("Canciones", new CancionesPorAlbumSpecification(item.Id))
-                </td>
-            </tr>
-            @* <tr>
+    @foreach (var item in Model)
+    {
+        <tr class="bg-info bg-opacity-25">
+            <td class="align-middle">
+                @Html.DisplayFor(modelItem => item.Nombre)
+            </td>
+            <td class="align-middle">
+                @Html.DisplayFor(modelItem => item.Grupos!.Nombre)
+            </td>
+            <td class="text-center align-middle">
+                @Html.DisplayFor(modelItem => item.Fecha)
+            </td>
+            <td class="text-center align-middle">
+                @Html.DisplayFor(modelItem => item.Generos!.Nombre)
+            </td>
+            <td>
+                @await Component.InvokeAsync("Canciones", new CancionesPorAlbumSpecification(item.Id))
+            </td>
+        </tr>
+        @* <tr>
         <td colspan="3" class="border-end-0">
         @await Component.InvokeAsync("Canciones", new CancionesPorAlbumSpecification(item.Id))
         </td>
         <td class="border-start-0"></td>
         </tr> *@
-        }
+    }
     </tbody>
 </table>
