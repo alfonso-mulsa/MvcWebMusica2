@@ -1,37 +1,59 @@
-﻿@using Microsoft.AspNetCore.Mvc.TagHelpers
-@model IEnumerable<MvcWebMusica2.Models.Artistas>
+﻿@* ﻿@using MvcWebMusica2.Services.Specification *@
+@using MvcWebMusica2.Services.Specification
+@model IEnumerable<MvcWebMusica2.Models.Albumes>
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Albumes Y Canciones";
 }
 
-<h1>Index</h1>
+<h1 class="text-center">Albumes Y Canciones</h1>
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
-<table class="table">
-    <thead>
-    <tr>
-        <th>
-            @Html.DisplayNameFor(model => model.Nombre)
-        </th>
-        <th></th>
-    </tr>
+<table class="table table-bordered border-primary table-hover tabla-sin-orden">
+    <thead class="bg-dark bg-opacity-75 text-light">
+        <tr>
+            <th class="text-center">
+                @Html.DisplayNameFor(model => model.Nombre)
+            </th>
+            <th class="text-center">
+                @Html.DisplayNameFor(model => model.Grupos)
+            </th>
+            <th class="text-center">
+                @Html.DisplayNameFor(model => model.Fecha)
+            </th>
+            <th class="text-center">
+                @Html.DisplayNameFor(model => model.Generos)
+            </th>
+            <th class="text-center">
+                @Html.DisplayNameFor(model => model.Canciones)
+            </th>
+        </tr>
     </thead>
     <tbody>
-    @foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Nombre)
-
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
-            </td>
-        </tr>
-    }
+        @foreach (var item in Model)
+        {
+            <tr class="bg-info bg-opacity-25">
+                <td class="align-middle">
+                    @Html.DisplayFor(modelItem => item.Nombre)
+                </td>
+                <td class="align-middle">
+                    @Html.DisplayFor(modelItem => item.Grupos!.Nombre)
+                </td>
+                <td class="text-center align-middle">
+                    @Html.DisplayFor(modelItem => item.Fecha)
+                </td>
+                <td class="text-center align-middle">
+                    @Html.DisplayFor(modelItem => item.Generos!.Nombre)
+                </td>
+                <td>
+                    @await Component.InvokeAsync("Canciones", new CancionesPorAlbumSpecification(item.Id))
+                </td>
+            </tr>
+            @* <tr>
+        <td colspan="3" class="border-end-0">
+        @await Component.InvokeAsync("Canciones", new CancionesPorAlbumSpecification(item.Id))
+        </td>
+        <td class="border-start-0"></td>
+        </tr> *@
+        }
     </tbody>
 </table>

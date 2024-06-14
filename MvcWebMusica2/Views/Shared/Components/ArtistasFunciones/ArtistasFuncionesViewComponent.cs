@@ -10,9 +10,15 @@ namespace MvcWebMusica2.Views.Shared.Components
     {
         public async Task<IViewComponentResult> InvokeAsync(IFuncionSpecification especificacion)
         {
+
+
+            //var items = await coleccion.DameTodos
+            //    (x => x.Artistas, x => x.Funciones);
+
             var items = await coleccion.DameTodos();
             var itemsFiltrados = items.Where(especificacion.IsValid);
             return View(itemsFiltrados);
+
         }
     }
 }

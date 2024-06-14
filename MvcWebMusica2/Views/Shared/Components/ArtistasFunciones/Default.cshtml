@@ -4,10 +4,10 @@
     <thead>
     <tr>
         <th>
-            @Html.DisplayNameFor(model => model.ArtistasId)
+            
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.FuncionesId)
+           
         </th>
     </tr>
     </thead>
@@ -15,10 +15,10 @@
     @foreach (var item in Model) {
         <tr>
             <td>
-                @Html.DisplayFor(modelItem => item.ArtistasId)
+                    
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.FuncionesId)
+                    @Html.DisplayFor(modelItem => item.Funciones.Nombre)
             </td>
         </tr>
     }
