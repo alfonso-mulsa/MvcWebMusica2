@@ -1,10 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Data;
 using ClosedXML.Excel;
-using DocumentFormat.OpenXml.InkML;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -287,7 +282,7 @@ namespace MvcWebMusica2.Controllers
                 funcionArtista.Artistas = await repositorioArtistas.DameUno(funcionArtista.ArtistasId);
                 funcionArtista.Funciones = await repositorioFunciones.DameUno(funcionArtista.FuncionesId);
             }
-            var nombreArchivo = $"FuncionesArtistas.xlsx";
+            var nombreArchivo = "FuncionesArtistas.xlsx";
             return GenerarExcel(nombreArchivo, funcionesArtistas);
         }
 
@@ -296,15 +291,15 @@ namespace MvcWebMusica2.Controllers
             DataTable dataTable = new DataTable("FuncionesArtistas");
             dataTable.Columns.AddRange(new DataColumn[]
             {
-                new DataColumn("Artistas"),
-                new DataColumn("Funciones")
+                new("Artistas"),
+                new("Funciones")
             });
 
             foreach (var funcionesArtista in funcionesArtistas)
             {
                 dataTable.Rows.Add(
-                    funcionesArtista.Artistas.Nombre,
-                    funcionesArtista.Funciones.Nombre);
+                    funcionesArtista.Artistas?.Nombre,
+                    funcionesArtista.Funciones?.Nombre);
             }
 
             using (XLWorkbook wb = new XLWorkbook())

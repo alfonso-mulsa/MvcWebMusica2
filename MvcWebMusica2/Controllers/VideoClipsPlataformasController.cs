@@ -1,10 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Data;
 using ClosedXML.Excel;
-using DocumentFormat.OpenXml.InkML;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -287,7 +282,7 @@ namespace MvcWebMusica2.Controllers
                 videoClipPlataforma.Plataformas = await repositorioPlataformas.DameUno(videoClipPlataforma.PlataformasId);
                 videoClipPlataforma.VideoClips = await repositorioVideoClips.DameUno(videoClipPlataforma.VideoClipsId);
             }
-            var nombreArchivo = $"VideoclipsPlataformas.xlsx";
+            var nombreArchivo = "VideoclipsPlataformas.xlsx";
             return GenerarExcel(nombreArchivo, videoClipsPlataformas);
         }
 
@@ -296,17 +291,17 @@ namespace MvcWebMusica2.Controllers
             DataTable dataTable = new DataTable("VideoClipsPlataformas");
             dataTable.Columns.AddRange(new DataColumn[]
             {
-                new DataColumn("Url"),
-                new DataColumn("Plataformas"),
-                new DataColumn("VideClips")
+                new("Url"),
+                new("Plataformas"),
+                new("VideClips")
             });
 
             foreach (var videoClipPlataformas in videoClipsPlataformas)
             {
                 dataTable.Rows.Add(
                     videoClipPlataformas.url,
-                    videoClipPlataformas.Plataformas.Nombre,
-                    videoClipPlataformas.VideoClips.Id);
+                    videoClipPlataformas.Plataformas?.Nombre,
+                    videoClipPlataformas.VideoClips?.Id);
             }
 
             using (XLWorkbook wb = new XLWorkbook())

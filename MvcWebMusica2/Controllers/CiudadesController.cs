@@ -1,10 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Data;
 using ClosedXML.Excel;
-using DocumentFormat.OpenXml.InkML;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -271,7 +266,7 @@ namespace MvcWebMusica2.Controllers
             {
                 ciudad.Paises = await repositorioPaises.DameUno(ciudad.PaisesID);
             }
-            var nombreArchivo = $"Ciudades.xlsx";
+            var nombreArchivo = "Ciudades.xlsx";
             return GenerarExcel(nombreArchivo, ciudades);
         }
 
@@ -280,15 +275,15 @@ namespace MvcWebMusica2.Controllers
             DataTable dataTable = new DataTable("Ciudades");
             dataTable.Columns.AddRange(new DataColumn[]
             {
-                new DataColumn("Nombre"),
-                new DataColumn("Paises"),
+                new("Nombre"),
+                new("Paises"),
             });
 
             foreach (var ciudad in ciudades)
             {
                 dataTable.Rows.Add(
                     ciudad.Nombre,
-                    ciudad.Paises.Nombre);
+                    ciudad.Paises?.Nombre);
             }
 
             using (XLWorkbook wb = new XLWorkbook())

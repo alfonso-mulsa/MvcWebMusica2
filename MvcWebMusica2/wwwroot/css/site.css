@@ -112,11 +112,6 @@ body {
     Josefin : font-family: "Josefin Sans", sans-serif;  // 
 */
 
-/* Colores */
-.bg-negro {
-    background-color: #202020;
-}
-
 .fa-file-excel:hover {
     color: #085723 !important;
 }
@@ -142,10 +137,10 @@ body {
     border: 0;
 }
 
-    .navbar-toggler span {
-        margin: 0;
-        padding: 0;
-    }
+.navbar-toggler span {
+    margin: 0;
+    padding: 0;
+}
 
 .toggler-icon {
     display: block;

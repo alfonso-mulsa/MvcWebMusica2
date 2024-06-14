@@ -1,12 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Data;
 using ClosedXML.Excel;
-using DocumentFormat.OpenXml.InkML;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using MvcWebMusica2.Models;
 using MvcWebMusica2.Services.Repositorio;
@@ -41,25 +35,40 @@ namespace MvcWebMusica2.Controllers
         }
 
         // GET: Plataformas/Create
-        public async Task<IActionResult> Create()
+        public IActionResult Create()
         {
             return View();
         }
+        
+        //public async Task<IActionResult> Create()
+        //{
+        //    return View();
+        //}
 
         // POST: Plataformas/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Nombre")] Plataformas plataformas)
+        public Task<IActionResult> Create([Bind("Id,Nombre")] Plataformas plataformas)
         {
             if (ModelState.IsValid)
             {
                 repositorioPlataformas.Agregar(plataformas);
-                return RedirectToAction(nameof(Index));
+                return Task.FromResult<IActionResult>(RedirectToAction(nameof(Index)));
             }
-            return View(plataformas);
+            return Task.FromResult<IActionResult>(View(plataformas));
         }
+
+        //public async Task<IActionResult> Create([Bind("Id,Nombre")] Plataformas plataformas)
+        //{
+        //    if (ModelState.IsValid)
+        //    {
+        //        repositorioPlataformas.Agregar(plataformas);
+        //        return RedirectToAction(nameof(Index));
+        //    }
+        //    return View(plataformas);
+        //}
 
         // GET: Plataformas/Edit/5
         public async Task<IActionResult> Edit(int? id)
@@ -151,7 +160,7 @@ namespace MvcWebMusica2.Controllers
         public async Task<FileResult> DescargarExcel()
         {
             var plataformas = await repositorioPlataformas.DameTodos();
-            var nombreArchivo = $"Plataformas.xlsx";
+            var nombreArchivo = "Plataformas.xlsx";
             return GenerarExcel(nombreArchivo, plataformas);
         }
 
@@ -160,7 +169,7 @@ namespace MvcWebMusica2.Controllers
             DataTable dataTable = new DataTable("Plataformas");
             dataTable.Columns.AddRange(new DataColumn[]
             {
-                new DataColumn("Nombre")
+                new("Nombre")
             });
 
             foreach (var plataforma in plataformas)

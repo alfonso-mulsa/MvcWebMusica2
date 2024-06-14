@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-
-namespace MvcWebMusica2.Models;
+﻿namespace MvcWebMusica2.Models;
 
 public partial class Albumes
 {

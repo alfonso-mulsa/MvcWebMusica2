@@ -1,16 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Data;
 using ClosedXML.Excel;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.CodeAnalysis;
 using Microsoft.EntityFrameworkCore;
 using MvcWebMusica2.Models;
 using MvcWebMusica2.Services.Repositorio;
-using MvcWebMusica2.ViewModels;
 
 namespace MvcWebMusica2.Controllers
 {
@@ -208,7 +202,7 @@ namespace MvcWebMusica2.Controllers
                 album.Generos = await repositorioGeneros.DameUno(album.GenerosId);
                 album.Grupos = await repositorioGrupos.DameUno(album.GruposId);
             }
-            var nombreArchivo = $"Albumes.xlsx";
+            var nombreArchivo = "Albumes.xlsx";
             return GenerarExcel(nombreArchivo, albumes);
         }
 
@@ -217,10 +211,10 @@ namespace MvcWebMusica2.Controllers
             DataTable dataTable = new DataTable("Albumes");
             dataTable.Columns.AddRange(new DataColumn[]
             {
-                new DataColumn("Nombre"),
-                new DataColumn("Fecha"),
-                new DataColumn("Generos"),
-                new DataColumn("Grupos")
+                new("Nombre"),
+                new("Fecha"),
+                new("Generos"),
+                new("Grupos")
             });
 
             foreach (var album in albumes)
@@ -228,8 +222,8 @@ namespace MvcWebMusica2.Controllers
                 dataTable.Rows.Add(
                     album.Nombre,
                     album.Fecha,
-                    album.Generos.Nombre,
-                    album.Grupos.Nombre);
+                    album.Generos?.Nombre,
+                    album.Grupos?.Nombre);
             }
 
             using (XLWorkbook wb = new XLWorkbook())

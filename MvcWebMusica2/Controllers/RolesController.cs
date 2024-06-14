@@ -1,12 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Data;
 using ClosedXML.Excel;
-using DocumentFormat.OpenXml.InkML;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using MvcWebMusica2.Models;
 using MvcWebMusica2.Services.Repositorio;
@@ -41,7 +35,7 @@ namespace MvcWebMusica2.Controllers
         }
 
         // GET: Roles/Create
-        public async Task<IActionResult> Create()
+        public IActionResult Create()
         {
             return View();
         }
@@ -151,7 +145,7 @@ namespace MvcWebMusica2.Controllers
         public async Task<FileResult> DescargarExcel()
         {
             var roles = await repositorioRoles.DameTodos();
-            var nombreArchivo = $"Roles.xlsx";
+            var nombreArchivo = "Roles.xlsx";
             return GenerarExcel(nombreArchivo, roles);
         }
 
@@ -160,7 +154,7 @@ namespace MvcWebMusica2.Controllers
             DataTable dataTable = new DataTable("Roles");
             dataTable.Columns.AddRange(new DataColumn[]
             {
-                new DataColumn("Descripcion")
+                new("Descripcion")
             });
 
             foreach (var rol in roles)
