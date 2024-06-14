@@ -37,6 +37,16 @@ namespace MvcWebMusica2.Controllers
 
         }
 
+
+        public async Task<IActionResult> ArtistasYGrupos()
+        {
+
+            var listaGrupos = await repositorioGrupos.DameTodos();
+            return View(listaGrupos);
+
+        }
+
+
         // GET: Grupos/Details/5
         public async Task<IActionResult> Details(int? id)
         {
@@ -72,9 +82,9 @@ namespace MvcWebMusica2.Controllers
             }
             else
             {
-                grupos.Ciudades = await repositorioCiudades.DameUno(grupos.CiudadesId);
-                grupos.Generos = await repositorioGeneros.DameUno(grupos.GenerosId);
-                grupos.Representantes = await repositorioRepresentantes.DameUno(grupos.RepresentantesId);
+                grupo.Ciudades = await repositorioCiudades.DameUno(grupo.CiudadesId);
+                grupo.Generos = await repositorioGeneros.DameUno(grupo.GenerosId);
+                grupo.Representantes = await repositorioRepresentantes.DameUno(grupo.RepresentantesId);
             }
 
             grupo.Ciudades = await repositorioCiudades.DameUno(grupo.CiudadesId);
@@ -267,9 +277,9 @@ namespace MvcWebMusica2.Controllers
             }
             else
             {
-                grupos.Ciudades = await repositorioCiudades.DameUno(grupos.CiudadesId);
-                grupos.Generos = await repositorioGeneros.DameUno(grupos.GenerosId);
-                grupos.Representantes = await repositorioRepresentantes.DameUno(grupos.RepresentantesId);
+                grupo.Ciudades = await repositorioCiudades.DameUno(grupo.CiudadesId);
+                grupo.Generos = await repositorioGeneros.DameUno(grupo.GenerosId);
+                grupo.Representantes = await repositorioRepresentantes.DameUno(grupo.RepresentantesId);
             }
 
             ViewData["CiudadesId"] = new SelectList(await repositorioCiudades.DameTodos(), "Id", "Nombre");
