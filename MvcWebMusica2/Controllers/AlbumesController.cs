@@ -206,16 +206,15 @@ namespace MvcWebMusica2.Controllers
             return GenerarExcel(nombreArchivo, albumes);
         }
 
-        private FileResult GenerarExcel(string nombreArchivo, IEnumerable<Albumes> albumes)
+        private FileContentResult GenerarExcel(string nombreArchivo, IEnumerable<Albumes> albumes)
         {
-            DataTable dataTable = new DataTable("Albumes");
-            dataTable.Columns.AddRange(new DataColumn[]
-            {
+            DataTable dataTable = new("Albumes");
+            dataTable.Columns.AddRange([
                 new("Nombre"),
                 new("Fecha"),
                 new("Generos"),
                 new("Grupos")
-            });
+            ]);
 
             foreach (var album in albumes)
             {
@@ -226,18 +225,14 @@ namespace MvcWebMusica2.Controllers
                     album.Grupos?.Nombre);
             }
 
-            using (XLWorkbook wb = new XLWorkbook())
-            {
-                wb.Worksheets.Add(dataTable);
+            using XLWorkbook wb = new();
+            wb.Worksheets.Add(dataTable);
 
-                using (MemoryStream stream = new MemoryStream())
-                {
-                    wb.SaveAs(stream);
-                    return File(stream.ToArray(),
-                        "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
-                        nombreArchivo);
-                }
-            }
+            using MemoryStream stream = new();
+            wb.SaveAs(stream);
+            return File(stream.ToArray(),
+                "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+                nombreArchivo);
         }
     }
 }

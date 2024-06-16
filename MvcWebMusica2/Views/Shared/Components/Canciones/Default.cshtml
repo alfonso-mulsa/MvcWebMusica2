@@ -59,13 +59,13 @@
             }
 
             <tr>
-                <td class=@TempData["BordeInferior"]>
+                <td class=@TempData["BordeInferior"] width="60%">
                     @Html.DisplayFor(modelItem => item.Titulo)
                 </td>
-                <td class="text-center @TempData["BordeInferior"]">
+                    <td class="text-center @TempData["BordeInferior"]" width="20%">
                     @Html.DisplayFor(modelItem => item.Duracion)
                 </td>
-                <td class="text-center @TempData["BordeInferior"]">
+                    <td class="text-center @TempData["BordeInferior"]" width="20%">
                     @Html.Raw(TempData["CeldaSingle"])
                 </td>
             </tr>
