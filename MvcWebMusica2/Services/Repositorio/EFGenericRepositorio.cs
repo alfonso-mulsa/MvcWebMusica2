@@ -37,9 +37,9 @@ namespace MvcWebMusica2.Services.Repositorio
         //    //return await _context.Set<T>().AsNoTracking().ToListAsync();
         //}
 
-        public async Task<List<T>> DameTodos()
+        public Task<List<T>> DameTodos()
         {
-            return _context.Set<T>().AsParallel().ToList();
+            return Task.FromResult(_context.Set<T>().AsParallel().ToList());
             //return await _context.Set<T>().AsNoTracking().ToListAsync();
         }
 

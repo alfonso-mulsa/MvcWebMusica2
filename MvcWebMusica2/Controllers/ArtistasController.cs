@@ -12,9 +12,7 @@ namespace MvcWebMusica2.Controllers
         IGenericRepositorio<Artistas> repositorioArtistas,
         IGenericRepositorio<Ciudades> repositorioCiudades,
         IGenericRepositorio<Generos> repositorioGeneros,
-        IGenericRepositorio<Grupos> repositorioGrupos,
-        IGenericRepositorio<FuncionesArtistas> repositorioFuncionesArtistas,
-        IGenericRepositorio<Funciones> repositorioFunciones)
+        IGenericRepositorio<Grupos> repositorioGrupos)
         : Controller
     {
         //private readonly GrupoBContext _context;
