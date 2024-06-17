@@ -103,7 +103,7 @@ namespace MvcWebMusica2.Controllers
                 return RedirectToAction(nameof(Index));
             }
             ViewData["PlataformaId"] = new SelectList(await repositorioPlataformas.DameTodos(), "Id", "Nombre", videoClipsPlataformas.PlataformasId);
-            ViewData["VideoClipId"] = new SelectList(await repositorioVideoClips.DameTodos(), "Id", "Canciones", videoClipsPlataformas.VideoClipsId);
+            ViewData["VideoClipsId"] = new SelectList(await repositorioVideoClips.DameTodos(), "Id", "Canciones", videoClipsPlataformas.VideoClipsId);
             return View(videoClipsPlataformas);
         }
 
@@ -135,7 +135,7 @@ namespace MvcWebMusica2.Controllers
                 return NotFound();
             }
             ViewData["PlataformaId"] = new SelectList(await repositorioPlataformas.DameTodos(), "Id", "Nombre", videoClipsPlataformas.PlataformasId);
-            ViewData["VideoClipId"] = new SelectList(await repositorioVideoClips.DameTodos(), "Id", "Nombre", videoClipsPlataformas.VideoClipsId);
+            ViewData["VideoClipsId"] = new SelectList(await repositorioVideoClips.DameTodos(), "Id", "Canciones", videoClipsPlataformas.VideoClipsId);
             return View(videoClipsPlataformas);
         }
 
@@ -200,7 +200,7 @@ namespace MvcWebMusica2.Controllers
                 return RedirectToAction(nameof(Index));
             }
             ViewData["PlataformaId"] = new SelectList(await repositorioPlataformas.DameTodos(), "Id", "Nombre", videoClipsPlataformas.PlataformasId);
-            ViewData["VideoClipId"] = new SelectList(await repositorioVideoClips.DameTodos(), "Id", "Nombre", videoClipsPlataformas.VideoClipsId);
+            ViewData["VideoClipsId"] = new SelectList(await repositorioVideoClips.DameTodos(), "Id", "Canciones", videoClipsPlataformas.VideoClipsId);
             return View(videoClipsPlataformas);
         }
 
