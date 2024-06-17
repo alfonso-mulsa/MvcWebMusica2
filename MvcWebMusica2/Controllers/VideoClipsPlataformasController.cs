@@ -11,7 +11,8 @@ namespace MvcWebMusica2.Controllers
     public class VideoClipsPlataformasController(
         IGenericRepositorio<VideoClipsPlataformas> repositorioVideoClipsPlataformas,
         IGenericRepositorio<Plataformas> repositorioPlataformas,
-        IGenericRepositorio<VideoClips> repositorioVideoClips
+        IGenericRepositorio<VideoClips> repositorioVideoClips,
+        IGenericRepositorio<Canciones> repositorioCanciones
         ) : Controller
     {
         // GET: VideoClipsPlataformas
@@ -25,6 +26,7 @@ namespace MvcWebMusica2.Controllers
             {
                 videoClipPlataforma.Plataformas = await repositorioPlataformas.DameUno(videoClipPlataforma.PlataformasId);
                 videoClipPlataforma.VideoClips = await repositorioVideoClips.DameUno(videoClipPlataforma.VideoClipsId);
+                videoClipPlataforma.VideoClips.Canciones = await repositorioCanciones.DameUno(videoClipPlataforma.VideoClips.CancionesId);
             }
             return View(listaVideoClipsPlataformas);
         }
@@ -63,6 +65,7 @@ namespace MvcWebMusica2.Controllers
             {
                 videoClipsPlataformas.Plataformas = await repositorioPlataformas.DameUno(videoClipsPlataformas.PlataformasId);
                 videoClipsPlataformas.VideoClips = await repositorioVideoClips.DameUno(videoClipsPlataformas.VideoClipsId);
+                videoClipsPlataformas.VideoClips.Canciones = await repositorioCanciones.DameUno(videoClipsPlataformas.VideoClips.CancionesId);
             }
 
             return View(videoClipsPlataformas);
