@@ -21,6 +21,7 @@ namespace MvcWebMusica2.Models
         [Required(ErrorMessage = "Campo requerido.")]
         [DisplayName("URL del VideoClip")]
         [RegularExpression(@"[(http(s)?):\/\/(www\.)?a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)", ErrorMessage = "La URL no es válida.")]
+        [DataType(DataType.Url)]
         public string? url { get; set; }
 
         [DisplayName("Plataforma de publicación")]
