@@ -13,12 +13,12 @@ namespace MvcWebMusica2.Controllers
         IGenericRepositorio<Canciones> repositorioCanciones
         ) : Controller
     {
+        private readonly string cancionesId = "CancionesId";
+        private readonly string titulo = "Titulo";
+
         // GET: VideoClips
         public async Task<IActionResult> Index()
         {
-            //var grupoBContext = context.VideoClips.Include(v => v.Canciones);
-            //return View(await grupoBContext.ToListAsync());
-
             var listaVideoClips = await repositorioVideoClips.DameTodos();
             foreach (var videoClip in listaVideoClips)
             {
@@ -30,21 +30,6 @@ namespace MvcWebMusica2.Controllers
         // GET: VideoClips/Details/5
         public async Task<IActionResult> Details(int? id)
         {
-            //if (id == null)
-            //{
-            //    return NotFound();
-            //}
-
-            //var videoClips = await context.VideoClips
-            //    .Include(v => v.Canciones)
-            //    .FirstOrDefaultAsync(m => m.Id == id);
-            //if (videoClips == null)
-            //{
-            //    return NotFound();
-            //}
-
-            //return View(videoClips);
-
             if (id == null)
             {
                 return NotFound();
@@ -67,10 +52,7 @@ namespace MvcWebMusica2.Controllers
         // GET: VideoClips/Create
         public async Task<IActionResult> CreateAsync()
         {
-            //ViewData["CancionesId"] = new SelectList(context.Canciones, "Id", "Titulo");
-            //return View();
-
-            ViewData["CancionesId"] = new SelectList(await repositorioCanciones.DameTodos(), "Id", "Titulo");
+            ViewData[cancionesId] = new SelectList(await repositorioCanciones.DameTodos(), "Id", titulo);
             return View();
         }
 
@@ -81,40 +63,18 @@ namespace MvcWebMusica2.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Id,CancionesId,Fecha")] VideoClips videoClips)
         {
-            //if (ModelState.IsValid)
-            //{
-            //    context.Add(videoClips);
-            //    await context.SaveChangesAsync();
-            //    return RedirectToAction(nameof(Index));
-            //}
-            //ViewData["CancionesId"] = new SelectList(context.Canciones, "Id", "Titulo", videoClips.CancionesId);
-            //return View(videoClips);
-
             if (ModelState.IsValid)
             {
                 await repositorioVideoClips.Agregar(videoClips);
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["CancionesId"] = new SelectList(await repositorioCanciones.DameTodos(), "Id", "Titulo", videoClips.CancionesId);
+            ViewData[cancionesId] = new SelectList(await repositorioCanciones.DameTodos(), "Id", titulo, videoClips.CancionesId);
             return View(videoClips);
         }
 
         // GET: VideoClips/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
-            //if (id == null)
-            //{
-            //    return NotFound();
-            //}
-
-            //var videoClips = await context.VideoClips.FindAsync(id);
-            //if (videoClips == null)
-            //{
-            //    return NotFound();
-            //}
-            //ViewData["CancionesId"] = new SelectList(context.Canciones, "Id", "Titulo", videoClips.CancionesId);
-            //return View(videoClips);
-
             if (id == null)
             {
                 return NotFound();
@@ -125,7 +85,7 @@ namespace MvcWebMusica2.Controllers
             {
                 return NotFound();
             }
-            ViewData["CancionesId"] = new SelectList(await repositorioCanciones.DameTodos(), "Id", "Titulo", videoClips.CancionesId);
+            ViewData[cancionesId] = new SelectList(await repositorioCanciones.DameTodos(), "Id", titulo, videoClips.CancionesId);
             return View(videoClips);
         }
 
@@ -136,34 +96,6 @@ namespace MvcWebMusica2.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("Id,CancionesId,Fecha")] VideoClips videoClips)
         {
-            //if (id != videoClips.Id)
-            //{
-            //    return NotFound();
-            //}
-
-            //if (ModelState.IsValid)
-            //{
-            //    try
-            //    {
-            //        context.Update(videoClips);
-            //        await context.SaveChangesAsync();
-            //    }
-            //    catch (DbUpdateConcurrencyException)
-            //    {
-            //        if (!VideoClipsExists(videoClips.Id))
-            //        {
-            //            return NotFound();
-            //        }
-            //        else
-            //        {
-            //            throw;
-            //        }
-            //    }
-            //    return RedirectToAction(nameof(Index));
-            //}
-            //ViewData["CancionesId"] = new SelectList(context.Canciones, "Id", "Titulo", videoClips.CancionesId);
-            //return View(videoClips);
-
             if (id != videoClips.Id)
             {
                 return NotFound();
@@ -188,28 +120,13 @@ namespace MvcWebMusica2.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["CancionesId"] = new SelectList(await repositorioCanciones.DameTodos(), "Id", "Titulo", videoClips.CancionesId);
+            ViewData[cancionesId] = new SelectList(await repositorioCanciones.DameTodos(), "Id", titulo, videoClips.CancionesId);
             return View(videoClips);
         }
 
         // GET: VideoClips/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
-            //if (id == null)
-            //{
-            //    return NotFound();
-            //}
-
-            //var videoClips = await context.VideoClips
-            //    .Include(v => v.Canciones)
-            //    .FirstOrDefaultAsync(m => m.Id == id);
-            //if (videoClips == null)
-            //{
-            //    return NotFound();
-            //}
-
-            //return View(videoClips);
-
             if (id == null)
             {
                 return NotFound();
@@ -233,15 +150,6 @@ namespace MvcWebMusica2.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            //var videoClips = await context.VideoClips.FindAsync(id);
-            //if (videoClips != null)
-            //{
-            //    context.VideoClips.Remove(videoClips);
-            //}
-
-            //await context.SaveChangesAsync();
-            //return RedirectToAction(nameof(Index));
-
             var videoClips = await repositorioVideoClips.DameUno(id);
             if (videoClips != null)
             {
@@ -253,8 +161,6 @@ namespace MvcWebMusica2.Controllers
 
         private bool VideoClipsExists(int id)
         {
-            //return context.VideoClips.Any(e => e.Id == id);
-
             return repositorioVideoClips.DameUno(id) != null;
         }
 
