@@ -15,6 +15,7 @@ namespace MvcWebMusica2.Controllers
         IGenericRepositorio<Canciones> repositorioCanciones)
         : Controller
     {
+        private readonly string nombre = "Nombre";
         //private readonly GrupoBContext _context;
         //private readonly IListableCancionesAlbumes _listadorCancionesAlbumes;
 
@@ -74,8 +75,8 @@ namespace MvcWebMusica2.Controllers
         // GET: Albumes/Create
         public async Task<IActionResult> Create()
         {
-            ViewData["GenerosId"] = new SelectList(await repositorioGeneros.DameTodos(), "Id", "Nombre");
-            ViewData["GruposId"] = new SelectList(await repositorioGrupos.DameTodos(), "Id", "Nombre");
+            ViewData["GenerosId"] = new SelectList(await repositorioGeneros.DameTodos(), "Id", nombre);
+            ViewData["GruposId"] = new SelectList(await repositorioGrupos.DameTodos(), "Id", nombre);
             return View();
         }
 
@@ -91,8 +92,8 @@ namespace MvcWebMusica2.Controllers
                 await repositorioAlbumes.Agregar(album);
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["GenerosId"] = new SelectList(await repositorioGeneros.DameTodos(), "Id", "Nombre", album.GenerosId);
-            ViewData["GruposId"] = new SelectList(await repositorioGrupos.DameTodos(), "Id", "Nombre", album.GruposId);
+            ViewData["GenerosId"] = new SelectList(await repositorioGeneros.DameTodos(), "Id", nombre, album.GenerosId);
+            ViewData["GruposId"] = new SelectList(await repositorioGrupos.DameTodos(), "Id", nombre, album.GruposId);
             return View(album);
         }
 
@@ -109,8 +110,8 @@ namespace MvcWebMusica2.Controllers
             {
                 return NotFound();
             }
-            ViewData["GenerosId"] = new SelectList(await repositorioGeneros.DameTodos(), "Id", "Nombre", album.GenerosId);
-            ViewData["GruposId"] = new SelectList(await repositorioGrupos.DameTodos(), "Id", "Nombre", album.GruposId);
+            ViewData["GenerosId"] = new SelectList(await repositorioGeneros.DameTodos(), "Id", nombre, album.GenerosId);
+            ViewData["GruposId"] = new SelectList(await repositorioGrupos.DameTodos(), "Id", nombre, album.GruposId);
             return View(album);
         }
 
@@ -145,8 +146,8 @@ namespace MvcWebMusica2.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["GenerosId"] = new SelectList(await repositorioGeneros.DameTodos(), "Id", "Nombre", album.GenerosId);
-            ViewData["GruposId"] = new SelectList(await repositorioGrupos.DameTodos(), "Id", "Nombre", album.GruposId);
+            ViewData["GenerosId"] = new SelectList(await repositorioGeneros.DameTodos(), "Id", nombre, album.GenerosId);
+            ViewData["GruposId"] = new SelectList(await repositorioGrupos.DameTodos(), "Id",nombre, album.GruposId);
             return View(album);
         }
 

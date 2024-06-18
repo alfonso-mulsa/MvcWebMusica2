@@ -14,12 +14,13 @@ namespace MvcWebMusica2.Controllers
         IGenericRepositorio<Giras> repositorioGiras
         ) : Controller
     {
+        private readonly string nombre = "Nombre";
+        private readonly string ciudadesId = "CiudadesId";
+        private readonly string girasId = "GirasId";
+
         // GET: Conciertos
         public async Task<IActionResult> Index()
         {
-            //var grupoBContext = context.Conciertos.Include(c => c.Ciudades).Include(c => c.Giras);
-            //return View(await grupoBContext.ToListAsync());
-
             var listaConciertos = await repositorioConciertos.DameTodos();
             foreach (var concierto in listaConciertos)
             {
@@ -32,22 +33,6 @@ namespace MvcWebMusica2.Controllers
         // GET: Conciertos/Details/5
         public async Task<IActionResult> Details(int? id)
         {
-            //if (id == null)
-            //{
-            //    return NotFound();
-            //}
-
-            //var conciertos = await context.Conciertos
-            //    .Include(c => c.Ciudades)
-            //    .Include(c => c.Giras)
-            //    .FirstOrDefaultAsync(m => m.Id == id);
-            //if (conciertos == null)
-            //{
-            //    return NotFound();
-            //}
-
-            //return View(conciertos);
-
             if (id == null)
             {
                 return NotFound();
@@ -71,12 +56,8 @@ namespace MvcWebMusica2.Controllers
         // GET: Conciertos/Create
         public async Task<IActionResult> CreateAsync()
         {
-            //ViewData["CiudadesId"] = new SelectList(context.Ciudades, "Id", "Nombre");
-            //ViewData["GirasId"] = new SelectList(context.Giras, "Id", "Nombre");
-            //return View();
-
-            ViewData["CiudadesId"] = new SelectList(await repositorioCiudades.DameTodos(), "Id", "Nombre");
-            ViewData["GirasId"] = new SelectList(await repositorioGiras.DameTodos(), "Id", "Nombre");
+            ViewData[ciudadesId] = new SelectList(await repositorioCiudades.DameTodos(), "Id", nombre);
+            ViewData[girasId] = new SelectList(await repositorioGiras.DameTodos(), "Id", nombre);
             return View();
         }
 
@@ -87,43 +68,19 @@ namespace MvcWebMusica2.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Id,GirasId,Fecha,CiudadesId,Direccion")] Conciertos conciertos)
         {
-            //if (ModelState.IsValid)
-            //{
-            //    context.Add(conciertos);
-            //    await context.SaveChangesAsync();
-            //    return RedirectToAction(nameof(Index));
-            //}
-            //ViewData["CiudadesId"] = new SelectList(context.Ciudades, "Id", "Nombre", conciertos.CiudadesId);
-            //ViewData["GirasId"] = new SelectList(context.Giras, "Id", "Nombre", conciertos.GirasId);
-            //return View(conciertos);
-
             if (ModelState.IsValid)
             {
                 await repositorioConciertos.Agregar(conciertos);
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["CiudadesId"] = new SelectList(await repositorioCiudades.DameTodos(), "Id", "Nombre", conciertos.CiudadesId);
-            ViewData["GirasId"] = new SelectList(await repositorioGiras.DameTodos(), "Id", "Nombre", conciertos.GirasId);
+            ViewData[ciudadesId] = new SelectList(await repositorioCiudades.DameTodos(), "Id", nombre, conciertos.CiudadesId);
+            ViewData[girasId] = new SelectList(await repositorioGiras.DameTodos(), "Id", nombre, conciertos.GirasId);
             return View(conciertos);
         }
 
         // GET: Conciertos/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
-            //if (id == null)
-            //{
-            //    return NotFound();
-            //}
-
-            //var conciertos = await context.Conciertos.FindAsync(id);
-            //if (conciertos == null)
-            //{
-            //    return NotFound();
-            //}
-            //ViewData["CiudadesId"] = new SelectList(context.Ciudades, "Id", "Nombre", conciertos.CiudadesId);
-            //ViewData["GirasId"] = new SelectList(context.Giras, "Id", "Nombre", conciertos.GirasId);
-            //return View(conciertos);
-
             if (id == null)
             {
                 return NotFound();
@@ -134,8 +91,8 @@ namespace MvcWebMusica2.Controllers
             {
                 return NotFound();
             }
-            ViewData["CiudadesId"] = new SelectList(await repositorioCiudades.DameTodos(), "Id", "Nombre", concierto.CiudadesId);
-            ViewData["GirasId"] = new SelectList(await repositorioGiras.DameTodos(), "Id", "Nombre", concierto.GirasId);
+            ViewData[ciudadesId] = new SelectList(await repositorioCiudades.DameTodos(), "Id", nombre, concierto.CiudadesId);
+            ViewData[girasId] = new SelectList(await repositorioGiras.DameTodos(), "Id", nombre, concierto.GirasId);
             return View(concierto);
         }
 
@@ -146,35 +103,6 @@ namespace MvcWebMusica2.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("Id,GirasId,Fecha,CiudadesId,Direccion")] Conciertos conciertos)
         {
-            //if (id != conciertos.Id)
-            //{
-            //    return NotFound();
-            //}
-
-            //if (ModelState.IsValid)
-            //{
-            //    try
-            //    {
-            //        context.Update(conciertos);
-            //        await context.SaveChangesAsync();
-            //    }
-            //    catch (DbUpdateConcurrencyException)
-            //    {
-            //        if (!ConciertosExists(conciertos.Id))
-            //        {
-            //            return NotFound();
-            //        }
-            //        else
-            //        {
-            //            throw;
-            //        }
-            //    }
-            //    return RedirectToAction(nameof(Index));
-            //}
-            //ViewData["CiudadesId"] = new SelectList(context.Ciudades, "Id", "Nombre", conciertos.CiudadesId);
-            //ViewData["GirasId"] = new SelectList(context.Giras, "Id", "Nombre", conciertos.GirasId);
-            //return View(conciertos);
-
             if (id != conciertos.Id)
             {
                 return NotFound();
@@ -199,30 +127,14 @@ namespace MvcWebMusica2.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["CiudadesId"] = new SelectList(await repositorioCiudades.DameTodos(), "Id", "Nombre", conciertos.CiudadesId);
-            ViewData["GirasId"] = new SelectList(await repositorioGiras.DameTodos(), "Id", "Nombre", conciertos.GirasId);
+            ViewData[ciudadesId] = new SelectList(await repositorioCiudades.DameTodos(), "Id", nombre, conciertos.CiudadesId);
+            ViewData[girasId] = new SelectList(await repositorioGiras.DameTodos(), "Id", nombre, conciertos.GirasId);
             return View(conciertos);
         }
 
         // GET: Conciertos/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
-            //if (id == null)
-            //{
-            //    return NotFound();
-            //}
-
-            //var conciertos = await context.Conciertos
-            //    .Include(c => c.Ciudades)
-            //    .Include(c => c.Giras)
-            //    .FirstOrDefaultAsync(m => m.Id == id);
-            //if (conciertos == null)
-            //{
-            //    return NotFound();
-            //}
-
-            //return View(conciertos);
-
             if (id == null)
             {
                 return NotFound();
@@ -248,15 +160,6 @@ namespace MvcWebMusica2.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            //var conciertos = await context.Conciertos.FindAsync(id);
-            //if (conciertos != null)
-            //{
-            //    context.Conciertos.Remove(conciertos);
-            //}
-
-            //await context.SaveChangesAsync();
-            //return RedirectToAction(nameof(Index));
-
             var concierto = await repositorioConciertos.DameUno(id);
             if (concierto != null)
             {
@@ -268,8 +171,6 @@ namespace MvcWebMusica2.Controllers
 
         private bool ConciertosExists(int id)
         {
-            //return context.Conciertos.Any(e => e.Id == id);
-
             return repositorioConciertos.DameUno(id) != null;
         }
 

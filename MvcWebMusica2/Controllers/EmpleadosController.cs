@@ -13,12 +13,12 @@ namespace MvcWebMusica2.Controllers
         IGenericRepositorio<Roles> repositorioRoles
         ) : Controller
     {
+        private readonly string descripcion = "Descripcion";
+        private readonly string rolesId = "RolesId";
+
         // GET: Empleados
         public async Task<IActionResult> Index()
         {
-            //var grupoBContext = context.Empleados.Include(e => e.Roles);
-            //return View(await grupoBContext.ToListAsync());
-
             var listaEmpleados = await repositorioEmpleados.DameTodos();
             foreach (var empleado in listaEmpleados)
             {
@@ -30,21 +30,6 @@ namespace MvcWebMusica2.Controllers
         // GET: Empleados/Details/5
         public async Task<IActionResult> Details(int? id)
         {
-            //if (id == null)
-            //{
-            //    return NotFound();
-            //}
-
-            //var empleados = await context.Empleados
-            //    .Include(e => e.Roles)
-            //    .FirstOrDefaultAsync(m => m.Id == id);
-            //if (empleados == null)
-            //{
-            //    return NotFound();
-            //}
-
-            //return View(empleados);
-
             if (id == null)
             {
                 return NotFound();
@@ -67,10 +52,7 @@ namespace MvcWebMusica2.Controllers
         // GET: Empleados/Create
         public async Task<IActionResult> CreateAsync()
         {
-            //ViewData["RolesId"] = new SelectList(context.Roles, "Id", "Descripcion");
-            //return View();
-
-            ViewData["RolesId"] = new SelectList(await repositorioRoles.DameTodos(), "Id", "Descripcion");
+            ViewData[rolesId] = new SelectList(await repositorioRoles.DameTodos(), "Id", descripcion);
             return View();
         }
 
@@ -81,40 +63,18 @@ namespace MvcWebMusica2.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Id,NombreCompleto,RolesId")] Empleados empleados)
         {
-            //if (ModelState.IsValid)
-            //{
-            //    context.Add(empleados);
-            //    await context.SaveChangesAsync();
-            //    return RedirectToAction(nameof(Index));
-            //}
-            //ViewData["RolesId"] = new SelectList(context.Roles, "Id", "Descripcion", empleados.RolesId);
-            //return View(empleados);
-
             if (ModelState.IsValid)
             {
                 await repositorioEmpleados.Agregar(empleados);
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["RolesId"] = new SelectList(await repositorioRoles.DameTodos(), "Id", "Descripcion", empleados.RolesId);
+            ViewData[rolesId] = new SelectList(await repositorioRoles.DameTodos(), "Id", descripcion, empleados.RolesId);
             return View(empleados);
         }
 
         // GET: Empleados/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
-            //if (id == null)
-            //{
-            //    return NotFound();
-            //}
-
-            //var empleados = await context.Empleados.FindAsync(id);
-            //if (empleados == null)
-            //{
-            //    return NotFound();
-            //}
-            //ViewData["RolesId"] = new SelectList(context.Roles, "Id", "Descripcion", empleados.RolesId);
-            //return View(empleados);
-
             if (id == null)
             {
                 return NotFound();
@@ -125,7 +85,7 @@ namespace MvcWebMusica2.Controllers
             {
                 return NotFound();
             }
-            ViewData["RolesId"] = new SelectList(await repositorioRoles.DameTodos(), "Id", "Descripcion", empleado.RolesId);
+            ViewData[rolesId] = new SelectList(await repositorioRoles.DameTodos(), "Id", descripcion, empleado.RolesId);
             return View(empleado);
         }
 
@@ -136,34 +96,6 @@ namespace MvcWebMusica2.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("Id,NombreCompleto,RolesId")] Empleados empleados)
         {
-            //if (id != empleados.Id)
-            //{
-            //    return NotFound();
-            //}
-
-            //if (ModelState.IsValid)
-            //{
-            //    try
-            //    {
-            //        context.Update(empleados);
-            //        await context.SaveChangesAsync();
-            //    }
-            //    catch (DbUpdateConcurrencyException)
-            //    {
-            //        if (!EmpleadosExists(empleados.Id))
-            //        {
-            //            return NotFound();
-            //        }
-            //        else
-            //        {
-            //            throw;
-            //        }
-            //    }
-            //    return RedirectToAction(nameof(Index));
-            //}
-            //ViewData["RolesId"] = new SelectList(context.Roles, "Id", "Descripcion", empleados.RolesId);
-            //return View(empleados);
-
             if (id != empleados.Id)
             {
                 return NotFound();
@@ -188,28 +120,13 @@ namespace MvcWebMusica2.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["RolesId"] = new SelectList(await repositorioRoles.DameTodos(), "Id", "Descripcion", empleados.RolesId);
+            ViewData[rolesId] = new SelectList(await repositorioRoles.DameTodos(), "Id", descripcion, empleados.RolesId);
             return View(empleados);
         }
 
         // GET: Empleados/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
-            //if (id == null)
-            //{
-            //    return NotFound();
-            //}
-
-            //var empleados = await context.Empleados
-            //    .Include(e => e.Roles)
-            //    .FirstOrDefaultAsync(m => m.Id == id);
-            //if (empleados == null)
-            //{
-            //    return NotFound();
-            //}
-
-            //return View(empleados);
-
             if (id == null)
             {
                 return NotFound();
@@ -234,15 +151,6 @@ namespace MvcWebMusica2.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            //var empleados = await context.Empleados.FindAsync(id);
-            //if (empleados != null)
-            //{
-            //    context.Empleados.Remove(empleados);
-            //}
-
-            //await context.SaveChangesAsync();
-            //return RedirectToAction(nameof(Index));
-
             var album = await repositorioEmpleados.DameUno(id);
             if (album != null)
             {
