@@ -11,7 +11,8 @@ namespace MvcWebMusica2.Controllers
     public class VideoClipsPlataformasController(
         IGenericRepositorio<VideoClipsPlataformas> repositorioVideoClipsPlataformas,
         IGenericRepositorio<Plataformas> repositorioPlataformas,
-        IGenericRepositorio<VideoClips> repositorioVideoClips
+        IGenericRepositorio<VideoClips> repositorioVideoClips,
+        IGenericRepositorio<Canciones> repositorioCanciones
         ) : Controller
     {
         // GET: VideoClipsPlataformas
@@ -21,10 +22,11 @@ namespace MvcWebMusica2.Controllers
             //return View(await grupoBContext.ToListAsync());
 
             var listaVideoClipsPlataformas = await repositorioVideoClipsPlataformas.DameTodos();
-            foreach (var videoClipPlataforma in listaVideoClipsPlataformas)
+            foreach (var videoClipPlataformas in listaVideoClipsPlataformas)
             {
-                videoClipPlataforma.Plataformas = await repositorioPlataformas.DameUno(videoClipPlataforma.PlataformasId);
-                videoClipPlataforma.VideoClips = await repositorioVideoClips.DameUno(videoClipPlataforma.VideoClipsId);
+                videoClipPlataformas.Plataformas = await repositorioPlataformas.DameUno(videoClipPlataformas.PlataformasId);
+                videoClipPlataformas.VideoClips = await repositorioVideoClips.DameUno(videoClipPlataformas.VideoClipsId);
+                videoClipPlataformas.VideoClips.Canciones = await repositorioCanciones.DameUno(videoClipPlataformas.VideoClips.CancionesId);
             }
             return View(listaVideoClipsPlataformas);
         }
@@ -63,6 +65,7 @@ namespace MvcWebMusica2.Controllers
             {
                 videoClipsPlataformas.Plataformas = await repositorioPlataformas.DameUno(videoClipsPlataformas.PlataformasId);
                 videoClipsPlataformas.VideoClips = await repositorioVideoClips.DameUno(videoClipsPlataformas.VideoClipsId);
+                videoClipsPlataformas.VideoClips.Canciones = await repositorioCanciones.DameUno(videoClipsPlataformas.VideoClips.CancionesId);
             }
 
             return View(videoClipsPlataformas);
@@ -74,9 +77,13 @@ namespace MvcWebMusica2.Controllers
             //ViewData["PlataformasId"] = new SelectList(context.Plataformas, "Id", "Nombre");
             //ViewData["VideoClipsId"] = new SelectList(context.VideoClips, "Id", "Canciones");
             //return View();
-
+            var listaVideoClips = await repositorioVideoClips.DameTodos();
+            foreach (var item in listaVideoClips)
+            {
+                item.Canciones = await repositorioCanciones.DameUno(item.CancionesId);
+            }
             ViewData["PlataformasId"] = new SelectList(await repositorioPlataformas.DameTodos(), "Id", "Nombre");
-            ViewData["VideoClipsId"] = new SelectList(await repositorioVideoClips.DameTodos(), "Id", "Canciones");
+            ViewData["VideoClipsId"] = new SelectList(listaVideoClips, "Id", "Canciones.Titulo");
             return View();
         }
 
@@ -102,8 +109,14 @@ namespace MvcWebMusica2.Controllers
                 await repositorioVideoClipsPlataformas.Agregar(videoClipsPlataformas);
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["PlataformaId"] = new SelectList(await repositorioPlataformas.DameTodos(), "Id", "Nombre", videoClipsPlataformas.PlataformasId);
-            ViewData["VideoClipsId"] = new SelectList(await repositorioVideoClips.DameTodos(), "Id", "Canciones", videoClipsPlataformas.VideoClipsId);
+
+            var listaVideoClips = await repositorioVideoClips.DameTodos();
+            foreach (var item in listaVideoClips)
+            {
+                item.Canciones = await repositorioCanciones.DameUno(item.CancionesId);
+            }
+            ViewData["PlataformasId"] = new SelectList(await repositorioPlataformas.DameTodos(), "Id", "Nombre", videoClipsPlataformas.PlataformasId);
+            ViewData["VideoClipsId"] = new SelectList(listaVideoClips, "Id", "Canciones.Titulo", videoClipsPlataformas.VideoClipsId);
             return View(videoClipsPlataformas);
         }
 
@@ -134,8 +147,15 @@ namespace MvcWebMusica2.Controllers
             {
                 return NotFound();
             }
-            ViewData["PlataformaId"] = new SelectList(await repositorioPlataformas.DameTodos(), "Id", "Nombre", videoClipsPlataformas.PlataformasId);
-            ViewData["VideoClipsId"] = new SelectList(await repositorioVideoClips.DameTodos(), "Id", "Canciones", videoClipsPlataformas.VideoClipsId);
+
+            var listaVideoClips = await repositorioVideoClips.DameTodos();
+            foreach (var item in listaVideoClips)
+            {
+                item.Canciones = await repositorioCanciones.DameUno(item.CancionesId);
+            }
+            ViewData["PlataformasId"] = new SelectList(await repositorioPlataformas.DameTodos(), "Id", "Nombre", videoClipsPlataformas.PlataformasId);
+            ViewData["VideoClipsId"] = new SelectList(listaVideoClips, "Id", "Canciones.Titulo", videoClipsPlataformas.VideoClipsId);
+            
             return View(videoClipsPlataformas);
         }
 
@@ -199,8 +219,15 @@ namespace MvcWebMusica2.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["PlataformaId"] = new SelectList(await repositorioPlataformas.DameTodos(), "Id", "Nombre", videoClipsPlataformas.PlataformasId);
-            ViewData["VideoClipsId"] = new SelectList(await repositorioVideoClips.DameTodos(), "Id", "Canciones", videoClipsPlataformas.VideoClipsId);
+
+            var listaVideoClips = await repositorioVideoClips.DameTodos();
+            foreach (var item in listaVideoClips)
+            {
+                item.Canciones = await repositorioCanciones.DameUno(item.CancionesId);
+            }
+            ViewData["PlataformasId"] = new SelectList(await repositorioPlataformas.DameTodos(), "Id", "Nombre", videoClipsPlataformas.PlataformasId);
+            ViewData["VideoClipsId"] = new SelectList(listaVideoClips, "Id", "Canciones.Titulo", videoClipsPlataformas.VideoClipsId);
+
             return View(videoClipsPlataformas);
         }
 
@@ -238,6 +265,7 @@ namespace MvcWebMusica2.Controllers
             {
                 videoClipsPlataformas.Plataformas = await repositorioPlataformas.DameUno(videoClipsPlataformas.PlataformasId);
                 videoClipsPlataformas.VideoClips = await repositorioVideoClips.DameUno(videoClipsPlataformas.VideoClipsId);
+                videoClipsPlataformas.VideoClips.Canciones = await repositorioCanciones.DameUno(videoClipsPlataformas.VideoClips.CancionesId);
             }
 
             return View(videoClipsPlataformas);
