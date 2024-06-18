@@ -14,7 +14,7 @@ namespace MvcWebMusica2.Controllers
         ) : Controller
     {
         private readonly string _descripcion = "Descripcion";
-        private readonly string _rolesId = "RolesId";
+        private const string RolesId = "RolesId";
 
         // GET: Empleados
         public async Task<IActionResult> Index()
@@ -52,7 +52,7 @@ namespace MvcWebMusica2.Controllers
         // GET: Empleados/Create
         public async Task<IActionResult> CreateAsync()
         {
-            ViewData[_rolesId] = new SelectList(await repositorioRoles.DameTodos(), "Id", _descripcion);
+            ViewData[RolesId] = new SelectList(await repositorioRoles.DameTodos(), "Id", _descripcion);
             return View();
         }
 
@@ -68,7 +68,7 @@ namespace MvcWebMusica2.Controllers
                 await repositorioEmpleados.Agregar(empleados);
                 return RedirectToAction(nameof(Index));
             }
-            ViewData[_rolesId] = new SelectList(await repositorioRoles.DameTodos(), "Id", _descripcion, empleados.RolesId);
+            ViewData[RolesId] = new SelectList(await repositorioRoles.DameTodos(), "Id", _descripcion, empleados.RolesId);
             return View(empleados);
         }
 
@@ -85,7 +85,7 @@ namespace MvcWebMusica2.Controllers
             {
                 return NotFound();
             }
-            ViewData[_rolesId] = new SelectList(await repositorioRoles.DameTodos(), "Id", _descripcion, empleado.RolesId);
+            ViewData[RolesId] = new SelectList(await repositorioRoles.DameTodos(), "Id", _descripcion, empleado.RolesId);
             return View(empleado);
         }
 
@@ -120,7 +120,7 @@ namespace MvcWebMusica2.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData[_rolesId] = new SelectList(await repositorioRoles.DameTodos(), "Id", _descripcion, empleados.RolesId);
+            ViewData[RolesId] = new SelectList(await repositorioRoles.DameTodos(), "Id", _descripcion, empleados.RolesId);
             return View(empleados);
         }
 
