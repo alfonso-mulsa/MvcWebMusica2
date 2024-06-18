@@ -15,9 +15,9 @@ namespace MvcWebMusica2.Services.Repositorio
             return true;
         }
 
-        public async Task<bool> Borrar(int Id)
+        public async Task<bool> Borrar(int id)
         {
-            var elementoABorrar = await DameUno(Id);
+            var elementoABorrar = await DameUno(id);
             if (elementoABorrar != null)
             {
                 _context.Set<T>().Remove(elementoABorrar);
@@ -71,7 +71,7 @@ namespace MvcWebMusica2.Services.Repositorio
             //return await _context.Set<T>().Where<T>(predicado).ToListAsync();
         }
 
-        public async Task<int> Modificar(int Id, T element)
+        public async Task<int> Modificar(int id, T element)
         {
             _context.Set<T>().Update(element);
             return await _context.SaveChangesAsync();

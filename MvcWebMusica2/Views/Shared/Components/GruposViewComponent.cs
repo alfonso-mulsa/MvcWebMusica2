@@ -7,10 +7,10 @@ namespace MvcWebMusica2.Views.Shared.Components
 {
     public class ArtistasViewComponent(IGenericRepositorio<Artistas> coleccion) : ViewComponent
     {
-        public async Task<IViewComponentResult> InvokeAsync(int GrupoId)
+        public async Task<IViewComponentResult> InvokeAsync(int grupoId)
         {
             var items = await coleccion.DameTodos();
-            IArtistaSpecification especificacion = new GrupoSpecification(GrupoId);
+            IArtistaSpecification especificacion = new GrupoSpecification(grupoId);
             var itemsFiltrados = items.Where(especificacion.IsValid);
             return View(itemsFiltrados);
         }

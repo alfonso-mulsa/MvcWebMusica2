@@ -4,6 +4,6 @@ namespace MvcWebMusica2.ViewModels
 {
     public interface IListableCancionesAlbumes
     {
-        List<Canciones> dameCanciones(int albumId);
+        List<Canciones> DameCanciones(int albumId);
     }
 }

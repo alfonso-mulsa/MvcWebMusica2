@@ -5,15 +5,15 @@ namespace MvcWebMusica2.Services.Repositorio
     public interface IGenericRepositorio<T> where T : class
     {
         Task<bool> Agregar(T element);
-        Task<bool> Borrar(int Id);
+        Task<bool> Borrar(int id);
 
         Task<List<T>> DameTodos();
         //  Metodo que permite especificar INCLUDE.
         //Task<List<T>> DameTodos(params Expression<Func<T, object>>[] includes);
 
-        Task<T?> DameUno(int? Id);
+        Task<T?> DameUno(int? id);
         Task<List<T>> Filtra(Expression<Func<T, bool>> predicado);
-        Task<int> Modificar(int Id, T element);
+        Task<int> Modificar(int id, T element);
 
     }
 }

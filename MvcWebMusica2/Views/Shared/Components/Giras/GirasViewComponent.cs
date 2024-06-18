@@ -7,15 +7,15 @@ namespace MvcWebMusica2.Views.Shared.Components.Giras
 {
     public class GirasViewComponent(IGenericRepositorio<Conciertos> coleccion,IGenericRepositorio<Ciudades> colCiudad) : ViewComponent
     {
-        public async Task<IViewComponentResult> InvokeAsync(int GiraId)
+        public async Task<IViewComponentResult> InvokeAsync(int giraId)
         {
             var items = await coleccion.DameTodos();
-            IConciertoSpecification especificacion = new GiraSpecification(GiraId);
-            foreach (var Concierto in items)
+            IConciertoSpecification especificacion = new GiraSpecification(giraId);
+            foreach (var concierto in items)
             {
-                var ciudadEncontrada = await colCiudad.DameUno(Concierto.CiudadesId);
+                var ciudadEncontrada = await colCiudad.DameUno(concierto.CiudadesId);
                 if (ciudadEncontrada != null)
-                    Concierto.Direccion = ciudadEncontrada.Nombre;
+                    concierto.Direccion = ciudadEncontrada.Nombre;
             }
             
             var itemsFiltrados = items.AsParallel().Where(especificacion.IsValid);
