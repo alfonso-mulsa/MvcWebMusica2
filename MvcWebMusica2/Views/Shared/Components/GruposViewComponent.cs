@@ -2,7 +2,6 @@
 using MvcWebMusica2.Models;
 using MvcWebMusica2.Services.Repositorio;
 using MvcWebMusica2.Services.Specification;
-using System.Linq;
 
 namespace MvcWebMusica2.Views.Shared.Components
 {

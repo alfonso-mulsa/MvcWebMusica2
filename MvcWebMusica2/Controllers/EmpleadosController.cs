@@ -109,7 +109,7 @@ namespace MvcWebMusica2.Controllers
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!EmpleadosExists(empleados.Id))
+                    if (!await EmpleadosExists(empleados.Id))
                     {
                         return NotFound();
                     }
@@ -160,11 +160,10 @@ namespace MvcWebMusica2.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-        private bool EmpleadosExists(int id)
+        private async Task<bool> EmpleadosExists(int id)
         {
-            //return context.Empleados.Any(e => e.Id == id);
-
-             return repositorioEmpleados.DameUno(id) != null;
+            var elemento = await repositorioEmpleados.DameTodos();
+            return elemento.Any(e => e.Id == id);
         }
 
         [HttpGet]
@@ -182,11 +181,10 @@ namespace MvcWebMusica2.Controllers
         private FileResult GenerarExcel(string nombreArchivo, IEnumerable<Empleados> empleados)
         {
             DataTable dataTable = new DataTable("Empleados");
-            dataTable.Columns.AddRange(new DataColumn[]
-            {
+            dataTable.Columns.AddRange([
                 new("NombreCompleto"),
                 new("Roles")
-            });
+            ]);
 
             foreach (var empleado in empleados)
             {
@@ -195,18 +193,14 @@ namespace MvcWebMusica2.Controllers
                     empleado.Roles?.Descripcion);
             }
 
-            using (XLWorkbook wb = new XLWorkbook())
-            {
-                wb.Worksheets.Add(dataTable);
+            using XLWorkbook wb = new();
+            wb.Worksheets.Add(dataTable);
 
-                using (MemoryStream stream = new MemoryStream())
-                {
-                    wb.SaveAs(stream);
-                    return File(stream.ToArray(),
-                        "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
-                        nombreArchivo);
-                }
-            }
+            using MemoryStream stream = new();
+            wb.SaveAs(stream);
+            return File(stream.ToArray(),
+                "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+                nombreArchivo);
         }
     }
 }

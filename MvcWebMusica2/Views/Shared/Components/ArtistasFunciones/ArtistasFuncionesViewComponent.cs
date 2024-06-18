@@ -1,10 +1,9 @@
-﻿using MvcWebMusica2.Models;
+﻿using Microsoft.AspNetCore.Mvc;
+using MvcWebMusica2.Models;
 using MvcWebMusica2.Services.Repositorio;
 using MvcWebMusica2.Services.Specification;
-using Microsoft.AspNetCore.Mvc;
-using System.Linq;
 
-namespace MvcWebMusica2.Views.Shared.Components
+namespace MvcWebMusica2.Views.Shared.Components.ArtistasFunciones
 {
     public class ArtistasFuncionesViewComponent (IGenericRepositorio<FuncionesArtistas> coleccion,
         IGenericRepositorio<Funciones> coleccionF): ViewComponent
@@ -17,7 +16,7 @@ namespace MvcWebMusica2.Views.Shared.Components
             //    (x => x.Artistas, x => x.Funciones);
 
             var items = await coleccion.DameTodos();
-            var itemsFiltrados = items.Where(especificacion.IsValid);
+            var itemsFiltrados = items.Where(especificacion.IsValid).ToList();
             foreach (var itemsF in itemsFiltrados)
             {
                 itemsF.Funciones = await coleccionF.DameUno(itemsF.FuncionesId);

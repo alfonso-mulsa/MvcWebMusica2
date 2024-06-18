@@ -135,7 +135,7 @@ namespace MvcWebMusica2.Controllers
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!VideoClipsPlataformasExists(videoClipsPlataformas.Id))
+                    if (!await VideoClipsPlataformasExists(videoClipsPlataformas.Id))
                     {
                         return NotFound();
                     }
@@ -196,8 +196,10 @@ namespace MvcWebMusica2.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-        private bool VideoClipsPlataformasExists(int id)
+        private async Task<bool> VideoClipsPlataformasExists(int id)
         {
+            var elemento = await repositorioVideoClipsPlataformas.DameTodos();
+            return elemento.Any(e => e.Id == id);
             return repositorioVideoClipsPlataformas.DameUno(id) != null;
         }
 

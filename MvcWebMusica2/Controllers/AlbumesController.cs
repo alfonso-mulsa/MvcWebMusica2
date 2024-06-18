@@ -135,7 +135,7 @@ namespace MvcWebMusica2.Controllers
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!AlbumesExists(album.Id))
+                    if (!await AlbumesExists(album.Id))
                     {
                         return NotFound();
                     }
@@ -189,9 +189,10 @@ namespace MvcWebMusica2.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-        private bool AlbumesExists(int id)
+        private async Task<bool> AlbumesExists(int id)
         {
-            return repositorioAlbumes.DameUno(id) != null;
+            var elemento = await repositorioAlbumes.DameTodos();
+            return elemento.Any(e => e.Id == id);
         }
 
         [HttpGet]

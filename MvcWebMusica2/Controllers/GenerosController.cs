@@ -91,7 +91,7 @@ namespace MvcWebMusica2.Controllers
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!GenerosExists(generos.Id))
+                    if (!await GenerosExists(generos.Id))
                     {
                         return NotFound();
                     }
@@ -136,9 +136,10 @@ namespace MvcWebMusica2.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-        private bool GenerosExists(int id)
+        private async Task<bool> GenerosExists(int id)
         {
-            return repositorioGeneros.DameUno(id) != null;
+            var elemento = await repositorioGeneros.DameTodos();
+            return elemento.Any(e => e.Id == id);
         }
 
         [HttpGet]
@@ -151,11 +152,10 @@ namespace MvcWebMusica2.Controllers
 
         private FileResult GenerarExcel(string nombreArchivo, IEnumerable<Generos> generos)
         {
-            DataTable dataTable = new DataTable("Generos");
-            dataTable.Columns.AddRange(new DataColumn[]
-            {
+            DataTable dataTable = new("Generos");
+            dataTable.Columns.AddRange([
                 new("Nombre")
-            });
+            ]);
 
             foreach (var genero in generos)
             {
@@ -163,18 +163,14 @@ namespace MvcWebMusica2.Controllers
                     genero.Nombre);
             }
 
-            using (XLWorkbook wb = new XLWorkbook())
-            {
-                wb.Worksheets.Add(dataTable);
+            using XLWorkbook wb = new();
+            wb.Worksheets.Add(dataTable);
 
-                using (MemoryStream stream = new MemoryStream())
-                {
-                    wb.SaveAs(stream);
-                    return File(stream.ToArray(),
-                        "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
-                        nombreArchivo);
-                }
-            }
+            using MemoryStream stream = new();
+            wb.SaveAs(stream);
+            return File(stream.ToArray(),
+                "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+                nombreArchivo);
         }
     }
 }
