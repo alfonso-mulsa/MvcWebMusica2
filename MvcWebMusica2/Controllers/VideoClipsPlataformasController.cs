@@ -155,6 +155,7 @@ namespace MvcWebMusica2.Controllers
             }
             ViewData["PlataformasId"] = new SelectList(await repositorioPlataformas.DameTodos(), "Id", "Nombre", videoClipsPlataformas.PlataformasId);
             ViewData["VideoClipsId"] = new SelectList(listaVideoClips, "Id", "Canciones.Titulo", videoClipsPlataformas.VideoClipsId);
+            
             return View(videoClipsPlataformas);
         }
 
@@ -226,6 +227,7 @@ namespace MvcWebMusica2.Controllers
             }
             ViewData["PlataformasId"] = new SelectList(await repositorioPlataformas.DameTodos(), "Id", "Nombre", videoClipsPlataformas.PlataformasId);
             ViewData["VideoClipsId"] = new SelectList(listaVideoClips, "Id", "Canciones.Titulo", videoClipsPlataformas.VideoClipsId);
+
             return View(videoClipsPlataformas);
         }
 
