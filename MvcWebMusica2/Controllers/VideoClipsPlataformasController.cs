@@ -200,7 +200,6 @@ namespace MvcWebMusica2.Controllers
         {
             var elemento = await repositorioVideoClipsPlataformas.DameTodos();
             return elemento.Any(e => e.Id == id);
-            return repositorioVideoClipsPlataformas.DameUno(id) != null;
         }
 
         [HttpGet]
