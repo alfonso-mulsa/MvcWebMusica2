@@ -224,11 +224,6 @@ public partial class GrupoBContext : DbContext
                 .HasConstraintName("FK_Representantes_Ciudades");
         });
 
-        //modelBuilder.Entity<Representates>(entity =>
-        //{
-        //    entity.HasNoKey();
-        //});
-
         modelBuilder.Entity<Roles>(entity =>
         {
             entity.Property(e => e.Descripcion)

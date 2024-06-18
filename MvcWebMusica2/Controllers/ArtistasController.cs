@@ -15,7 +15,6 @@ namespace MvcWebMusica2.Controllers
         IGenericRepositorio<Grupos> repositorioGrupos)
         : Controller
     {
-        //private readonly GrupoBContext _context;
         private readonly string _nombre = "Nombre";
 
         // GET: Artistas
@@ -36,23 +35,6 @@ namespace MvcWebMusica2.Controllers
         public async Task<IActionResult> ArtistasYFunciones()
         {
             var listaArtistas = await repositorioArtistas.DameTodos();
-
-            //foreach (var artista in listaArtistas)
-            //{
-            //    artista.FuncionesArtistas = await repositorioFuncionesArtistas.Filtra
-            //        (x => x.ArtistasId == artista.Id);
-            //    //foreach (var funcion in artista.FuncionesArtistas)
-            //    //{
-            //    //    funcion.Funciones = await repositorioFunciones.DameUno(funcion.FuncionesId);
-            //    //}
-
-
-
-            //    //album.Generos = await repositorioGeneros.DameUno(album.GenerosId);
-            //    //album.Grupos = await repositorioGrupos.DameUno(album.GruposId);
-            //    //album.Canciones = await repositorioCanciones.Filtra(x => x.AlbumesId == album.Id);
-            //}
-
             return View(listaArtistas);
         }
 
@@ -149,10 +131,8 @@ namespace MvcWebMusica2.Controllers
                     {
                         return NotFound();
                     }
-                    else
-                    {
-                        throw;
-                    }
+
+                    throw;
                 }
                 return RedirectToAction(nameof(Index));
             }
@@ -217,9 +197,9 @@ namespace MvcWebMusica2.Controllers
             return GenerarExcel(nombreArchivo, artistas);
         }
 
-        private FileResult GenerarExcel(string nombreArchivo, IEnumerable<Artistas> artistas)
+        private FileContentResult GenerarExcel(string nombreArchivo, IEnumerable<Artistas> artistas)
         {
-            DataTable dataTable = new DataTable("Artistas");
+            DataTable dataTable = new("Artistas");
             dataTable.Columns.AddRange([
                 new("Nombre"),
                 new("FechaDeNacimiento"),

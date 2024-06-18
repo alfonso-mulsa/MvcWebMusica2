@@ -41,10 +41,8 @@ namespace MvcWebMusica2.Controllers
             {
                 return NotFound();
             }
-            else
-            {
-                videoClips.Canciones = await repositorioCanciones.DameUno(videoClips.CancionesId);
-            }
+
+            videoClips.Canciones = await repositorioCanciones.DameUno(videoClips.CancionesId);
 
             return View(videoClips);
         }
@@ -113,10 +111,8 @@ namespace MvcWebMusica2.Controllers
                     {
                         return NotFound();
                     }
-                    else
-                    {
-                        throw;
-                    }
+
+                    throw;
                 }
                 return RedirectToAction(nameof(Index));
             }
@@ -137,10 +133,8 @@ namespace MvcWebMusica2.Controllers
             {
                 return NotFound();
             }
-            else
-            {
-                videoClips.Canciones = await repositorioCanciones.DameUno(videoClips.CancionesId);
-            }
+
+            videoClips.Canciones = await repositorioCanciones.DameUno(videoClips.CancionesId);
 
             return View(videoClips);
         }
@@ -177,7 +171,7 @@ namespace MvcWebMusica2.Controllers
             return GenerarExcel(nombreArchivo, videoClips);
         }
 
-        private FileResult GenerarExcel(string nombreArchivo, IEnumerable<VideoClips> videoClips)
+        private FileContentResult GenerarExcel(string nombreArchivo, IEnumerable<VideoClips> videoClips)
         {
             DataTable dataTable = new("VideoClips");
             dataTable.Columns.AddRange([

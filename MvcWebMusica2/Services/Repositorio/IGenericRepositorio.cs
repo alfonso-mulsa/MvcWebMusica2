@@ -6,14 +6,9 @@ namespace MvcWebMusica2.Services.Repositorio
     {
         Task<bool> Agregar(T element);
         Task<bool> Borrar(int id);
-
         Task<List<T>> DameTodos();
-        //  Metodo que permite especificar INCLUDE.
-        //Task<List<T>> DameTodos(params Expression<Func<T, object>>[] includes);
-
         Task<T?> DameUno(int? id);
         Task<List<T>> Filtra(Expression<Func<T, bool>> predicado);
         Task<int> Modificar(int id, T element);
-
     }
 }

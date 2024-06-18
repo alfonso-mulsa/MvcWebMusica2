@@ -44,11 +44,9 @@ namespace MvcWebMusica2.Controllers
             {
                 return NotFound();
             }
-            else
-            {
-                concierto.Ciudades = await repositorioCiudades.DameUno(concierto.CiudadesId);
-                concierto.Giras = await repositorioGiras.DameUno(concierto.GirasId);
-            }
+
+            concierto.Ciudades = await repositorioCiudades.DameUno(concierto.CiudadesId);
+            concierto.Giras = await repositorioGiras.DameUno(concierto.GirasId);
 
             return View(concierto);
         }
@@ -120,10 +118,8 @@ namespace MvcWebMusica2.Controllers
                     {
                         return NotFound();
                     }
-                    else
-                    {
-                        throw;
-                    }
+
+                    throw;
                 }
                 return RedirectToAction(nameof(Index));
             }
@@ -188,7 +184,7 @@ namespace MvcWebMusica2.Controllers
             return GenerarExcel(nombreArchivo, conciertos);
         }
 
-        private FileResult GenerarExcel(string nombreArchivo, IEnumerable<Conciertos> conciertos)
+        private FileContentResult GenerarExcel(string nombreArchivo, IEnumerable<Conciertos> conciertos)
         {
             DataTable dataTable = new("Conciertos");
             dataTable.Columns.AddRange([

@@ -37,11 +37,6 @@ namespace MvcWebMusica2.Controllers
         }
 
         // GET: Funciones/Create
-        //public async Task<IActionResult> Create()
-        //{
-        //    return View();
-        //}
-
         public IActionResult Create()
         {
             return View();
@@ -104,10 +99,8 @@ namespace MvcWebMusica2.Controllers
                     {
                         return NotFound();
                     }
-                    else
-                    {
-                        throw;
-                    }
+
+                    throw;
                 }
                 return RedirectToAction(nameof(Index));
             }
@@ -161,9 +154,9 @@ namespace MvcWebMusica2.Controllers
             return GenerarExcel(nombreArchivo, funciones);
         }
 
-        private FileResult GenerarExcel(string nombreArchivo, IEnumerable<Funciones> funciones)
+        private FileContentResult GenerarExcel(string nombreArchivo, IEnumerable<Funciones> funciones)
         {
-            DataTable dataTable = new DataTable("Funciones");
+            DataTable dataTable = new("Funciones");
             dataTable.Columns.AddRange([
                 new("Nombre")
             ]);

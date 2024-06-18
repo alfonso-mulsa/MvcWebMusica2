@@ -43,11 +43,9 @@ namespace MvcWebMusica2.Controllers
             {
                 return NotFound();
             }
-            else
-            {
-                funcionesArtistas.Artistas = await repositorioArtistas.DameUno(funcionesArtistas.ArtistasId);
-                funcionesArtistas.Funciones = await repositorioFunciones.DameUno(funcionesArtistas.FuncionesId);
-            }
+
+            funcionesArtistas.Artistas = await repositorioArtistas.DameUno(funcionesArtistas.ArtistasId);
+            funcionesArtistas.Funciones = await repositorioFunciones.DameUno(funcionesArtistas.FuncionesId);
 
             return View(funcionesArtistas);
         }
@@ -119,10 +117,8 @@ namespace MvcWebMusica2.Controllers
                     {
                         return NotFound();
                     }
-                    else
-                    {
-                        throw;
-                    }
+
+                    throw;
                 }
                 return RedirectToAction(nameof(Index));
             }
@@ -145,11 +141,9 @@ namespace MvcWebMusica2.Controllers
             {
                 return NotFound();
             }
-            else
-            {
-                funcionesArtistas.Artistas = await repositorioArtistas.DameUno(funcionesArtistas.ArtistasId);
-                funcionesArtistas.Funciones = await repositorioFunciones.DameUno(funcionesArtistas.FuncionesId);
-            }
+
+            funcionesArtistas.Artistas = await repositorioArtistas.DameUno(funcionesArtistas.ArtistasId);
+            funcionesArtistas.Funciones = await repositorioFunciones.DameUno(funcionesArtistas.FuncionesId);
 
             return View(funcionesArtistas);
         }
@@ -187,7 +181,7 @@ namespace MvcWebMusica2.Controllers
             return GenerarExcel(nombreArchivo, funcionesArtistas);
         }
 
-        private FileResult GenerarExcel(string nombreArchivo, IEnumerable<FuncionesArtistas> funcionesArtistas)
+        private FileContentResult GenerarExcel(string nombreArchivo, IEnumerable<FuncionesArtistas> funcionesArtistas)
         {
             DataTable dataTable = new("FuncionesArtistas");
             dataTable.Columns.AddRange([

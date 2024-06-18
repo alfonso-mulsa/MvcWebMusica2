@@ -42,12 +42,10 @@ namespace MvcWebMusica2.Controllers
             {
                 return NotFound();
             }
-            else
-            {
-                videoClipsPlataformas.Plataformas = await repositorioPlataformas.DameUno(videoClipsPlataformas.PlataformasId);
-                videoClipsPlataformas.VideoClips = await repositorioVideoClips.DameUno(videoClipsPlataformas.VideoClipsId);
-                videoClipsPlataformas.VideoClips!.Canciones = await repositorioCanciones.DameUno(videoClipsPlataformas.VideoClips.CancionesId);
-            }
+
+            videoClipsPlataformas.Plataformas = await repositorioPlataformas.DameUno(videoClipsPlataformas.PlataformasId);
+            videoClipsPlataformas.VideoClips = await repositorioVideoClips.DameUno(videoClipsPlataformas.VideoClipsId);
+            videoClipsPlataformas.VideoClips!.Canciones = await repositorioCanciones.DameUno(videoClipsPlataformas.VideoClips.CancionesId);
 
             return View(videoClipsPlataformas);
         }
@@ -139,10 +137,8 @@ namespace MvcWebMusica2.Controllers
                     {
                         return NotFound();
                     }
-                    else
-                    {
-                        throw;
-                    }
+
+                    throw;
                 }
                 return RedirectToAction(nameof(Index));
             }
@@ -172,12 +168,10 @@ namespace MvcWebMusica2.Controllers
             {
                 return NotFound();
             }
-            else
-            {
-                videoClipsPlataformas.Plataformas = await repositorioPlataformas.DameUno(videoClipsPlataformas.PlataformasId);
-                videoClipsPlataformas.VideoClips = await repositorioVideoClips.DameUno(videoClipsPlataformas.VideoClipsId);
-                videoClipsPlataformas.VideoClips!.Canciones = await repositorioCanciones.DameUno(videoClipsPlataformas.VideoClips.CancionesId);
-            }
+
+            videoClipsPlataformas.Plataformas = await repositorioPlataformas.DameUno(videoClipsPlataformas.PlataformasId);
+            videoClipsPlataformas.VideoClips = await repositorioVideoClips.DameUno(videoClipsPlataformas.VideoClipsId);
+            videoClipsPlataformas.VideoClips!.Canciones = await repositorioCanciones.DameUno(videoClipsPlataformas.VideoClips.CancionesId);
 
             return View(videoClipsPlataformas);
         }

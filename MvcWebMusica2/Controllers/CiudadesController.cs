@@ -41,10 +41,8 @@ namespace MvcWebMusica2.Controllers
             {
                 return NotFound();
             }
-            else
-            {
-                ciudad.Paises = await repositorioPaises.DameUno(ciudad.PaisesID);
-            }
+
+            ciudad.Paises = await repositorioPaises.DameUno(ciudad.PaisesID);
 
             return View(ciudad);
         }
@@ -113,10 +111,8 @@ namespace MvcWebMusica2.Controllers
                     {
                         return NotFound();
                     }
-                    else
-                    {
-                        throw;
-                    }
+
+                    throw;
                 }
                 return RedirectToAction(nameof(Index));
             }
@@ -178,7 +174,7 @@ namespace MvcWebMusica2.Controllers
             return GenerarExcel(nombreArchivo, ciudades);
         }
 
-        private FileResult GenerarExcel(string nombreArchivo, IEnumerable<Ciudades> ciudades)
+        private FileContentResult GenerarExcel(string nombreArchivo, IEnumerable<Ciudades> ciudades)
         {
             DataTable dataTable = new("Ciudades");
             dataTable.Columns.AddRange([
