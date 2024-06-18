@@ -13,8 +13,8 @@ namespace MvcWebMusica2.Controllers
         IGenericRepositorio<Roles> repositorioRoles
         ) : Controller
     {
-        private readonly string descripcion = "Descripcion";
-        private readonly string rolesId = "RolesId";
+        private readonly string _descripcion = "Descripcion";
+        private readonly string _rolesId = "RolesId";
 
         // GET: Empleados
         public async Task<IActionResult> Index()
@@ -52,7 +52,7 @@ namespace MvcWebMusica2.Controllers
         // GET: Empleados/Create
         public async Task<IActionResult> CreateAsync()
         {
-            ViewData[rolesId] = new SelectList(await repositorioRoles.DameTodos(), "Id", descripcion);
+            ViewData[_rolesId] = new SelectList(await repositorioRoles.DameTodos(), "Id", _descripcion);
             return View();
         }
 
@@ -68,7 +68,7 @@ namespace MvcWebMusica2.Controllers
                 await repositorioEmpleados.Agregar(empleados);
                 return RedirectToAction(nameof(Index));
             }
-            ViewData[rolesId] = new SelectList(await repositorioRoles.DameTodos(), "Id", descripcion, empleados.RolesId);
+            ViewData[_rolesId] = new SelectList(await repositorioRoles.DameTodos(), "Id", _descripcion, empleados.RolesId);
             return View(empleados);
         }
 
@@ -85,7 +85,7 @@ namespace MvcWebMusica2.Controllers
             {
                 return NotFound();
             }
-            ViewData[rolesId] = new SelectList(await repositorioRoles.DameTodos(), "Id", descripcion, empleado.RolesId);
+            ViewData[_rolesId] = new SelectList(await repositorioRoles.DameTodos(), "Id", _descripcion, empleado.RolesId);
             return View(empleado);
         }
 
@@ -120,7 +120,7 @@ namespace MvcWebMusica2.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData[rolesId] = new SelectList(await repositorioRoles.DameTodos(), "Id", descripcion, empleados.RolesId);
+            ViewData[_rolesId] = new SelectList(await repositorioRoles.DameTodos(), "Id", _descripcion, empleados.RolesId);
             return View(empleados);
         }
 

@@ -14,9 +14,9 @@ namespace MvcWebMusica2.Controllers
         IGenericRepositorio<Giras> repositorioGiras
         ) : Controller
     {
-        private readonly string nombre = "Nombre";
-        private readonly string ciudadesId = "CiudadesId";
-        private readonly string girasId = "GirasId";
+        private readonly string _nombre = "Nombre";
+        private readonly string _ciudadesId = "CiudadesId";
+        private readonly string _girasId = "GirasId";
 
         // GET: Conciertos
         public async Task<IActionResult> Index()
@@ -56,8 +56,8 @@ namespace MvcWebMusica2.Controllers
         // GET: Conciertos/Create
         public async Task<IActionResult> CreateAsync()
         {
-            ViewData[ciudadesId] = new SelectList(await repositorioCiudades.DameTodos(), "Id", nombre);
-            ViewData[girasId] = new SelectList(await repositorioGiras.DameTodos(), "Id", nombre);
+            ViewData[_ciudadesId] = new SelectList(await repositorioCiudades.DameTodos(), "Id", _nombre);
+            ViewData[_girasId] = new SelectList(await repositorioGiras.DameTodos(), "Id", _nombre);
             return View();
         }
 
@@ -73,8 +73,8 @@ namespace MvcWebMusica2.Controllers
                 await repositorioConciertos.Agregar(conciertos);
                 return RedirectToAction(nameof(Index));
             }
-            ViewData[ciudadesId] = new SelectList(await repositorioCiudades.DameTodos(), "Id", nombre, conciertos.CiudadesId);
-            ViewData[girasId] = new SelectList(await repositorioGiras.DameTodos(), "Id", nombre, conciertos.GirasId);
+            ViewData[_ciudadesId] = new SelectList(await repositorioCiudades.DameTodos(), "Id", _nombre, conciertos.CiudadesId);
+            ViewData[_girasId] = new SelectList(await repositorioGiras.DameTodos(), "Id", _nombre, conciertos.GirasId);
             return View(conciertos);
         }
 
@@ -91,8 +91,8 @@ namespace MvcWebMusica2.Controllers
             {
                 return NotFound();
             }
-            ViewData[ciudadesId] = new SelectList(await repositorioCiudades.DameTodos(), "Id", nombre, concierto.CiudadesId);
-            ViewData[girasId] = new SelectList(await repositorioGiras.DameTodos(), "Id", nombre, concierto.GirasId);
+            ViewData[_ciudadesId] = new SelectList(await repositorioCiudades.DameTodos(), "Id", _nombre, concierto.CiudadesId);
+            ViewData[_girasId] = new SelectList(await repositorioGiras.DameTodos(), "Id", _nombre, concierto.GirasId);
             return View(concierto);
         }
 
@@ -127,8 +127,8 @@ namespace MvcWebMusica2.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData[ciudadesId] = new SelectList(await repositorioCiudades.DameTodos(), "Id", nombre, conciertos.CiudadesId);
-            ViewData[girasId] = new SelectList(await repositorioGiras.DameTodos(), "Id", nombre, conciertos.GirasId);
+            ViewData[_ciudadesId] = new SelectList(await repositorioCiudades.DameTodos(), "Id", _nombre, conciertos.CiudadesId);
+            ViewData[_girasId] = new SelectList(await repositorioGiras.DameTodos(), "Id", _nombre, conciertos.GirasId);
             return View(conciertos);
         }
 

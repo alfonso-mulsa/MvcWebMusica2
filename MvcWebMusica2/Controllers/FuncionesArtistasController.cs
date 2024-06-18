@@ -14,9 +14,9 @@ namespace MvcWebMusica2.Controllers
         IGenericRepositorio<Funciones> repositorioFunciones
         ) : Controller
     {
-        private readonly string nombre = "Nombre";
-        private readonly string artistasId = "ArtistasId";
-        private readonly string funcionesId = "FuncionesId";
+        private readonly string _nombre = "Nombre";
+        private readonly string _artistasId = "ArtistasId";
+        private readonly string _funcionesId = "FuncionesId";
         // GET: FuncionesArtistas
         public async Task<IActionResult> Index()
         {
@@ -55,8 +55,8 @@ namespace MvcWebMusica2.Controllers
         // GET: FuncionesArtistas/Create
         public async Task<IActionResult> CreateAsync()
         {
-            ViewData[artistasId] = new SelectList(await repositorioArtistas.DameTodos(), "Id", nombre);
-            ViewData[funcionesId] = new SelectList(await repositorioFunciones.DameTodos(), "Id", nombre);
+            ViewData[_artistasId] = new SelectList(await repositorioArtistas.DameTodos(), "Id", _nombre);
+            ViewData[_funcionesId] = new SelectList(await repositorioFunciones.DameTodos(), "Id", _nombre);
             return View();
         }
 
@@ -72,8 +72,8 @@ namespace MvcWebMusica2.Controllers
                 await repositorioFuncionesArtistas.Agregar(funcionesArtistas);
                 return RedirectToAction(nameof(Index));
             }
-            ViewData[artistasId] = new SelectList(await repositorioArtistas.DameTodos(), "Id", nombre, funcionesArtistas.ArtistasId);
-            ViewData[funcionesId] = new SelectList(await repositorioFunciones.DameTodos(), "Id", nombre, funcionesArtistas.FuncionesId);
+            ViewData[_artistasId] = new SelectList(await repositorioArtistas.DameTodos(), "Id", _nombre, funcionesArtistas.ArtistasId);
+            ViewData[_funcionesId] = new SelectList(await repositorioFunciones.DameTodos(), "Id", _nombre, funcionesArtistas.FuncionesId);
             return View(funcionesArtistas);
         }
 
@@ -90,8 +90,8 @@ namespace MvcWebMusica2.Controllers
             {
                 return NotFound();
             }
-            ViewData[artistasId] = new SelectList(await repositorioArtistas.DameTodos(), "Id", nombre, funcionesArtistas.ArtistasId);
-            ViewData[funcionesId] = new SelectList(await repositorioFunciones.DameTodos(), "Id", nombre, funcionesArtistas.FuncionesId);
+            ViewData[_artistasId] = new SelectList(await repositorioArtistas.DameTodos(), "Id", _nombre, funcionesArtistas.ArtistasId);
+            ViewData[_funcionesId] = new SelectList(await repositorioFunciones.DameTodos(), "Id", _nombre, funcionesArtistas.FuncionesId);
             return View(funcionesArtistas);
         }
 
@@ -126,8 +126,8 @@ namespace MvcWebMusica2.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData[artistasId] = new SelectList(await repositorioArtistas.DameTodos(), "Id", nombre, funcionesArtistas.ArtistasId);
-            ViewData["FuncionesId"] = new SelectList(await repositorioFunciones.DameTodos(), "Id", nombre, funcionesArtistas.FuncionesId);
+            ViewData[_artistasId] = new SelectList(await repositorioArtistas.DameTodos(), "Id", _nombre, funcionesArtistas.ArtistasId);
+            ViewData["FuncionesId"] = new SelectList(await repositorioFunciones.DameTodos(), "Id", _nombre, funcionesArtistas.FuncionesId);
             return View(funcionesArtistas);
         }
 

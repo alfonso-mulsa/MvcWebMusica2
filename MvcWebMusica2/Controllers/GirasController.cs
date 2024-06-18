@@ -13,7 +13,7 @@ namespace MvcWebMusica2.Controllers
         IGenericRepositorio<Grupos> repositorioGrupos)
         : Controller
     {
-        private readonly string nombre = "Nombre";
+        private readonly string _nombre = "Nombre";
 
         // GET: Giras
         public async Task<IActionResult> Index()
@@ -62,7 +62,7 @@ namespace MvcWebMusica2.Controllers
         // GET: Giras/Create
         public async Task<IActionResult> Create()
         {
-            ViewData["GruposId"] = new SelectList(await repositorioGrupos.DameTodos(), "Id", nombre);
+            ViewData["GruposId"] = new SelectList(await repositorioGrupos.DameTodos(), "Id", _nombre);
             return View();
         }
 
@@ -78,7 +78,7 @@ namespace MvcWebMusica2.Controllers
                 await repositorioGiras.Agregar(giras);
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["GruposId"] = new SelectList(await repositorioGrupos.DameTodos(), "Id", nombre, giras.GruposId);
+            ViewData["GruposId"] = new SelectList(await repositorioGrupos.DameTodos(), "Id", _nombre, giras.GruposId);
             return View(giras);
         }
 
@@ -95,7 +95,7 @@ namespace MvcWebMusica2.Controllers
             {
                 return NotFound();
             }
-            ViewData["GruposId"] = new SelectList(await repositorioGrupos.DameTodos(), "Id", nombre, giras.GruposId);
+            ViewData["GruposId"] = new SelectList(await repositorioGrupos.DameTodos(), "Id", _nombre, giras.GruposId);
             return View(giras);
         }
 
@@ -130,7 +130,7 @@ namespace MvcWebMusica2.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["GruposId"] = new SelectList(await repositorioGrupos.DameTodos(), "Id", nombre, giras.GruposId);
+            ViewData["GruposId"] = new SelectList(await repositorioGrupos.DameTodos(), "Id", _nombre, giras.GruposId);
             return View(giras);
         }
 

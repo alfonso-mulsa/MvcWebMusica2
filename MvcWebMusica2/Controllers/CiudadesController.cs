@@ -13,8 +13,8 @@ namespace MvcWebMusica2.Controllers
         IGenericRepositorio<Paises> repositorioPaises
         ) : Controller
     {
-        private readonly string nombre = "Nombre";
-        private readonly string paisesId = "PaisesID";
+        private readonly string _nombre = "Nombre";
+        private readonly string _paisesId = "PaisesID";
 
         // GET: Ciudades
         public async Task<IActionResult> Index()
@@ -52,7 +52,7 @@ namespace MvcWebMusica2.Controllers
         // GET: Ciudades/Create
         public async Task<IActionResult> CreateAsync()
         {
-            ViewData[paisesId] = new SelectList(await repositorioPaises.DameTodos(), "Id", nombre);
+            ViewData[_paisesId] = new SelectList(await repositorioPaises.DameTodos(), "Id", _nombre);
             return View();
         }
 
@@ -68,7 +68,7 @@ namespace MvcWebMusica2.Controllers
                 await repositorioCiudades.Agregar(ciudades);
                 return RedirectToAction(nameof(Index));
             }
-            ViewData[paisesId] = new SelectList(await repositorioPaises.DameTodos(), "Id", nombre, ciudades.PaisesID);
+            ViewData[_paisesId] = new SelectList(await repositorioPaises.DameTodos(), "Id", _nombre, ciudades.PaisesID);
             return View(ciudades);
         }
 
@@ -85,7 +85,7 @@ namespace MvcWebMusica2.Controllers
             {
                 return NotFound();
             }
-            ViewData[paisesId] = new SelectList(await repositorioPaises.DameTodos(), "Id", nombre, ciudad.PaisesID);
+            ViewData[_paisesId] = new SelectList(await repositorioPaises.DameTodos(), "Id", _nombre, ciudad.PaisesID);
             return View(ciudad);
         }
 
@@ -120,7 +120,7 @@ namespace MvcWebMusica2.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData[paisesId] = new SelectList(await repositorioPaises.DameTodos(), "Id", nombre, ciudades.PaisesID);
+            ViewData[_paisesId] = new SelectList(await repositorioPaises.DameTodos(), "Id", _nombre, ciudades.PaisesID);
             return View(ciudades);
         }
 

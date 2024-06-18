@@ -13,8 +13,8 @@ namespace MvcWebMusica2.Controllers
         IGenericRepositorio<Ciudades> repositorioCiudades) 
         : Controller
     {
-        private readonly string nombre = "Nombre";
-        private readonly string ciudadesId = "CiudadesId";
+        private readonly string _nombre = "Nombre";
+        private readonly string _ciudadesId = "CiudadesId";
         
         // GET: Representantes
         public async Task<IActionResult> Index()
@@ -49,7 +49,7 @@ namespace MvcWebMusica2.Controllers
         // GET: Representantes/Create
         public async Task<IActionResult> Create()
         {
-            ViewData[ciudadesId] = new SelectList(await repositorioCiudades.DameTodos(), "Id", nombre);
+            ViewData[_ciudadesId] = new SelectList(await repositorioCiudades.DameTodos(), "Id", _nombre);
             return View();
         }
 
@@ -65,7 +65,7 @@ namespace MvcWebMusica2.Controllers
                 await repositorioRepresentantes.Agregar(representantes);
                 return RedirectToAction(nameof(Index));
             }
-            ViewData[ciudadesId] = new SelectList(await repositorioCiudades.DameTodos(), "Id", nombre, representantes.CiudadesID);
+            ViewData[_ciudadesId] = new SelectList(await repositorioCiudades.DameTodos(), "Id", _nombre, representantes.CiudadesID);
             return View(representantes);
         }
 
@@ -82,7 +82,7 @@ namespace MvcWebMusica2.Controllers
             {
                 return NotFound();
             }
-            ViewData[ciudadesId] = new SelectList(await repositorioCiudades.DameTodos(), "Id", nombre, representantes.CiudadesID);
+            ViewData[_ciudadesId] = new SelectList(await repositorioCiudades.DameTodos(), "Id", _nombre, representantes.CiudadesID);
             return View(representantes);
         }
 
@@ -117,7 +117,7 @@ namespace MvcWebMusica2.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData[ciudadesId] = new SelectList(await repositorioCiudades.DameTodos(), "Id", nombre, representantes.CiudadesID);
+            ViewData[_ciudadesId] = new SelectList(await repositorioCiudades.DameTodos(), "Id", _nombre, representantes.CiudadesID);
             return View(representantes);
         }
 

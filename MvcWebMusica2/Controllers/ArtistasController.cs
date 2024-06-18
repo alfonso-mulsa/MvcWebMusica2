@@ -16,7 +16,7 @@ namespace MvcWebMusica2.Controllers
         : Controller
     {
         //private readonly GrupoBContext _context;
-        private readonly string nombre = "Nombre";
+        private readonly string _nombre = "Nombre";
 
         // GET: Artistas
         public async Task<IActionResult> Index()
@@ -80,9 +80,9 @@ namespace MvcWebMusica2.Controllers
         // GET: Artistas/Create
         public async Task<IActionResult> Create()
         {
-            ViewData["CiudadesId"] = new SelectList(await repositorioCiudades.DameTodos(), "Id", nombre);
-            ViewData["GenerosId"] = new SelectList(await repositorioGeneros.DameTodos(), "Id", nombre);
-            ViewData["GruposId"] = new SelectList(await repositorioGrupos.DameTodos(), "Id", nombre);
+            ViewData["CiudadesId"] = new SelectList(await repositorioCiudades.DameTodos(), "Id", _nombre);
+            ViewData["GenerosId"] = new SelectList(await repositorioGeneros.DameTodos(), "Id", _nombre);
+            ViewData["GruposId"] = new SelectList(await repositorioGrupos.DameTodos(), "Id", _nombre);
             return View();
         }
 
@@ -98,9 +98,9 @@ namespace MvcWebMusica2.Controllers
                 await repositorioArtistas.Agregar(artista);
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["CiudadesId"] = new SelectList(await repositorioCiudades.DameTodos(), "Id", nombre, artista.CiudadesId);
-            ViewData["GenerosId"] = new SelectList(await repositorioGeneros.DameTodos(), "Id", nombre, artista.GenerosId);
-            ViewData["GruposId"] = new SelectList(await repositorioGrupos.DameTodos(), "Id", nombre, artista.GruposId);
+            ViewData["CiudadesId"] = new SelectList(await repositorioCiudades.DameTodos(), "Id", _nombre, artista.CiudadesId);
+            ViewData["GenerosId"] = new SelectList(await repositorioGeneros.DameTodos(), "Id", _nombre, artista.GenerosId);
+            ViewData["GruposId"] = new SelectList(await repositorioGrupos.DameTodos(), "Id", _nombre, artista.GruposId);
             return View(artista);
         }
 
@@ -119,9 +119,9 @@ namespace MvcWebMusica2.Controllers
                 return NotFound();
             }
 
-            ViewData["CiudadesId"] = new SelectList(await repositorioCiudades.DameTodos(), "Id", nombre, artista.CiudadesId);
-            ViewData["GenerosId"] = new SelectList(await repositorioGeneros.DameTodos(), "Id", nombre, artista.GenerosId);
-            ViewData["GruposId"] = new SelectList(await repositorioGrupos.DameTodos(), "Id", nombre, artista.GruposId);
+            ViewData["CiudadesId"] = new SelectList(await repositorioCiudades.DameTodos(), "Id", _nombre, artista.CiudadesId);
+            ViewData["GenerosId"] = new SelectList(await repositorioGeneros.DameTodos(), "Id", _nombre, artista.GenerosId);
+            ViewData["GruposId"] = new SelectList(await repositorioGrupos.DameTodos(), "Id", _nombre, artista.GruposId);
             return View(artista);
         }
 
@@ -156,9 +156,9 @@ namespace MvcWebMusica2.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["CiudadesId"] = new SelectList(await repositorioCiudades.DameTodos(), "Id", nombre, artista.CiudadesId);
-            ViewData["GenerosId"] = new SelectList(await repositorioGeneros.DameTodos(), "Id", nombre, artista.GenerosId);
-            ViewData["GruposId"] = new SelectList(await repositorioGrupos.DameTodos(), "Id", nombre, artista.GruposId);
+            ViewData["CiudadesId"] = new SelectList(await repositorioCiudades.DameTodos(), "Id", _nombre, artista.CiudadesId);
+            ViewData["GenerosId"] = new SelectList(await repositorioGeneros.DameTodos(), "Id", _nombre, artista.GenerosId);
+            ViewData["GruposId"] = new SelectList(await repositorioGrupos.DameTodos(), "Id", _nombre, artista.GruposId);
             return View(artista);
         }
 

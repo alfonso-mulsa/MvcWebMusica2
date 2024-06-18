@@ -13,8 +13,8 @@ namespace MvcWebMusica2.Controllers
         IGenericRepositorio<Canciones> repositorioCanciones
         ) : Controller
     {
-        private readonly string cancionesId = "CancionesId";
-        private readonly string titulo = "Titulo";
+        private readonly string _cancionesId = "CancionesId";
+        private readonly string _titulo = "Titulo";
 
         // GET: VideoClips
         public async Task<IActionResult> Index()
@@ -52,7 +52,7 @@ namespace MvcWebMusica2.Controllers
         // GET: VideoClips/Create
         public async Task<IActionResult> CreateAsync()
         {
-            ViewData[cancionesId] = new SelectList(await repositorioCanciones.DameTodos(), "Id", titulo);
+            ViewData[_cancionesId] = new SelectList(await repositorioCanciones.DameTodos(), "Id", _titulo);
             return View();
         }
 
@@ -68,7 +68,7 @@ namespace MvcWebMusica2.Controllers
                 await repositorioVideoClips.Agregar(videoClips);
                 return RedirectToAction(nameof(Index));
             }
-            ViewData[cancionesId] = new SelectList(await repositorioCanciones.DameTodos(), "Id", titulo, videoClips.CancionesId);
+            ViewData[_cancionesId] = new SelectList(await repositorioCanciones.DameTodos(), "Id", _titulo, videoClips.CancionesId);
             return View(videoClips);
         }
 
@@ -85,7 +85,7 @@ namespace MvcWebMusica2.Controllers
             {
                 return NotFound();
             }
-            ViewData[cancionesId] = new SelectList(await repositorioCanciones.DameTodos(), "Id", titulo, videoClips.CancionesId);
+            ViewData[_cancionesId] = new SelectList(await repositorioCanciones.DameTodos(), "Id", _titulo, videoClips.CancionesId);
             return View(videoClips);
         }
 
@@ -120,7 +120,7 @@ namespace MvcWebMusica2.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData[cancionesId] = new SelectList(await repositorioCanciones.DameTodos(), "Id", titulo, videoClips.CancionesId);
+            ViewData[_cancionesId] = new SelectList(await repositorioCanciones.DameTodos(), "Id", _titulo, videoClips.CancionesId);
             return View(videoClips);
         }
 
