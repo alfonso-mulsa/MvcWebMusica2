@@ -26,7 +26,7 @@ namespace MvcWebMusica2.Controllers
             {
                 videoClipPlataformas.Plataformas = await repositorioPlataformas.DameUno(videoClipPlataformas.PlataformasId);
                 videoClipPlataformas.VideoClips = await repositorioVideoClips.DameUno(videoClipPlataformas.VideoClipsId);
-                videoClipPlataformas.VideoClips.Canciones = await repositorioCanciones.DameUno(videoClipPlataformas.VideoClips.CancionesId);
+                videoClipPlataformas.VideoClips!.Canciones = await repositorioCanciones.DameUno(videoClipPlataformas.VideoClips.CancionesId);
             }
             return View(listaVideoClipsPlataformas);
         }
@@ -65,7 +65,7 @@ namespace MvcWebMusica2.Controllers
             {
                 videoClipsPlataformas.Plataformas = await repositorioPlataformas.DameUno(videoClipsPlataformas.PlataformasId);
                 videoClipsPlataformas.VideoClips = await repositorioVideoClips.DameUno(videoClipsPlataformas.VideoClipsId);
-                videoClipsPlataformas.VideoClips.Canciones = await repositorioCanciones.DameUno(videoClipsPlataformas.VideoClips.CancionesId);
+                videoClipsPlataformas.VideoClips!.Canciones = await repositorioCanciones.DameUno(videoClipsPlataformas.VideoClips.CancionesId);
             }
 
             return View(videoClipsPlataformas);
@@ -265,7 +265,7 @@ namespace MvcWebMusica2.Controllers
             {
                 videoClipsPlataformas.Plataformas = await repositorioPlataformas.DameUno(videoClipsPlataformas.PlataformasId);
                 videoClipsPlataformas.VideoClips = await repositorioVideoClips.DameUno(videoClipsPlataformas.VideoClipsId);
-                videoClipsPlataformas.VideoClips.Canciones = await repositorioCanciones.DameUno(videoClipsPlataformas.VideoClips.CancionesId);
+                videoClipsPlataformas.VideoClips!.Canciones = await repositorioCanciones.DameUno(videoClipsPlataformas.VideoClips.CancionesId);
             }
 
             return View(videoClipsPlataformas);
@@ -314,15 +314,14 @@ namespace MvcWebMusica2.Controllers
             return GenerarExcel(nombreArchivo, videoClipsPlataformas);
         }
 
-        private FileResult GenerarExcel(string nombreArchivo, IEnumerable<VideoClipsPlataformas> videoClipsPlataformas)
+        private FileContentResult GenerarExcel(string nombreArchivo, IEnumerable<VideoClipsPlataformas> videoClipsPlataformas)
         {
-            DataTable dataTable = new DataTable("VideoClipsPlataformas");
-            dataTable.Columns.AddRange(new DataColumn[]
-            {
+            DataTable dataTable = new("VideoClipsPlataformas");
+            dataTable.Columns.AddRange([
                 new("Url"),
                 new("Plataformas"),
                 new("VideClips")
-            });
+            ]);
 
             foreach (var videoClipPlataformas in videoClipsPlataformas)
             {
@@ -332,18 +331,14 @@ namespace MvcWebMusica2.Controllers
                     videoClipPlataformas.VideoClips?.Id);
             }
 
-            using (XLWorkbook wb = new XLWorkbook())
-            {
-                wb.Worksheets.Add(dataTable);
+            using XLWorkbook wb = new();
+            wb.Worksheets.Add(dataTable);
 
-                using (MemoryStream stream = new MemoryStream())
-                {
-                    wb.SaveAs(stream);
-                    return File(stream.ToArray(),
-                        "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
-                        nombreArchivo);
-                }
-            }
+            using MemoryStream stream = new();
+            wb.SaveAs(stream);
+            return File(stream.ToArray(),
+                "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+                nombreArchivo);
         }
     }
 }
