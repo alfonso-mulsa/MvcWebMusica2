@@ -16,45 +16,53 @@ namespace MvcWebMusica2.Controllers
         private readonly string _nombre = "Nombre";
 
         // GET: Giras
-        public async Task<IActionResult> Index()
+
+        private async Task<List<Giras>> DameListaDeGiras()
         {
             var listaGiras = await repositorioGiras.DameTodos();
             foreach (var giras in listaGiras)
             {
                 giras.Grupos = await repositorioGrupos.DameUno(giras.GruposId);
             }
-            return View(listaGiras);
+
+            return listaGiras;
         }
 
+        public async Task<IActionResult> Index()
+        {
+            return View(await DameListaDeGiras());
+        }
+
+        
         // GET: Informacion de las Giras
 
         public async Task<IActionResult> InfoGiras()
         {
-            var listaGiras = await repositorioGiras.DameTodos();
-            foreach (var giras in listaGiras)
-            {
-                giras.Grupos = await repositorioGrupos.DameUno(giras.GruposId);
-            }
-            return View(listaGiras);
+            return View(await DameListaDeGiras());
         }
 
         // GET: Giras/Details/5
-        public async Task<IActionResult> Details(int? id)
+
+        private async Task<Giras?> DameGira(int? id)
         {
             if (id == null)
             {
-                return NotFound();
+                return null;
             }
 
             var giras = await repositorioGiras.DameUno(id);
             if (giras == null)
             {
-                return NotFound();
+                return null;
             }
 
             giras.Grupos = await repositorioGrupos.DameUno(giras.GruposId);
 
-            return View(giras);
+            return giras;
+        }
+        public async Task<IActionResult> Details(int? id)
+        {
+            return View(await DameGira(id));
         }
 
         // GET: Giras/Create
@@ -133,20 +141,7 @@ namespace MvcWebMusica2.Controllers
         // GET: Giras/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var giras = await repositorioGiras.DameUno(id);
-            if (giras == null)
-            {
-                return NotFound();
-            }
-
-            giras.Grupos = await repositorioGrupos.DameUno(giras.GruposId);
-
-            return View(giras);
+            return View(await DameGira(id));
         }
 
         // POST: Giras/Delete/5
