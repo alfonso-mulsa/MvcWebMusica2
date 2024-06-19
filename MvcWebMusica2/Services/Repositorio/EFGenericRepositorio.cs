@@ -33,9 +33,7 @@ namespace MvcWebMusica2.Services.Repositorio
             return Task.FromResult(_context.Set<T>().AsParallel().ToList());
         }
 
-        //List<Products> GetProducts<TOrderBy>(Expression<Func<Products, bool>> filter,
-        //    Expression<Func<Products, TOrderBy>> orderBy, Table<Products> Products)
-        public Task<List<T>> DameTodosOrdenados(Expression<Func<T, string>> predicado)
+        public Task<List<T>> DameTodosOrdenados(Expression<Func<T, dynamic>> predicado)
         {
             return Task.FromResult(_context.Set<T>().OrderBy(predicado).AsParallel().ToList());
         }

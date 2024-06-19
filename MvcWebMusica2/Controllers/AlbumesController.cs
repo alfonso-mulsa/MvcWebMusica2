@@ -72,14 +72,8 @@ namespace MvcWebMusica2.Controllers
         // GET: Albumes/Create
         public async Task<IActionResult> Create()
         {
-            var listaGenerosOrdenada = repositorioGeneros.DameTodosOrdenados(x => x.Nombre);
-
-            //var listaGeneros = await repositorioGeneros.DameTodos();
-            //var listaGenerosOrdenada = listaGeneros.OrderBy(x => x.Nombre).ToList();
-            var listaGrupos = await repositorioGrupos.DameTodos();
-            var listaGruposOrdenada = listaGrupos.OrderBy(x => x.Nombre).ToList();
-            ViewData["GenerosId"] = new SelectList(listaGenerosOrdenada, "Id", _nombre);
-            ViewData["GruposId"] = new SelectList(listaGruposOrdenada, "Id", _nombre);
+            ViewData["GenerosId"] = new SelectList(await repositorioGeneros.DameTodosOrdenados(x => x.Nombre!), "Id", _nombre);
+            ViewData["GruposId"] = new SelectList(await repositorioGrupos.DameTodosOrdenados(x => x.Nombre!), "Id", _nombre);
             return View();
         }
 
@@ -95,12 +89,9 @@ namespace MvcWebMusica2.Controllers
                 await repositorioAlbumes.Agregar(album);
                 return RedirectToAction(nameof(Index));
             }
-            var listaGeneros = await repositorioGeneros.DameTodos();
-            var listaGenerosOrdenada = listaGeneros.OrderBy(x => x.Nombre).ToList();
-            var listaGrupos = await repositorioGrupos.DameTodos();
-            var listaGruposOrdenada = listaGrupos.OrderBy(x => x.Nombre).ToList();
-            ViewData["GenerosId"] = new SelectList(listaGenerosOrdenada, "Id", _nombre);
-            ViewData["GruposId"] = new SelectList(listaGruposOrdenada, "Id", _nombre);
+
+            ViewData["GenerosId"] = new SelectList(await repositorioGeneros.DameTodosOrdenados(x => x.Nombre!), "Id", _nombre);
+            ViewData["GruposId"] = new SelectList(await repositorioGrupos.DameTodosOrdenados(x => x.Nombre!), "Id", _nombre);
             return View(album);
         }
 
@@ -118,12 +109,8 @@ namespace MvcWebMusica2.Controllers
                 return NotFound();
             }
 
-            var listaGeneros = await repositorioGeneros.DameTodos();
-            var listaGenerosOrdenada = listaGeneros.OrderBy(x => x.Nombre).ToList();
-            var listaGrupos = await repositorioGrupos.DameTodos();
-            var listaGruposOrdenada = listaGrupos.OrderBy(x => x.Nombre).ToList();
-            ViewData["GenerosId"] = new SelectList(listaGenerosOrdenada, "Id", _nombre);
-            ViewData["GruposId"] = new SelectList(listaGruposOrdenada, "Id", _nombre);
+            ViewData["GenerosId"] = new SelectList(await repositorioGeneros.DameTodosOrdenados(x => x.Nombre!), "Id", _nombre);
+            ViewData["GruposId"] = new SelectList(await repositorioGrupos.DameTodosOrdenados(x => x.Nombre!), "Id", _nombre);
             return View(album);
         }
 
@@ -156,12 +143,8 @@ namespace MvcWebMusica2.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            var listaGeneros = await repositorioGeneros.DameTodos();
-            var listaGenerosOrdenada = listaGeneros.OrderBy(x => x.Nombre).ToList();
-            var listaGrupos = await repositorioGrupos.DameTodos();
-            var listaGruposOrdenada = listaGrupos.OrderBy(x => x.Nombre).ToList();
-            ViewData["GenerosId"] = new SelectList(listaGenerosOrdenada, "Id", _nombre);
-            ViewData["GruposId"] = new SelectList(listaGruposOrdenada, "Id", _nombre);
+            ViewData["GenerosId"] = new SelectList(await repositorioGeneros.DameTodosOrdenados(x => x.Nombre!), "Id", _nombre);
+            ViewData["GruposId"] = new SelectList(await repositorioGrupos.DameTodosOrdenados(x => x.Nombre!), "Id", _nombre);
             return View(album);
         }
 

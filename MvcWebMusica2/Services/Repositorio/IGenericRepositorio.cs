@@ -7,7 +7,7 @@ namespace MvcWebMusica2.Services.Repositorio
         Task<bool> Agregar(T element);
         Task<bool> Borrar(int id);
         Task<List<T>> DameTodos();
-        Task<List<T>> DameTodosOrdenados(Expression<Func<T, T>> predicado);
+        Task<List<T>> DameTodosOrdenados(Expression<Func<T, dynamic>> predicado);
         Task<T?> DameUno(int? id);
         Task<List<T>> Filtra(Expression<Func<T, bool>> predicado);
         Task<int> Modificar(int id, T element);
