@@ -16,10 +16,11 @@ namespace MvcWebMusica2.Controllers
         : Controller
     {
         private readonly string _nombre = "Nombre";
-        //private readonly GrupoBContext _context;
-        //private readonly IListableCancionesAlbumes _listadorCancionesAlbumes;
 
-        //_context = context;
+        private async Task<(Generos?, Grupos?)> DameGeneroYGrupo(int generoId, int grupoId)
+        {
+            return (await repositorioGeneros.DameUno(generoId), await repositorioGrupos.DameUno(grupoId));
+        }
 
         // GET: Albumes
         public async Task<IActionResult> Index()
@@ -27,8 +28,7 @@ namespace MvcWebMusica2.Controllers
             var listaAlbumes = await repositorioAlbumes.DameTodos();
             foreach (var album in listaAlbumes)
             {
-                album.Generos = await repositorioGeneros.DameUno(album.GenerosId);
-                album.Grupos = await repositorioGrupos.DameUno(album.GruposId);
+                (album.Generos, album.Grupos) = await DameGeneroYGrupo((int)album.GenerosId!, (int)album.GruposId!);
                 album.Canciones = await repositorioCanciones.Filtra(x => x.AlbumesId == album.Id);
             }
             return View(listaAlbumes);
@@ -41,8 +41,7 @@ namespace MvcWebMusica2.Controllers
 
             foreach (var album in listaAlbumes)
             {
-                album.Generos = await repositorioGeneros.DameUno(album.GenerosId);
-                album.Grupos = await repositorioGrupos.DameUno(album.GruposId);
+                (album.Generos, album.Grupos) = await DameGeneroYGrupo((int)album.GenerosId!, (int)album.GruposId!);
             }
 
             return View(listaAlbumes);
@@ -62,12 +61,9 @@ namespace MvcWebMusica2.Controllers
             {
                 return NotFound();
             }
-            else
-            {
-                album.Generos = await repositorioGeneros.DameUno(album.GenerosId);
-                album.Grupos = await repositorioGrupos.DameUno(album.GruposId);
-                album.Canciones = await repositorioCanciones.Filtra(x => x.AlbumesId == album.Id);
-            }
+
+            (album.Generos, album.Grupos) = await DameGeneroYGrupo((int)album.GenerosId!, (int)album.GruposId!);
+            album.Canciones = await repositorioCanciones.Filtra(x => x.AlbumesId == album.Id);
 
             return View(album);
         }
@@ -110,6 +106,7 @@ namespace MvcWebMusica2.Controllers
             {
                 return NotFound();
             }
+
             ViewData["GenerosId"] = new SelectList(await repositorioGeneros.DameTodos(), "Id", _nombre, album.GenerosId);
             ViewData["GruposId"] = new SelectList(await repositorioGrupos.DameTodos(), "Id", _nombre, album.GruposId);
             return View(album);
@@ -139,10 +136,8 @@ namespace MvcWebMusica2.Controllers
                     {
                         return NotFound();
                     }
-                    else
-                    {
-                        throw;
-                    }
+
+                    throw;
                 }
                 return RedirectToAction(nameof(Index));
             }
@@ -165,12 +160,9 @@ namespace MvcWebMusica2.Controllers
             {
                 return NotFound();
             }
-            else
-            {
-                album.Generos = await repositorioGeneros.DameUno(album.GenerosId);
-                album.Grupos = await repositorioGrupos.DameUno(album.GruposId);
-                album.Canciones = await repositorioCanciones.Filtra(x => x.AlbumesId == album.Id);
-            }
+
+            (album.Generos, album.Grupos) = await DameGeneroYGrupo((int)album.GenerosId!, (int)album.GruposId!);
+            album.Canciones = await repositorioCanciones.Filtra(x => x.AlbumesId == album.Id);
 
             return View(album);
         }
@@ -201,8 +193,7 @@ namespace MvcWebMusica2.Controllers
             var albumes = await repositorioAlbumes.DameTodos();
             foreach (var album in albumes)
             {
-                album.Generos = await repositorioGeneros.DameUno(album.GenerosId);
-                album.Grupos = await repositorioGrupos.DameUno(album.GruposId);
+                (album.Generos, album.Grupos) = await DameGeneroYGrupo((int)album.GenerosId!, (int)album.GruposId!);
             }
             var nombreArchivo = "Albumes.xlsx";
             return GenerarExcel(nombreArchivo, albumes);

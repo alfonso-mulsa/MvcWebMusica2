@@ -41,10 +41,8 @@ namespace MvcWebMusica2.Controllers
             {
                 return NotFound();
             }
-            else
-            {
-                empleado.Roles = await repositorioRoles.DameUno(empleado.RolesId);
-            }
+
+            empleado.Roles = await repositorioRoles.DameUno(empleado.RolesId);
 
             return View(empleado);
         }
@@ -113,10 +111,8 @@ namespace MvcWebMusica2.Controllers
                     {
                         return NotFound();
                     }
-                    else
-                    {
-                        throw;
-                    }
+
+                    throw;
                 }
                 return RedirectToAction(nameof(Index));
             }
@@ -138,10 +134,8 @@ namespace MvcWebMusica2.Controllers
             {
                 return NotFound();
             }
-            else
-            {
-                empleado.Roles = await repositorioRoles.DameUno(empleado.RolesId);
-            }
+
+            empleado.Roles = await repositorioRoles.DameUno(empleado.RolesId);
 
             return View(empleado);
         }
@@ -178,9 +172,9 @@ namespace MvcWebMusica2.Controllers
             return GenerarExcel(nombreArchivo, empleados);
         }
 
-        private FileResult GenerarExcel(string nombreArchivo, IEnumerable<Empleados> empleados)
+        private FileContentResult GenerarExcel(string nombreArchivo, IEnumerable<Empleados> empleados)
         {
-            DataTable dataTable = new DataTable("Empleados");
+            DataTable dataTable = new("Empleados");
             dataTable.Columns.AddRange([
                 new("NombreCompleto"),
                 new("Roles")

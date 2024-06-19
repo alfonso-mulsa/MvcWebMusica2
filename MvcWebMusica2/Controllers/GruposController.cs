@@ -57,16 +57,11 @@ namespace MvcWebMusica2.Controllers
             {
                 return NotFound();
             }
-            else
-            {
-                grupo.Ciudades = await repositorioCiudades.DameUno(grupo.CiudadesId);
-                grupo.Generos = await repositorioGeneros.DameUno(grupo.GenerosId);
-                grupo.Representantes = await repositorioRepresentantes.DameUno(grupo.RepresentantesId);
-            }
 
             grupo.Ciudades = await repositorioCiudades.DameUno(grupo.CiudadesId);
             grupo.Generos = await repositorioGeneros.DameUno(grupo.GenerosId);
             grupo.Representantes = await repositorioRepresentantes.DameUno(grupo.RepresentantesId);
+
             return View(grupo);
         }
 
@@ -113,9 +108,9 @@ namespace MvcWebMusica2.Controllers
             {
                 return NotFound();
             }
-            ViewData["CiudadesId"] = new SelectList(await repositorioCiudades.DameTodos(), "Id", "Nombre");
-            ViewData["GenerosId"] = new SelectList(await repositorioGeneros.DameTodos(), "Id", "Nombre");
-            ViewData["RepresentantesId"] = new SelectList(await repositorioRepresentantes.DameTodos(), "Id", "NombreCompleto");
+            ViewData["CiudadesId"] = new SelectList(await repositorioCiudades.DameTodos(), "Id", "Nombre", grupo.CiudadesId);
+            ViewData["GenerosId"] = new SelectList(await repositorioGeneros.DameTodos(), "Id", "Nombre", grupo.GenerosId);
+            ViewData["RepresentantesId"] = new SelectList(await repositorioRepresentantes.DameTodos(), "Id", "NombreCompleto", grupo.RepresentantesId);
             return View(grupo);
 
         }
@@ -149,9 +144,9 @@ namespace MvcWebMusica2.Controllers
                 return RedirectToAction(nameof(Index));
             }
 
-            ViewData["CiudadesId"] = new SelectList(await repositorioCiudades.DameTodos(), "Id", "Nombre");
-            ViewData["GenerosId"] = new SelectList(await repositorioGeneros.DameTodos(), "Id", "Nombre");
-            ViewData["RepresentantesId"] = new SelectList(await repositorioRepresentantes.DameTodos(), "Id", "NombreCompleto");
+            ViewData["CiudadesId"] = new SelectList(await repositorioCiudades.DameTodos(), "Id", "Nombre", grupos.CiudadesId);
+            ViewData["GenerosId"] = new SelectList(await repositorioGeneros.DameTodos(), "Id", "Nombre", grupos.GenerosId);
+            ViewData["RepresentantesId"] = new SelectList(await repositorioRepresentantes.DameTodos(), "Id", "NombreCompleto", grupos.RepresentantesId);
 
             return View(grupos);
         }
@@ -172,16 +167,11 @@ namespace MvcWebMusica2.Controllers
             {
                 return NotFound();
             }
-            else
-            {
-                grupo.Ciudades = await repositorioCiudades.DameUno(grupo.CiudadesId);
-                grupo.Generos = await repositorioGeneros.DameUno(grupo.GenerosId);
-                grupo.Representantes = await repositorioRepresentantes.DameUno(grupo.RepresentantesId);
-            }
 
-            ViewData["CiudadesId"] = new SelectList(await repositorioCiudades.DameTodos(), "Id", "Nombre");
-            ViewData["GenerosId"] = new SelectList(await repositorioGeneros.DameTodos(), "Id", "Nombre");
-            ViewData["RepresentantesId"] = new SelectList(await repositorioRepresentantes.DameTodos(), "Id", "NombreCompleto");
+            grupo.Ciudades = await repositorioCiudades.DameUno(grupo.CiudadesId);
+            grupo.Generos = await repositorioGeneros.DameUno(grupo.GenerosId);
+            grupo.Representantes = await repositorioRepresentantes.DameUno(grupo.RepresentantesId);
+
             return View(grupo);
         }
 
@@ -221,7 +211,7 @@ namespace MvcWebMusica2.Controllers
             return GenerarExcel(nombreArchivo, grupos);
         }
 
-        private FileResult GenerarExcel(string nombreArchivo, IEnumerable<Grupos> grupos)
+        private FileContentResult GenerarExcel(string nombreArchivo, IEnumerable<Grupos> grupos)
         {
             DataTable dataTable = new("Grupos");
             dataTable.Columns.AddRange([

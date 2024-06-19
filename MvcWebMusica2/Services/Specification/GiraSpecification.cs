@@ -2,11 +2,11 @@
 
 namespace MvcWebMusica2.Services.Specification
 {
-    public class GiraSpecification(int GiraId) : IConciertoSpecification
+    public class GiraSpecification(int giraId) : IConciertoSpecification
     {
         public bool IsValid(Conciertos element)
         {
-            return element.GirasId == GiraId;
+            return element.GirasId == giraId;
         }
     }
 }

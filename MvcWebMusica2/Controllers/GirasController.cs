@@ -51,10 +51,8 @@ namespace MvcWebMusica2.Controllers
             {
                 return NotFound();
             }
-            else
-            {
-                giras.Grupos = await repositorioGrupos.DameUno(giras.GruposId);
-            }
+
+            giras.Grupos = await repositorioGrupos.DameUno(giras.GruposId);
 
             return View(giras);
         }
@@ -123,10 +121,8 @@ namespace MvcWebMusica2.Controllers
                     {
                         return NotFound();
                     }
-                    else
-                    {
-                        throw;
-                    }
+
+                    throw;
                 }
                 return RedirectToAction(nameof(Index));
             }
@@ -147,10 +143,8 @@ namespace MvcWebMusica2.Controllers
             {
                 return NotFound();
             }
-            else
-            {
-                giras.Grupos = await repositorioGrupos.DameUno(giras.GruposId);
-            }
+
+            giras.Grupos = await repositorioGrupos.DameUno(giras.GruposId);
 
             return View(giras);
         }
@@ -187,7 +181,7 @@ namespace MvcWebMusica2.Controllers
             return GenerarExcel(nombreArchivo, giras);
         }
 
-        private FileResult GenerarExcel(string nombreArchivo, IEnumerable<Giras> giras)
+        private FileContentResult GenerarExcel(string nombreArchivo, IEnumerable<Giras> giras)
         {
             DataTable dataTable = new("Giras");
             dataTable.Columns.AddRange([

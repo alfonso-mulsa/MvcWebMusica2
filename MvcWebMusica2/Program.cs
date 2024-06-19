@@ -17,7 +17,6 @@ builder.Services.AddDbContext<GrupoBContext>(options =>
                         }
     )
 );
-//builder.Services.AddScoped<IListableCancionesAlbumes, ListaCancionesAlbumes>();
 builder.Services.AddScoped(typeof(IGenericRepositorio<>), typeof(EFGenericRepositorio<>));
 var app = builder.Build();
 

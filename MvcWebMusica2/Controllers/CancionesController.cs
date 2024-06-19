@@ -39,10 +39,8 @@ namespace MvcWebMusica2.Controllers
             {
                 return NotFound();
             }
-            else
-            {
-                cancion.Albumes = await repositorioAlbumes.DameUno(cancion.AlbumesId);
-            }
+
+            cancion.Albumes = await repositorioAlbumes.DameUno(cancion.AlbumesId);
 
             return View(cancion);
         }
@@ -111,10 +109,8 @@ namespace MvcWebMusica2.Controllers
                     {
                         return NotFound();
                     }
-                    else
-                    {
-                        throw;
-                    }
+
+                    throw;
                 }
                 return RedirectToAction(nameof(Index));
             }
@@ -171,7 +167,7 @@ namespace MvcWebMusica2.Controllers
             return GenerarExcel(nombreArchivo, canciones);
         }
 
-        private FileResult GenerarExcel(string nombreArchivo, IEnumerable<Canciones> canciones)
+        private FileContentResult GenerarExcel(string nombreArchivo, IEnumerable<Canciones> canciones)
         {
             DataTable dataTable = new("Canciones");
             dataTable.Columns.AddRange([

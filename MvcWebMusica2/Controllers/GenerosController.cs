@@ -9,8 +9,6 @@ namespace MvcWebMusica2.Controllers
 {
     public class GenerosController(IGenericRepositorio<Generos> repositorioGeneros) : Controller
     {
-        //private readonly GrupoBContext _context;
-
         // GET: Generos
         public async Task<IActionResult> Index()
         {
@@ -95,10 +93,8 @@ namespace MvcWebMusica2.Controllers
                     {
                         return NotFound();
                     }
-                    else
-                    {
-                        throw;
-                    }
+
+                    throw;
                 }
                 return RedirectToAction(nameof(Index));
             }
@@ -150,7 +146,7 @@ namespace MvcWebMusica2.Controllers
             return GenerarExcel(nombreArchivo, generos);
         }
 
-        private FileResult GenerarExcel(string nombreArchivo, IEnumerable<Generos> generos)
+        private FileContentResult GenerarExcel(string nombreArchivo, IEnumerable<Generos> generos)
         {
             DataTable dataTable = new("Generos");
             dataTable.Columns.AddRange([

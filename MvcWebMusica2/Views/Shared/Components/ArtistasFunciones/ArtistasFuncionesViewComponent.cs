@@ -10,11 +10,6 @@ namespace MvcWebMusica2.Views.Shared.Components.ArtistasFunciones
     {
         public async Task<IViewComponentResult> InvokeAsync(IFuncionSpecification especificacion)
         {
-
-
-            //var items = await coleccion.DameTodos
-            //    (x => x.Artistas, x => x.Funciones);
-
             var items = await coleccion.DameTodos();
             var itemsFiltrados = items.Where(especificacion.IsValid).ToList();
             foreach (var itemsF in itemsFiltrados)
@@ -22,9 +17,7 @@ namespace MvcWebMusica2.Views.Shared.Components.ArtistasFunciones
                 itemsF.Funciones = await coleccionF.DameUno(itemsF.FuncionesId);
             }
 
-
             return View(itemsFiltrados);
-
         }
     }
 }

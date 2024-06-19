@@ -95,10 +95,8 @@ namespace MvcWebMusica2.Controllers
                     {
                         return NotFound();
                     }
-                    else
-                    {
-                        throw;
-                    }
+
+                    throw;
                 }
                 return RedirectToAction(nameof(Index));
             }
@@ -150,7 +148,7 @@ namespace MvcWebMusica2.Controllers
             return GenerarExcel(nombreArchivo, roles);
         }
 
-        private FileResult GenerarExcel(string nombreArchivo, IEnumerable<Roles> roles)
+        private FileContentResult GenerarExcel(string nombreArchivo, IEnumerable<Roles> roles)
         {
             DataTable dataTable = new("Roles");
             dataTable.Columns.AddRange([

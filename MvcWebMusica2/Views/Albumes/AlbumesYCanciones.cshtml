@@ -1,5 +1,4 @@
-﻿@* ﻿@using MvcWebMusica2.Services.Specification *@
-@using MvcWebMusica2.Services.Specification
+﻿@using MvcWebMusica2.Services.Specification
 @model IEnumerable<MvcWebMusica2.Models.Albumes>
 
 @{
@@ -48,12 +47,6 @@
                 @await Component.InvokeAsync("Canciones", new CancionesPorAlbumSpecification(item.Id))
             </td>
         </tr>
-        @* <tr>
-        <td colspan="3" class="border-end-0">
-        @await Component.InvokeAsync("Canciones", new CancionesPorAlbumSpecification(item.Id))
-        </td>
-        <td class="border-start-0"></td>
-        </tr> *@
     }
     </tbody>
 </table>

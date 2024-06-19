@@ -20,7 +20,6 @@ C:\Users\Alumno\source\repos\MvcWebMusica2\MvcWebMusica2\Models\Albumes.cs
 C:\Users\Alumno\source\repos\MvcWebMusica2\MvcWebMusica2\Models\AlbumesMetadata.cs
 C:\Users\Alumno\source\repos\MvcWebMusica2\MvcWebMusica2\Models\Artistas.cs
 C:\Users\Alumno\source\repos\MvcWebMusica2\MvcWebMusica2\Models\ArtistasMetadata.cs
-C:\Users\Alumno\source\repos\MvcWebMusica2\MvcWebMusica2\Models\ArtistasViewModel.cs
 C:\Users\Alumno\source\repos\MvcWebMusica2\MvcWebMusica2\Models\Canciones.cs
 C:\Users\Alumno\source\repos\MvcWebMusica2\MvcWebMusica2\Models\CancionesMetadata.cs
 C:\Users\Alumno\source\repos\MvcWebMusica2\MvcWebMusica2\Models\Ciudades.cs
@@ -67,8 +66,7 @@ C:\Users\Alumno\source\repos\MvcWebMusica2\MvcWebMusica2\Services\Specification\
 C:\Users\Alumno\source\repos\MvcWebMusica2\MvcWebMusica2\Services\Specification\IFuncionSpecification.cs
 C:\Users\Alumno\source\repos\MvcWebMusica2\MvcWebMusica2\Services\Specification\IGrupoSpecification.cs
 C:\Users\Alumno\source\repos\MvcWebMusica2\MvcWebMusica2\Services\Specification\RepresentanteSpecification.cs
-C:\Users\Alumno\source\repos\MvcWebMusica2\MvcWebMusica2\ViewModels\IListableCancionesAlbumes.cs
-C:\Users\Alumno\source\repos\MvcWebMusica2\MvcWebMusica2\ViewModels\ListaCancionesAlbumes.cs
+C:\Users\Alumno\source\repos\MvcWebMusica2\MvcWebMusica2\ViewModels\ArtistasViewModel.cs
 C:\Users\Alumno\source\repos\MvcWebMusica2\MvcWebMusica2\Views\Shared\Components\ArtistasFunciones\ArtistasFuncionesViewComponent.cs
 C:\Users\Alumno\source\repos\MvcWebMusica2\MvcWebMusica2\Views\Shared\Components\Canciones\CancionesViewComponent.cs
 C:\Users\Alumno\source\repos\MvcWebMusica2\MvcWebMusica2\Views\Shared\Components\Giras\GirasViewComponent.cs
