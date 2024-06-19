@@ -153,8 +153,8 @@ namespace MvcWebMusica2.Controllers
 
         private async Task<bool> RepresentantesExists(int id)
         {
-            var elemento = await repositorioRepresentantes.DameTodos();
-            return elemento.Any(e => e.Id == id);
+            var lista = await repositorioRepresentantes.DameTodos();
+            return lista.Exists(e => e.Id == id);
         }
 
         [HttpGet]

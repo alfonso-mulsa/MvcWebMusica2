@@ -156,8 +156,8 @@ namespace MvcWebMusica2.Controllers
 
         private async Task<bool> EmpleadosExists(int id)
         {
-            var elemento = await repositorioEmpleados.DameTodos();
-            return elemento.Any(e => e.Id == id);
+            var lista = await repositorioEmpleados.DameTodos();
+            return lista.Exists(e => e.Id == id);
         }
 
         [HttpGet]

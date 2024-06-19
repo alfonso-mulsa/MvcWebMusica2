@@ -193,8 +193,8 @@ namespace MvcWebMusica2.Controllers
         private async Task<bool> GruposExists(int id)
         {
 
-            var elemento = await repositorioGrupos.DameTodos();
-            return elemento.Any(e => e.Id == id);
+            var lista = await repositorioGrupos.DameTodos();
+            return lista.Exists(e => e.Id == id);
         }
 
         [HttpGet]
