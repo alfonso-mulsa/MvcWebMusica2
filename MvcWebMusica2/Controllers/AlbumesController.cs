@@ -19,20 +19,25 @@ namespace MvcWebMusica2.Controllers
         private readonly string _nombre = "Nombre";
         private readonly string _generosId = "GenerosId";
         private readonly string _gruposId = "GruposId";
+        private const bool ConCanciones = true;
+        private const bool SinCanciones = false;
 
-        private async Task<IActionResult> VistaListaAlbumes(string vista)
+        private async Task<List<Albumes>> DameListaAlbumes(bool canciones)
         {
             var listaAlbumes = await repositorioAlbumes.DameTodos();
             foreach (var album in listaAlbumes)
             {
                 album.Generos = await repositorioGeneros.DameUno((int)album.GenerosId!);
                 album.Grupos = await repositorioGrupos.DameUno((int)album.GruposId!);
-                album.Canciones = await repositorioCanciones.Filtra(x => x.AlbumesId == album.Id);
+                if (canciones)
+                {
+                    album.Canciones = await repositorioCanciones.Filtra(x => x.AlbumesId == album.Id);
+                }
             }
-            return View(vista, listaAlbumes);
+            return listaAlbumes;
         }
 
-        private async Task<IActionResult> VistaAlbum(int? id, string vista)
+        private async Task<IActionResult> VistaAlbum(string vista, int? id)
         {
             if (id == null)
             {
@@ -64,19 +69,19 @@ namespace MvcWebMusica2.Controllers
         // GET: Albumes
         public async Task<IActionResult> Index()
         {
-            return await VistaListaAlbumes("Index");
+            return View(await DameListaAlbumes(ConCanciones));
         }
 
         // GET: Albumes y Canciones
         public async Task<IActionResult> AlbumesYCanciones()
         {
-            return await VistaListaAlbumes("AlbumesYCanciones");
+            return View(await DameListaAlbumes(SinCanciones));
         }
 
         // GET: Albumes/Details/5
         public async Task<IActionResult> Details(int? id)
         {
-            return await VistaAlbum(id, "Details");
+            return await VistaAlbum("Details", id);
         }
 
         // GET: Albumes/Create
@@ -108,7 +113,7 @@ namespace MvcWebMusica2.Controllers
         // GET: Albumes/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
-            return await VistaAlbum(id, "Edit");
+            return await VistaAlbum("Edit", id);
         }
 
         // POST: Albumes/Edit/5
@@ -148,7 +153,7 @@ namespace MvcWebMusica2.Controllers
         // GET: Albumes/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
-            return await VistaAlbum(id, "Delete");
+            return await VistaAlbum("Delete", id);
         }
 
         // POST: Albumes/Delete/5
@@ -174,14 +179,8 @@ namespace MvcWebMusica2.Controllers
         [HttpGet]
         public async Task<FileResult> DescargarExcel()
         {
-            var albumes = await repositorioAlbumes.DameTodos();
-            foreach (var album in albumes)
-            {
-                album.Generos = await repositorioGeneros.DameUno((int)album.GenerosId!);
-                album.Grupos = await repositorioGrupos.DameUno((int)album.GruposId!);
-            }
             var nombreArchivo = "Albumes.xlsx";
-            return GenerarExcel(nombreArchivo, albumes);
+            return GenerarExcel(nombreArchivo, await DameListaAlbumes(SinCanciones));
         }
 
         private FileContentResult GenerarExcel(string nombreArchivo, IEnumerable<Albumes> albumes)
