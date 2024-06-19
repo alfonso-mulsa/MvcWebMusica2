@@ -22,14 +22,23 @@ namespace MvcWebMusica2.Controllers
         private const bool ConCanciones = true;
         private const bool SinCanciones = false;
 
-        private async Task<List<Albumes>> DameListaAlbumes(bool canciones)
+        /// <summary>
+        /// Método que devuelve la lista de todos los albumes con el género, el grupo y, opcionalemente, las canciones del album.
+        /// </summary>
+        /// <param name="canciones">
+        /// Tipo Booleano (const ConCanciones / const SinCanciones) para indicar si hay que añadir, o no, las canciones al album.
+        /// </param>
+        /// <returns>
+        /// Lista de todos los albumes con con el género, el grupo y, opcionalemente, las canciones del album.
+        /// </returns>
+        private async Task<List<Albumes>> DameListaAlbumes(bool incluyeCanciones)
         {
             var listaAlbumes = await repositorioAlbumes.DameTodos();
             foreach (var album in listaAlbumes)
             {
                 album.Generos = await repositorioGeneros.DameUno((int)album.GenerosId!);
                 album.Grupos = await repositorioGrupos.DameUno((int)album.GruposId!);
-                if (canciones)
+                if (incluyeCanciones)
                 {
                     album.Canciones = await repositorioCanciones.Filtra(x => x.AlbumesId == album.Id);
                 }
@@ -37,6 +46,12 @@ namespace MvcWebMusica2.Controllers
             return listaAlbumes;
         }
 
+        /// <summary>
+        /// Método que devuelve la vista de un album.
+        /// </summary>
+        /// <param name="vista">Nombre de la vista.</param>
+        /// <param name="id">Id del album a mostrar.</param>
+        /// <returns>Vista de album</returns>
         private async Task<IActionResult> VistaAlbum(string vista, int? id)
         {
             if (id == null)
