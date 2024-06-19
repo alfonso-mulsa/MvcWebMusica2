@@ -134,10 +134,8 @@ namespace MvcWebMusica2.Controllers
             {
                 return NotFound();
             }
-            else
-            {
-                ciudad.Paises = await repositorioPaises.DameUno(ciudad.PaisesID);
-            }
+
+            ciudad.Paises = await repositorioPaises.DameUno(ciudad.PaisesID);
 
             return View(ciudad);
         }

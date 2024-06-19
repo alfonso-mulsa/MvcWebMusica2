@@ -24,10 +24,8 @@ namespace MvcWebMusica2.Services.Repositorio
                 await _context.SaveChangesAsync();
                 return true;
             }
-            else
-            {
-                return false;
-            }
+
+            return false;
         }
 
         public Task<List<T>> DameTodos()

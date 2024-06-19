@@ -142,11 +142,9 @@ namespace MvcWebMusica2.Controllers
             {
                 return NotFound();
             }
-            else
-            {
-                concierto.Ciudades = await repositorioCiudades.DameUno(concierto.CiudadesId);
-                concierto.Giras = await repositorioGiras.DameUno(concierto.GirasId);
-            }
+
+            concierto.Ciudades = await repositorioCiudades.DameUno(concierto.CiudadesId);
+            concierto.Giras = await repositorioGiras.DameUno(concierto.GirasId);
 
             return View(concierto);
         }
