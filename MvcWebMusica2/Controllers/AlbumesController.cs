@@ -17,39 +17,22 @@ namespace MvcWebMusica2.Controllers
         : Controller
     {
         private readonly string _nombre = "Nombre";
+        private readonly string _generosId = "GenerosId";
+        private readonly string _gruposId = "GruposId";
 
-        private async Task<(Generos?, Grupos?)> DameGeneroYGrupo(int generoId, int grupoId)
-        {
-            return (await repositorioGeneros.DameUno(generoId), await repositorioGrupos.DameUno(grupoId));
-        }
-
-        // GET: Albumes
-        public async Task<IActionResult> Index()
+        private async Task<IActionResult> VisualizaListaAlbumes(string vista)
         {
             var listaAlbumes = await repositorioAlbumes.DameTodos();
             foreach (var album in listaAlbumes)
             {
-                (album.Generos, album.Grupos) = await DameGeneroYGrupo((int)album.GenerosId!, (int)album.GruposId!);
+                album.Generos = await repositorioGeneros.DameUno((int)album.GenerosId!);
+                album.Grupos = await repositorioGrupos.DameUno((int)album.GruposId!);
                 album.Canciones = await repositorioCanciones.Filtra(x => x.AlbumesId == album.Id);
             }
-            return View(listaAlbumes);
+            return View(vista, listaAlbumes);
         }
 
-        // GET: Albumes y Canciones
-        public async Task<IActionResult> AlbumesYCanciones()
-        {
-            var listaAlbumes = await repositorioAlbumes.DameTodos();
-
-            foreach (var album in listaAlbumes)
-            {
-                (album.Generos, album.Grupos) = await DameGeneroYGrupo((int)album.GenerosId!, (int)album.GruposId!);
-            }
-
-            return View(listaAlbumes);
-        }
-
-        // GET: Albumes/Details/5
-        public async Task<IActionResult> Details(int? id)
+        private async Task<IActionResult> VisualizaAlbum(int? id, string vista)
         {
             if (id == null)
             {
@@ -63,17 +46,81 @@ namespace MvcWebMusica2.Controllers
                 return NotFound();
             }
 
-            (album.Generos, album.Grupos) = await DameGeneroYGrupo((int)album.GenerosId!, (int)album.GruposId!);
-            album.Canciones = await repositorioCanciones.Filtra(x => x.AlbumesId == album.Id);
+            if (vista == "Edit")
+            {
+                ViewData[_generosId] = new SelectList(await repositorioGeneros.DameTodosOrdenados(x => x.Nombre!), "Id", _nombre);
+                ViewData[_gruposId] = new SelectList(await repositorioGrupos.DameTodosOrdenados(x => x.Nombre!), "Id", _nombre);
+            }
+            else
+            {
+                album.Generos = await repositorioGeneros.DameUno((int)album.GenerosId!);
+                album.Grupos = await repositorioGrupos.DameUno((int)album.GruposId!);
+                album.Canciones = await repositorioCanciones.Filtra(x => x.AlbumesId == album.Id);
+            }
 
-            return View(album);
+            return View(vista, album);
+        }
+
+        // GET: Albumes
+        public async Task<IActionResult> Index()
+        //public void Index()
+        {
+            return await VisualizaListaAlbumes("Index");
+            //var listaAlbumes = await repositorioAlbumes.DameTodos();
+            //foreach (var album in listaAlbumes)
+            //{
+            //    album.Generos = await repositorioGeneros.DameUno((int)album.GenerosId!);
+            //    album.Grupos = await repositorioGrupos.DameUno((int)album.GruposId!);
+            //    album.Canciones = await repositorioCanciones.Filtra(x => x.AlbumesId == album.Id);
+            //}
+            //return View(listaAlbumes);
+        }
+
+        // GET: Albumes y Canciones
+        public async Task<IActionResult> AlbumesYCanciones()
+        //public void AlbumesYCanciones()
+        {
+            return await VisualizaListaAlbumes("AlbumesYCanciones");
+            //var listaAlbumes = await repositorioAlbumes.DameTodos();
+
+            //foreach (var album in listaAlbumes)
+            //{
+            //    album.Generos = await repositorioGeneros.DameUno((int)album.GenerosId!);
+            //    album.Grupos = await repositorioGrupos.DameUno((int)album.GruposId!);
+            //}
+
+            //return View(listaAlbumes);
+        }
+
+        // GET: Albumes/Details/5
+        public async Task<IActionResult> Details(int? id)
+        //public void Details(int? id)
+        {
+            return await VisualizaAlbum(id, "Details");
+            //if (id == null)
+            //{
+            //    return NotFound();
+            //}
+
+            //var album = await repositorioAlbumes.DameUno(id);
+
+            //if (album == null)
+            //{
+            //    return NotFound();
+            //}
+
+            //album.Generos = await repositorioGeneros.DameUno((int)album.GenerosId!);
+            //album.Grupos = await repositorioGrupos.DameUno((int)album.GruposId!);
+            //album.Canciones = await repositorioCanciones.Filtra(x => x.AlbumesId == album.Id);
+
+            //return View(album);
         }
 
         // GET: Albumes/Create
         public async Task<IActionResult> Create()
         {
-            ViewData["GenerosId"] = new SelectList(await repositorioGeneros.DameTodosOrdenados(x => x.Nombre!), "Id", _nombre);
-            ViewData["GruposId"] = new SelectList(await repositorioGrupos.DameTodosOrdenados(x => x.Nombre!), "Id", _nombre);
+            ViewData[_generosId] = new SelectList(await repositorioGeneros.DameTodosOrdenados(x => x.Nombre!), "Id", _nombre);
+            ViewData[_gruposId] = new SelectList(await repositorioGrupos.DameTodosOrdenados(x => x.Nombre!), "Id", _nombre);
             return View();
         }
 
@@ -90,28 +137,29 @@ namespace MvcWebMusica2.Controllers
                 return RedirectToAction(nameof(Index));
             }
 
-            ViewData["GenerosId"] = new SelectList(await repositorioGeneros.DameTodosOrdenados(x => x.Nombre!), "Id", _nombre);
-            ViewData["GruposId"] = new SelectList(await repositorioGrupos.DameTodosOrdenados(x => x.Nombre!), "Id", _nombre);
+            ViewData[_generosId] = new SelectList(await repositorioGeneros.DameTodosOrdenados(x => x.Nombre!), "Id", _nombre);
+            ViewData[_gruposId] = new SelectList(await repositorioGrupos.DameTodosOrdenados(x => x.Nombre!), "Id", _nombre);
             return View(album);
         }
 
         // GET: Albumes/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
+            return await VisualizaAlbum(id, "Edit");
+            //if (id == null)
+            //{
+            //    return NotFound();
+            //}
 
-            var album = await repositorioAlbumes.DameUno(id);
-            if (album == null)
-            {
-                return NotFound();
-            }
+            //var album = await repositorioAlbumes.DameUno(id);
+            //if (album == null)
+            //{
+            //    return NotFound();
+            //}
 
-            ViewData["GenerosId"] = new SelectList(await repositorioGeneros.DameTodosOrdenados(x => x.Nombre!), "Id", _nombre);
-            ViewData["GruposId"] = new SelectList(await repositorioGrupos.DameTodosOrdenados(x => x.Nombre!), "Id", _nombre);
-            return View(album);
+            //ViewData[_generosId] = new SelectList(await repositorioGeneros.DameTodosOrdenados(x => x.Nombre!), "Id", _nombre);
+            //ViewData[_gruposId] = new SelectList(await repositorioGrupos.DameTodosOrdenados(x => x.Nombre!), "Id", _nombre);
+            //return View(album);
         }
 
         // POST: Albumes/Edit/5
@@ -143,30 +191,32 @@ namespace MvcWebMusica2.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["GenerosId"] = new SelectList(await repositorioGeneros.DameTodosOrdenados(x => x.Nombre!), "Id", _nombre);
-            ViewData["GruposId"] = new SelectList(await repositorioGrupos.DameTodosOrdenados(x => x.Nombre!), "Id", _nombre);
+            ViewData[_generosId] = new SelectList(await repositorioGeneros.DameTodosOrdenados(x => x.Nombre!), "Id", _nombre);
+            ViewData[_gruposId] = new SelectList(await repositorioGrupos.DameTodosOrdenados(x => x.Nombre!), "Id", _nombre);
             return View(album);
         }
 
         // GET: Albumes/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
+            return await VisualizaAlbum(id, "Delete");
+            //if (id == null)
+            //{
+            //    return NotFound();
+            //}
 
-            var album = await repositorioAlbumes.DameUno(id);
+            //var album = await repositorioAlbumes.DameUno(id);
 
-            if (album == null)
-            {
-                return NotFound();
-            }
+            //if (album == null)
+            //{
+            //    return NotFound();
+            //}
 
-            (album.Generos, album.Grupos) = await DameGeneroYGrupo((int)album.GenerosId!, (int)album.GruposId!);
-            album.Canciones = await repositorioCanciones.Filtra(x => x.AlbumesId == album.Id);
+            //album.Generos = await repositorioGeneros.DameUno((int)album.GenerosId!);
+            //album.Grupos = await repositorioGrupos.DameUno((int)album.GruposId!);
+            //album.Canciones = await repositorioCanciones.Filtra(x => x.AlbumesId == album.Id);
 
-            return View(album);
+            //return View(album);
         }
 
         // POST: Albumes/Delete/5
@@ -195,7 +245,8 @@ namespace MvcWebMusica2.Controllers
             var albumes = await repositorioAlbumes.DameTodos();
             foreach (var album in albumes)
             {
-                (album.Generos, album.Grupos) = await DameGeneroYGrupo((int)album.GenerosId!, (int)album.GruposId!);
+                album.Generos = await repositorioGeneros.DameUno((int)album.GenerosId!);
+                album.Grupos = await repositorioGrupos.DameUno((int)album.GruposId!);
             }
             var nombreArchivo = "Albumes.xlsx";
             return GenerarExcel(nombreArchivo, albumes);

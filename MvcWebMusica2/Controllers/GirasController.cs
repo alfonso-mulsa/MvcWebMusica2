@@ -17,7 +17,7 @@ namespace MvcWebMusica2.Controllers
 
         // GET: Giras
 
-        private async Task<List<Giras>> DameListaDeGiras()
+        private async Task<List<Giras>> DameListaGiras()
         {
             var listaGiras = await repositorioGiras.DameTodos();
             foreach (var giras in listaGiras)
@@ -27,22 +27,6 @@ namespace MvcWebMusica2.Controllers
 
             return listaGiras;
         }
-
-        public async Task<IActionResult> Index()
-        {
-            return View(await DameListaDeGiras());
-        }
-
-        
-        // GET: Informacion de las Giras
-
-        public async Task<IActionResult> InfoGiras()
-        {
-            return View(await DameListaDeGiras());
-        }
-
-        // GET: Giras/Details/5
-
         private async Task<Giras?> DameGira(int? id)
         {
             if (id == null)
@@ -60,6 +44,22 @@ namespace MvcWebMusica2.Controllers
 
             return giras;
         }
+
+        public async Task<IActionResult> Index()
+        {
+            return View(await DameListaGiras());
+        }
+
+        
+        // GET: Informacion de las Giras
+
+        public async Task<IActionResult> InfoGiras()
+        {
+            return View(await DameListaGiras());
+        }
+
+        // GET: Giras/Details/5
+
         public async Task<IActionResult> Details(int? id)
         {
             return View(await DameGira(id));
