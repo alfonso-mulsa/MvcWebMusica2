@@ -160,8 +160,8 @@ namespace MvcWebMusica2.Controllers
 
         private async Task<bool> GirasExists(int id)
         {
-            var elemento = await repositorioGiras.DameTodos();
-            return elemento.Any(e => e.Id == id);
+            var lista = await repositorioGiras.DameTodos();
+            return lista.Exists(e => e.Id == id);
         }
 
         [HttpGet]
