@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using MvcWebMusica2.Models;
 
 namespace MvcWebMusica2.Models;
 
@@ -257,4 +258,6 @@ public partial class GrupoBContext : DbContext
     }
 
     partial void OnModelCreatingPartial(ModelBuilder modelBuilder);
+
+public DbSet<MvcWebMusica2.Models.ProximosConcierto> ProximosConcierto { get; set; } = default!;
 }
