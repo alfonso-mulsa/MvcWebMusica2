@@ -33,6 +33,11 @@ namespace MvcWebMusica2.Services.Repositorio
             return Task.FromResult(_context.Set<T>().AsParallel().ToList());
         }
 
+        public Task<List<T>> DameTodosOrdenados(Expression<Func<T, dynamic>> predicado)
+        {
+            return Task.FromResult(_context.Set<T>().OrderBy(predicado).AsParallel().ToList());
+        }
+
         public async Task<T?> DameUno(int? id)
         {
             if (id == null)
